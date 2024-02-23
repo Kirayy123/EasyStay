@@ -127,11 +127,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
    os.path.join(BASE_DIR, "static"),
 ]
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.example.com'  # 你的 SMTP 服务器地址
-EMAIL_PORT = 587  # SMTP 服务器端口号
-EMAIL_USE_TLS = True  # 使用 TLS 加密
-EMAIL_HOST_USER = 'your_email@example.com'  # 发件人邮箱
-EMAIL_HOST_PASSWORD = 'your_email_password'  # 发件人邮箱密码
-DEFAULT_FROM_EMAIL = 'your_email@example.com'  # 默认发件人邮箱
