@@ -82,3 +82,6 @@ def manager_register(request):
 
 def search_home(request):
     return render(request, 'search/home.html')
+
+def hotel_details(request):
+    return render(request, 'hotels/hoteldetails/html')
