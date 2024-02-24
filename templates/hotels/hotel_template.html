@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/hotelpagestyle.css' %}" rel="stylesheet">
+    <title>EasyStay</title>
+</head>
+<body>
+
+    <div class="header-bar">
+        <label>EasyStay</label>
+        <label>navigation-buttons-placeholder</label>
+    </div>
+    {% block content_surrounding %}
+    <div class="content-surrounding">
+        <div class="content-header">
+            <label>Hotel</label>
+            <div>
+                <input type="text" placeholder="Search"/>
+            </div>
+        </div>
+        <div>
+            {% block content_pane %}
+            {% endblock%}
+        </div>
+    </div>
+    {% endblock %}
+
+</body>
+</html>
