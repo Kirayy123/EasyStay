@@ -35,6 +35,7 @@ class hotel(models.Model):
 
 
 class roomtype(models.Model):
+    hotel = models.ForeignKey(hotel, on_delete=models.CASCADE)
     type = models.CharField(max_length=50, unique=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, default=100.00)
     facility = models.TextField(default='Basic room facilities.')
@@ -42,9 +43,8 @@ class roomtype(models.Model):
 
 
 class room(models.Model):
-    hotel = models.ForeignKey(hotel, on_delete=models.CASCADE)
     type = models.ForeignKey(roomtype, on_delete=models.CASCADE)
-    number = models.CharField(max_length=10, default='001')
+    Room_number = models.CharField(max_length=10, default='001')
     availability = models.BooleanField(default=True)  # True for available, False for unavailable
 
 
@@ -53,13 +53,19 @@ class booking(models.Model):
     room_number = models.ForeignKey(room, on_delete=models.CASCADE)
     ref_num = models.CharField(max_length=50, default='REF0001')
     booking_date = models.DateTimeField(default=timezone.now)
-    check_in_date = models.DateTimeField(default=None)
-    check_out_date = models.DateTimeField(default=None)
+
+    from_date = models.DateField(default=None)####
+    to_date = models.DateField(default=None)####
+
     total_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     is_paid = models.BooleanField(default=False)
     reserved_name = models.CharField(max_length=50, default='Name')
     reserved_phone = models.CharField(max_length=50, default='Phone')
-    status = models.TextField(default='1')  # '1' for wait check-in
-    review_star = models.IntegerField(default=None)
-    review_comment = models.TextField(default='No comment.')
-    review_date = models.DateTimeField(default=None)
+    status = models.IntegerField(default='1')  # '1' for wait check-in//'2'checked in //'3'checked out
+
+    check_in_date = models.DateTimeField(null=True, blank=True)####
+    check_out_date = models.DateTimeField(null=True, blank=True)####
+
+    review_star = models.IntegerField(null=True, blank=True)
+    review_comment = models.TextField(null=True, blank=True)
+    review_date = models.DateTimeField(null=True, blank=True)
