@@ -1,19 +1,31 @@
 {% extends "hotels/hotel_template.html" %}
 
 {% block content_pane %}
+<div class="content-header">
+    {% if hotel %}
+    <h1>{{ hotel.name }}</h1>
+    <div>
+        <input type="text" placeholder="Search"/>
+    </div>
+</div>
+<div>
 <div class="content-pane">
     <div class="summary" >
         <div class="summary-header">
-            <label>HOTEL NAME</label>
-            <label>stars</LABEL>
-            <label>score</label>
+            <label>{{ hotel.name }}</label>
+            <div>
+                {% for i in hotel.star %}
+                    <li>*</Li>                
+                {% endfor %}
+            </div>            
+            <label>{{ hotel.star }}</label>
         </div>
         <div class="summary-body">
             <div class="hotel-image">PLACEHOLDERFORIMAGE</div>
             <div class="hotel-description">
                 <div class="hotel_address">
                     <label>ICON</label>
-                    <label>HOTELADDRESS</label>
+                    <label>{{ hotel.location }}</label>
                 </div>
                 
                 <div class="features">  
@@ -35,10 +47,17 @@
     </div>  
    
 </div>
+{% if rooms %}
 <div class="room-list">
-    <ul>
+    {% for room in rooms %}
+    <li>
+        <div class="room-description">
 
-    </ul>
+        </div>
+    </li>
+    {% endfor %}
 </div>
+{% endif %}
+{% endif %}
 
 {% endblock %}

@@ -6,7 +6,7 @@ from django.shortcuts import render
 from EasyStay.form import UserLoginForm, ManagerLoginForm
 
 from EasyStay.cbvs import CreateUserView, CreateManagerView
-from EasyStay.models import user, hotelmanager
+from EasyStay.models import user, hotelmanager, hotel, room
 
 
 def login_home(request):
@@ -83,5 +83,18 @@ def manager_register(request):
 def search_home(request):
     return render(request, 'search/home.html')
 
-def hotel_details(request):
+def hotel_details(request, hotelID):
+
+    context_hotel = {}
+    try: 
+        hoteldisplayed = hotel.objects.get(hotel_id=hotelID)
+        roomsdisplayed = room.objects.filter(hotel=hoteldisplayed)
+        context_hotel['hotel'] = hoteldisplayed
+        context_hotel['rooms'] = roomsdisplayed
+
+    except hotel.DoesNotExist:
+        context_hotel['hotel'] = None
+        context_hotel['rooms'] = None
+
+
     return render(request, 'hotels/hotel_details.html')

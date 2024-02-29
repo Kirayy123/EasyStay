@@ -10,18 +10,12 @@
 <body>
 
     <div class="header-bar">
-        <label>EasyStay</label>
+        <h1>EasyStay</h1>
         <label>navigation-buttons-placeholder</label>
     </div>
     {% block content_surrounding %}
     <div class="content-surrounding">
-        <div class="content-header">
-            <label>Hotel</label>
-            <div>
-                <input type="text" placeholder="Search"/>
-            </div>
-        </div>
-        <div>
+       
             {% block content_pane %}
             {% endblock%}
         </div>
