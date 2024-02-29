@@ -20,8 +20,6 @@ from EasyStay.views import manager_login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    ###########################################################
     path('',manager_login,name="manager_login"),
-    ###########################################################
     path('easystay/', include("EasyStay.urls")),
 ]

@@ -97,4 +97,4 @@ def hotel_details(request, hotelID):
         context_hotel['rooms'] = None
 
 
-    return render(request, 'hotels/hotel_details.html')
+    return render(request, 'hotels/hotel_details.html', context_hotel)
