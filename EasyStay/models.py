@@ -36,7 +36,8 @@ class hotel(models.Model):
 
 class roomtype(models.Model):
     hotel = models.ForeignKey(hotel, on_delete=models.CASCADE)
-    type = models.CharField(max_length=50, unique=True)
+    type = models.CharField(max_length=50)
+    #type = models.CharField(max_length=50,unique=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, default=100.00)
     facility = models.TextField(default='Basic room facilities.')
     image = models.ImageField(upload_to='room_image',default=None)
@@ -61,6 +62,7 @@ class booking(models.Model):
     is_paid = models.BooleanField(default=False)
     reserved_name = models.CharField(max_length=50, default='Name')
     reserved_phone = models.CharField(max_length=50, default='Phone')
+
     status = models.IntegerField(default='1')  # '1' for wait check-in//'2'checked in //'3'checked out
 
     check_in_date = models.DateTimeField(null=True, blank=True)####

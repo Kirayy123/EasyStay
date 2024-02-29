@@ -2,7 +2,7 @@ from django.shortcuts import reverse, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from EasyStay.form import UserRegisterForm, ManagerRegisterForm
+from EasyStay.form import UserRegisterForm, ManagerRegisterForm, HotelInfoForm, RoomTypeEditForm
 
 from EasyStay.models import user, hotelmanager
 import random
