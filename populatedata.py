@@ -58,9 +58,7 @@ def add_manager(mID):
     m = hotelmanager.objects.get_or_create(manage_id= mID,
                                            hotel_name= fake.company(),
                                            email= fake.free_email())[0]
-   
-    
-
+       
 
 def populate():
     counter= 1
@@ -69,10 +67,18 @@ def populate():
         counter += 1 
         add_manager(manID)
         add_hotel(counter)
+
+def fill_photos():     
+    for h in hotel.objects.all():
+        url = "images/hotel.jpg"
+        h.image = url
+        h.save()
+        
+
         
 if __name__ == '__main__':
     
-    populate()
+    fill_photos()
 
 
     
