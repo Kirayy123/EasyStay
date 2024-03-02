@@ -6,7 +6,7 @@ from django.shortcuts import render
 from EasyStay.form import UserLoginForm, ManagerLoginForm
 
 from EasyStay.cbvs import CreateUserView, CreateManagerView
-from EasyStay.models import user, hotelmanager, hotel, room
+from EasyStay.models import user, hotelmanager, hotel, room, roomtype
 
 
 def login_home(request):
@@ -79,16 +79,16 @@ def manager_register(request):
     func = CreateManagerView.as_view()
     return func(request)
 
-
 def search_home(request):
     return render(request, 'search/home.html')
 
-def hotel_details(request, hotelID):
-
+def hotel_details(request,id):
     context_hotel = {}
     try: 
-        hoteldisplayed = hotel.objects.get(hotel_id=hotelID)
-        roomsdisplayed = room.objects.filter(hotel=hoteldisplayed)
+        hoteldisplayed = hotel.objects.get(hotel_id=id)
+        roomsdisplayed = roomtype.objects.filter(hotel=hoteldisplayed)
+        context_hotel['hotelFac'] = hoteldisplayed.facility.split(',')
+        context_hotel['roomFac'] = roomtype.id
         context_hotel['hotel'] = hoteldisplayed
         context_hotel['rooms'] = roomsdisplayed
 
@@ -96,5 +96,16 @@ def hotel_details(request, hotelID):
         context_hotel['hotel'] = None
         context_hotel['rooms'] = None
 
-
     return render(request, 'hotels/hotel_details.html', context_hotel)
+
+def details(request):
+    return render(request,'hotels/details.html')
+
+def search_rst(request):
+    if request.method == 'POST':
+        location = request.POST.get('location')
+        print('location:',location)
+        rsts = hotel.objects.filter(position__icontains=location).all()
+        return render(request, 'search_rst.html', locals())
+
+

@@ -1,63 +1,112 @@
-{% extends "hotels/hotel_template.html" %}
+{% extends 'base.html' %}
+{% load static %}
+{% block css_ext %}
 
-{% block content_pane %}
-<div class="content-header">
-    {% if hotel %}
-    <h1>{{ hotel.name }}</h1>
-    <div>
-        <input type="text" placeholder="Search"/>
+<link href="{% static 'css/blog.css' %}" rel="stylesheet">
+<link href="{% static 'css/list-groups.css' %}" rel="stylesheet">
+<link href="{% static 'css/hoteldetails.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block main%}
+    
+<div class="container mt-5 rounded-4 p-2 h-auto contentcontainer" id="hotelsummary">     <!-- hotel details-->
+    <div class="row ">
+        <div class="row">
+            <div class="col-sm-auto">
+                <h3>
+                    {% if hotel %}
+                    {{hotel.name}}
+                    {% else %}
+                    UNKNOWN HOTEL
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="col ">
+                <h4>
+                    {% if hotel %}
+                    {{hotel.star}}
+                    {% else %}
+                    Rating
+                    {% endif %}
+                </h4>
+            </div>
+
+        </div>
+       <div class = "col-sm-auto"> <!-- picture-->
+       <img class="image_hotel img-thumbnail" src="{% static 'images/hotel.jpg' %}" class="img-fluid"  alt="HOTELNAME">
+        </div>
+        <div class="col">
+            <div class="row"><!-- location-->
+                <div class="col-sm-auto">
+                    <h1>ICON</h1>
+                </div>
+                <div class="col justify-content-lg-start">
+                <p>
+                    {% if hotel %}
+                    {{hotel.location}}
+                    {% else %}
+                    Uknown Location
+                    {% endif %}
+                </p>
+                    
+                </div>
+            </div>
+            <div class="row"><!-- features-->
+                <p>{% if hotel %}
+                    {{hotel.features}}
+                    {% else %}
+                    Uknown Features
+                    {% endif %}</p>
+            </div>
+            <div class="row p-2"> <!-- details-->
+                <p>
+                    {% if hotel %}
+                    {{hotel.description}}
+                    {% else %}
+                    Nestled in the heart of a vibrant city, the Crystal Oasis Hotel offers a luxurious retreat with modern amenities and timeless elegance. 
+                    The sleek architecture welcomes guests into a sophisticated lobby adorned with contemporary art, setting the tone for a stylish stay. 
+                    Spacious rooms boast panoramic views of the city skyline, while the hotel's gourmet restaurant tantalizes taste buds with a fusion of local and international flavors. With a rooftop pool, fitness center, and attentive concierge service, the Crystal Oasis Hotel promises a memorable blend of comfort and sophistication for both business and leisure travelers
+                    {% endif %}
+                    </p>
+            </div>
+
+        </div>
     </div>
 </div>
-<div>
-<div class="content-pane">
-    <div class="summary" >
-        <div class="summary-header">
-            <label>{{ hotel.name }}</label>
-            <div>
-                {% for i in hotel.star %}
-                    <li>*</Li>                
-                {% endfor %}
-            </div>            
-            <label>{{ hotel.star }}</label>
-        </div>
-        <div class="summary-body">
-            <div class="hotel-image">PLACEHOLDERFORIMAGE</div>
-            <div class="hotel-description">
-                <div class="hotel_address">
-                    <label>ICON</label>
-                    <label>{{ hotel.location }}</label>
-                </div>
-                
-                <div class="features">  
-                    <label>feature</label>    
-                    <label>feature</label>  
-                    <label>feature</label>  
-                    <label>feature</label>  
-                    <label>feature</label>  
-                    <label>feature</label>                   
-
-                </div>
-                <div class="reviews">
-
-                </div>               
-
-            </div>
-            
-        </div>
-    </div>  
-   
-</div>
 {% if rooms %}
-<div class="room-list">
-    {% for room in rooms %}
-    <li>
-        <div class="room-description">
-
+{% for room in rooms %}
+<div class="container mt-2 rounded-4 p-2 contentcontainer h-100" id="room">
+    <div class="row">
+    <div class="col">
+    <div class="row">
+        <div class="col-sm-auto"><!-- RoomType-->
+            <h4>{{room.type}}</h4>
         </div>
-    </li>
-    {% endfor %}
+        <div class="col"><!-- Price-->
+            <h4>{{room.price}}</h4>
+        </div>
+  
+    </div>
+    <div class="row d-flex flex-fill">
+        <div class="col"><!-- features-->
+            <h4>{{room.facility}}</h4>
+        </div>
+        <div class="col"><!-- guests-->
+            <h4>Guests: {{room.guests}}</h4>
+        </div>
+        <div class="col d-flex justify-content-center" ><!-- button-->
+            <a class="btn btn-primary btn-lg" href="{% url 'search_home' %}" target="_blank" role="button">Reserve</a>
+        </div>
+    </div>
+    </div>
+        <div class="col-sm-auto"><!-- picture-->     
+            <img class="image_hotel img-thumbnail" src="{{room.image.url}}" class="img-fluid"  alt="Room">      
+        </div>
 </div>
+</div>
+{% endfor %}
 {% endif %}
-{% endif %}
+
+
 
 {% endblock %}
