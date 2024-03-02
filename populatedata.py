@@ -21,6 +21,14 @@ room_facility=["Hot-Tub", "Sauna", "Kitchen", "Dog-Friendly", "Sea Views", "Loun
 hotel_facility = ["En-suite","Swimming pool", "Tennis Court", "Beach Access", "Hot Tub", "Sauna", "Gym", "Concierge service",
               "Family Friendly", "Dog friendly", "Cat friendly","City Views", "Restaurant", "Free breakfast"]
 
+
+hotelphotos = os.listdir("media/hotels")
+photo_provider = DynamicProvider(
+    provider_name='hotelPhotos',
+    elements=os.listdir("media/hotels")
+)
+
+
 feature_provider = DynamicProvider(
     provider_name='features',
     elements=hotel_facility
@@ -156,6 +164,7 @@ fake.add_provider(feature_provider)
 fake.add_provider(roomFacility_Provider)
 fake.add_provider(hotelnames)
 fake.add_provider(hoteldesc)
+fake.add_provider(photo_provider)
 
 file_path = 'worldcities.csv'
 num_rows_to_read = 50  # Specify the number of rows you want to read
@@ -183,7 +192,7 @@ def add_hotel(ID, man, city, city_countries):
     h.description = fake.descriptions()
     h.email = fake.free_email()
     h.star = random.randint(1,5)
-    h.image = "images/hotel.jpg"
+    h.image = "hotels/" + fake.hotelPhotos()
     h.facility = concatRandom(hotel_facility, 6)
     h.phone= fake.phone_number()
     h.save()
