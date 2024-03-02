@@ -87,10 +87,10 @@ def hotel_details(request,id):
     try: 
         hoteldisplayed = hotel.objects.get(hotel_id=id)
         roomsdisplayed = roomtype.objects.filter(hotel=hoteldisplayed)
-        context_hotel['hotelFac'] = hoteldisplayed.facility.split(',')
-        context_hotel['roomFac'] = roomtype.id
+        context_hotel['Facility'] = hoteldisplayed.facility.split(',')
         context_hotel['hotel'] = hoteldisplayed
         context_hotel['rooms'] = roomsdisplayed
+        context_hotel['rating'] = range(hoteldisplayed.star)
 
     except hotel.DoesNotExist:
         context_hotel['hotel'] = None

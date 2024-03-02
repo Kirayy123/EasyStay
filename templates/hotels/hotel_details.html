@@ -12,19 +12,23 @@
 <div class="container mt-5 rounded-4 p-2 h-auto contentcontainer" id="hotelsummary">     <!-- hotel details-->
     <div class="row ">
         <div class="row">
-            <div class="col-sm-auto">
-                <h3>
+            <div class="col-sm-auto px-4 pb-1">
+                <h2>
                     {% if hotel %}
                     {{hotel.name}}
                     {% else %}
                     UNKNOWN HOTEL
                     {% endif %}
-                </h3>
+                </h2>
             </div>
             <div class="col ">
                 <h4>
-                    {% if hotel %}
-                    {{hotel.star}}
+                    {% if rating %}
+                    {% for star in rating %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
+                      </svg>
+                    {% endfor %}
                     {% else %}
                     Rating
                     {% endif %}
@@ -35,29 +39,60 @@
        <div class = "col-sm-auto"> <!-- picture-->
        <img class="image_hotel img-thumbnail" src="{% static 'images/hotel.jpg' %}" class="img-fluid"  alt="HOTELNAME">
         </div>
-        <div class="col">
+        <div class="col align-items-center justify-content-center">
             <div class="row"><!-- location-->
-                <div class="col-sm-auto">
-                    <h1>ICON</h1>
+                <div class="col-sm-auto ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24 " height="24" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                      </svg>
                 </div>
-                <div class="col justify-content-lg-start">
-                <p>
-                    {% if hotel %}
-                    {{hotel.location}}
-                    {% else %}
-                    Uknown Location
-                    {% endif %}
-                </p>
+                <div class="col  align-items-center justify-content-center">
+                    <div class="row align-items-center "> 
+                        <label class = "col-sm-auto">
+                            {% if hotel %}
+                            {{hotel.country}}
+                            {% else %}
+                            Uknown Location
+                            {% endif %}
+                        </label>                       
+                            <label class = "col-sm-auto">
+                                {% if hotel %}
+                                {{hotel.city}}
+                                {% else %}
+                                Uknown Location
+                                {% endif %}
+                            </label>
+                            <label class = "col-sm-auto">
+                                {% if hotel %}
+                                {{hotel.location}}
+                                {% else %}
+                                Uknown Location
+                                {% endif %}
+                            </label>
+                        
+                    </div>
                     
                 </div>
             </div>
-            <div class="row"><!-- features-->
-                <p>{% if hotel %}
-                    {{hotel.features}}
+            <div class="container my-2 "><!-- features-->
+                <div class="row d-flex justify-content-between px-4">
+                
+                    {% if Facility %}
+                    
+                        {% for fac in Facility %}
+                 
+                            <div class="col-md-auto">
+                                {{fac}}
+                            </div>                    
+
+                         {% endfor %}
                     {% else %}
                     Uknown Features
-                    {% endif %}</p>
+                    {% endif %}
+                
             </div>
+        </div>
             <div class="row p-2"> <!-- details-->
                 <p>
                     {% if hotel %}
@@ -75,32 +110,33 @@
 </div>
 {% if rooms %}
 {% for room in rooms %}
-<div class="container mt-2 rounded-4 p-2 contentcontainer h-100" id="room">
-    <div class="row">
+<div class="container w-100 mt-2 rounded-4 p-2 contentcontainer h-100" id="room">
+    <div class="row d-flex justify-content-between  w-100">
     <div class="col">
     <div class="row">
-        <div class="col-sm-auto"><!-- RoomType-->
+        <div class="col-sm-auto mx-3 mt-1 p-1"><!-- RoomType-->
             <h4>{{room.type}}</h4>
-        </div>
-        <div class="col"><!-- Price-->
-            <h4>{{room.price}}</h4>
-        </div>
-  
+        </div>  
     </div>
-    <div class="row d-flex flex-fill">
+    <div class="row align-items-center d-flex">
         <div class="col"><!-- features-->
-            <h4>{{room.facility}}</h4>
+            {{room.facility}}
         </div>
         <div class="col"><!-- guests-->
-            <h4>Guests: {{room.guests}}</h4>
+            <h2><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+              </svg> {{room.guests}}</h2>
+        </div>
+        <div class="col"><!-- Price-->
+            <h4>£{{room.price}}</h4>
         </div>
         <div class="col d-flex justify-content-center" ><!-- button-->
             <a class="btn btn-primary btn-lg" href="{% url 'search_home' %}" target="_blank" role="button">Reserve</a>
         </div>
     </div>
     </div>
-        <div class="col-sm-auto"><!-- picture-->     
-            <img class="image_hotel img-thumbnail" src="{{room.image.url}}" class="img-fluid"  alt="Room">      
+        <div class="col-sm-auto px-0"><!-- picture-->     
+            <img class="image_hotel img-thumbnail px-0" src="{{room.image.url}}" class="img-fluid"  alt="Room">      
         </div>
 </div>
 </div>
