@@ -616,23 +616,24 @@ def search_rst(request):
         rsts = Hotel.objects.filter(position__icontains=location).all()
         return render(request, 'search_rst.html', locals())
 
-def hotel_details(request,hid):
+def hotel_details(request,id):
     context_hotel = {}
     try: 
-        hoteldisplayed = hotel.objects.filter(id=hid)[0]
+        hoteldisplayed = hotel.objects.get(id=id)
         roomsdisplayed = roomtype.objects.filter(hotel=hoteldisplayed)
 
         if hoteldisplayed.facility:
             facility_list = ast.literal_eval(hoteldisplayed.facility)
-            formatted_facilities = ', '.join(facility_list)
+            formatted_facilities = ','.join(facility_list)
         else:
             formatted_facilities = 'No facilities listed'
-    
 
+        #context_hotel['Facility'] = filter(None,hoteldisplayed.facility.split(','))
         context_hotel['Facility'] = formatted_facilities
         context_hotel['hotel'] = hoteldisplayed
         context_hotel['rooms'] = roomsdisplayed
         context_hotel['rating'] = range(hoteldisplayed.star)
+        context_hotel['non_star'] = range(5- hoteldisplayed.star)
 
     except hotel.DoesNotExist:
         context_hotel['hotel'] = None

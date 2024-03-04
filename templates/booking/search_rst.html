@@ -81,7 +81,7 @@
                     <hr>
                     <div class="mb-1 text-muted">€{{ rst.phone }}</div>
                     <p class="card-text mb-auto">{{ rst.position }}</p>
-                    <a href="#" class="stretched-link">booking</a>
+                    <a href="{% url 'hotel_details' id=rst.id %}" class="stretched-link">booking</a>
                 </div>
             </div>
         </div>
