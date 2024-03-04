@@ -82,3 +82,9 @@ def manager_register(request):
 
 def search_home(request):
     return render(request, 'search/home.html')
+
+def user_profile(request):
+    return render(request, 'user/userProfile.html')
+
+def booking_management(request):
+    return render(request, 'user/bookingManagement.html')
