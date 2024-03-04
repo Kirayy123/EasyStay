@@ -37,7 +37,6 @@ class hotel(models.Model):
 
 class roomtype(models.Model):
     
-    id = models.CharField(max_length=10, primary_key=True)
     hotel = models.ForeignKey(hotel, on_delete=models.CASCADE)
     type = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=12, decimal_places=2, default=None)

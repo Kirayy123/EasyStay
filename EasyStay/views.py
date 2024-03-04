@@ -605,4 +605,24 @@ def check_out_list(request):
 def search_home(request):
     return render(request, 'search/home.html')
 
+def hotel_details(request,hid):
+    context_hotel = {}
+    try: 
+        hoteldisplayed = hotel.objects.filter(id=hid)[0]
+        roomsdisplayed = roomtype.objects.filter(hotel=hoteldisplayed)
+        context_hotel['Facility'] = hoteldisplayed.facility.split(',')
+        context_hotel['hotel'] = hoteldisplayed
+        context_hotel['rooms'] = roomsdisplayed
+        context_hotel['rating'] = range(hoteldisplayed.star)
+
+    except hotel.DoesNotExist:
+        context_hotel['hotel'] = None
+        context_hotel['rooms'] = None
+
+    return render(request, 'hotels/hotel_details.html', context_hotel)
+
+def show_random_hotel(request):
+    hotels = hotel.objects.all()
+    randHotel = random.choice(hotels)
+    return hotel_details(request, randHotel.hotel_id)
 
