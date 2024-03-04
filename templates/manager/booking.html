@@ -1,0 +1,93 @@
+{% extends "manager/base.html" %}
+{% load static %}
+
+{% block title %}Bookings{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <form method="get" action="{% url 'bookings' %}" class="mb-3">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Enter Booking Reference" name="search" value="{{ request.GET.search }}">
+            <button class="btn btn-outline-secondary search" type="submit">Search</button>
+        </div>
+    </form>
+    <div class="row mb-3">
+        <div class="col">
+            <form method="get" action="{% url 'bookings' %}" class="row align-items-center g-3">
+                <div class="col-auto">
+                    <label for="status" class="col-form-label">Status:</label>
+                </div>
+                <div class="col-auto">
+                    <select id="status" name="status" class="form-select">
+                        <option value="">All</option>
+                        <option value="1">Awaiting Check-in</option>
+                        <option value="2">Checked In</option>
+                        <option value="3">Checked Out</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <label for="start_date" class="col-form-label">Start Date:</label>
+                </div>
+                <div class="col-auto">
+                    <input type="date" id="start_date" name="start_date" class="form-control">
+                </div>
+                <div class="col-auto">
+                    <label for="end_date" class="col-form-label">End Date:</label>
+                </div>
+                <div class="col-auto">
+                    <input type="date" id="end_date" name="end_date" class="form-control">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary filter">Filter</button>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary reset">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th scope="col">Ref Number</th>
+                <th scope="col">User</th>
+                <th scope="col">Room Number</th>
+                <th scope="col">Starting Date</th>
+                <th scope="col">Ending Date</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.ref_num }}</td>
+                <td>{{ booking.user.username }}</td>
+                <td>{{ booking.room_number.Room_number }}</td>
+                <td>{{ booking.from_date }}</td>
+                <td>{{ booking.to_date }}</td>
+                <td>
+                    {% if booking.status == 1 %}
+                        Awaiting Check-in
+                    {% elif booking.status == 2 %}
+                        Checked In
+                    {% elif booking.status == 3 %}
+                        Checked Out
+                    {% else %}
+                        False
+                    {% endif %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">No bookings.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+
