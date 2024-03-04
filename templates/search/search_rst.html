@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_ext %}
+<link href="{% static 'css/blog.css' %}" rel="stylesheet">
+<link href="{% static 'css/list-groups.css' %}" rel="stylesheet">
+{% endblock %}
+{% block main %}
+<main class="container">
+    <!--search bar-->
+    <div class="px-3 py-2 mt-5">
+        <div class="container d-flex flex-wrap justify-content-center">
+            <form class="col-12 col-lg-10 mb-2 mb-lg-0" role="search" action="{% url 'search' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="search" class="form-control" placeholder="Where are you going?" name="location"
+                               value="{{ location }}">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="date" class="form-control" name="check-in-date">
+                    </div>
+                    ——
+                    <div class="col-sm-3">
+                        <input type="date" class="form-control" name="check-out-date">
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!--filter bar-->
+    <div class="row ps-5 pt-2">
+        <div class="col-md-4 btn-list ps-5">
+            <a href="#" class="btn btn-outline-info d-inline">price
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-chevron-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path>
+                </svg>
+            </a>
+            <a href="#" class="btn btn-outline-info d-inline">star rating
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-chevron-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path>
+                </svg>
+            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
+        </div>
+        <div class="col-md-8 center-block">
+            <label class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox">
+                <span class="form-check-label">free cancellation</span>
+            </label>
+            <label class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox">
+                <span class="form-check-label">free parking</span>
+            </label>
+            <label class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox">
+                <span class="form-check-label">breakfast included</span>
+            </label>
+        </div>
+    </div>
+
+
+    <!--content-->
+    <div class="row mb-2 mt-4">
+        {% for rst in rsts %}
+        <div class="col-md-12">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col-auto d-none d-lg-block">
+                    <img style="width: 200px; height: 250px" src="{{ rst.image.url }}">
+                </div>
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">star_rating: {{ rst.star_rating }}</strong>
+                    <h3 class="mb-0">{{ rst.name }}</h3>
+                    <hr>
+                    <div class="mb-1 text-muted">€{{ rst.price }}</div>
+                    <p class="card-text mb-auto">{{ rst.position }}</p>
+                    <a href="#" class="stretched-link">reserve</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}

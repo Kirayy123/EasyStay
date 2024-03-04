@@ -1,0 +1,98 @@
+
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fffbe7; /* Light yellow background */
+    display: flex;
+    flex-direction: column;
+}
+.header-bar{
+    font-size: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 80px;
+    align-items: center;    
+    background: #d1a545;
+    color: #fffbe7; /* Warm yellow for title */
+    padding: 0.5rem;
+}
+
+.content-header{
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+    align-items: center;
+    padding-left: 1.5rem;
+    font-size: 2rem;
+}
+.content-header div{
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+.content-header input{
+    width: 30%;
+    height: 2rem;
+    border-radius: 30px;
+    min-width: 200px;
+}
+.content-surrounding{
+    background: #fffbe7; /* Light yellow background */
+    flex: 1 1 auto;
+}
+.content-pane, .room-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 5rem;
+    height: 100%;
+    background: #fff;
+    border-radius: 25px;
+}
+.summary{
+    display: flex;
+    flex-direction: column;
+    height: 40%;
+    flex: 1 1 auto;
+    min-height: 400px;
+}
+.summary-header{
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    align-items:flex-start;
+    height: fit-content;
+}
+.summary-header label{
+    padding-left: 1rem;
+}
+.summary-body{
+    display: flex;
+    flex-direction: row;
+    padding-left: 1rem;
+}
+.hotel-description{
+    flex-direction: column;
+    size: 100%;
+    flex: 1 1 auto;
+    padding-left: 1rem;
+}
+.hotel-address{
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.features{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+.room-list{
+    margin-top: 1rem;
+    height: 800px;
+    flex: 1 1 auto;
+}

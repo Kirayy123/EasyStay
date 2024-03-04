@@ -2,7 +2,7 @@ body, html {
     height: 100%;
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #fffbe7; /* Light yellow background */
+    background: #fffbe7;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -83,16 +83,16 @@ body, html {
 }
 
 .return-button a {
-    padding: 5px 10px; /* Smaller padding for a smaller button */
-    font-size: 0.8rem; /* Smaller font-size for the text inside the button */
-    margin-top: 20px; /* Adjust margin as needed */
-    display: inline-block; /* Adjust display as needed */
-    background: #d1a545; /* Keep the yellow background */
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-top: 20px;
+    display: inline-block;
+    background: #d1a545;
     color: #fff;
     border-radius: 4px;
     text-transform: uppercase;
     text-decoration: none;
     border: none;
     cursor: pointer;
-    width: auto; /* Let the width be determined by the content and padding */
+    width: auto;
 }

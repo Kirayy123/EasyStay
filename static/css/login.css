@@ -1,16 +1,16 @@
-/* Base Styles */
+/* _________________________Base */
 body, html {
     height: 100%;
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #fffbe7; /* Light yellow background */
+    background: #fffbe7;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-/* Header Styles */
+/* _______________________Header */
 .main-header {
     text-align: center;
     margin-bottom: 2rem;
@@ -18,22 +18,22 @@ body, html {
 
 .main-header .main-title {
     font-size: 3rem;
-    color: #d1a545; /* Warm yellow for title */
+    color: #d1a545;
 }
 
 .welcome-message, .welcome-message2 {
     font-size: 1.1rem;
-    color: #666; /* Darker text for readability */
+    color: #666;
     margin: 1rem 0;
 }
 
 .welcome-message a, .welcome-message2 a {
-    color: #d1a545; /* Warm yellow for links */
+    color: #d1a545;
     text-decoration: none;
     font-weight: bold;
 }
 
-/* Login Styles */
+/* _______________Login */
 .login-container {
     width: 100%;
     max-width: 400px;
@@ -41,7 +41,7 @@ body, html {
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem; /* Adds space between the login container and any elements below */
+    margin-bottom: 2rem;
 }
 
 .form {
@@ -66,9 +66,9 @@ body, html {
 }
 
 .submit-button {
-    width: 100%; /* Full width of form to center the button inside */
+    width: 100%;
     display: flex;
-    justify-content: center; /* Centers the button horizontally */
+    justify-content: center;
 }
 
 .submit-button input[type="submit"] {
@@ -86,31 +86,31 @@ body, html {
 
 .register-password {
     display: flex;
-    justify-content: center; /* Center the links horizontally */
-    flex-wrap: wrap; /* Allows content to wrap on small screens */
-    gap: 0.5em; /* Adds a small gap between links */
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5em;
 }
 
 .register-password a {
-    color: #d1a545; /* Warm yellow for links */
+    color: #d1a545;
     text-decoration: none;
     font-weight: bold;
-    font-size: 1rem; /* Adjust font size as necessary */
+    font-size: 1rem;
 }
 
 .return-button a {
-    padding: 5px 10px; /* Smaller padding for a smaller button */
-    font-size: 0.8rem; /* Smaller font-size for the text inside the button */
-    margin-top: 20px; /* Adjust margin as needed */
-    display: inline-block; /* Adjust display as needed */
-    background: #d1a545; /* Keep the yellow background */
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-top: 20px;
+    display: inline-block;
+    background: #d1a545;
     color: #fff;
     border-radius: 4px;
     text-transform: uppercase;
     text-decoration: none;
     border: none;
     cursor: pointer;
-    width: auto; /* Let the width be determined by the content and padding */
+    width: auto;
 }
 
 
