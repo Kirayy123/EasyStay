@@ -6,7 +6,7 @@ import django
 django.setup()
 from faker import Faker
 from faker.providers import DynamicProvider
-from EasyStay.models import hotel, user, hotelmanager, roomtype
+from EasyStay.models import hotel, user, hotelmanager, roomtype, user, room, booking
 
 #This is just to populate the database with a random asssortment of hotels,
 # managers & room types. it usually results in about 500 hotels (number is utimately random)
@@ -176,35 +176,38 @@ num_rows_to_read = 50
 #creates a string of hotel features that is then parsed by the view method to display them seperately
 def concatRandom(list, range):
     sample = random.sample(list, range)
-    str = ""
+    str = "["
     for x in sample:
-            str += x + ","
+            str += "'" + x +"'" +","
+    str += "]"
     return str
     
 
 
 def add_hotel(ID, man, city, city_countries):
-    h = hotel.objects.get_or_create(hotel_id=ID +500,
+    h = hotel.objects.get_or_create(hotel_id= fake.bothify(text = "H########"),
                                     manager= man,
                                     city = city,
                                     name= fake.hotels(),
+                                    country = city_countries[city],
+                                    location = fake.street_address(),
+                                    postcode = fake.postcode(),
+                                    phone= fake.phone_number(),
+                                    description = fake.descriptions(),
+                                    facility = concatRandom(hotel_facility, 6)
+
                                     )[0]
-    h.location = fake.street_address()
-    h.country = city_countries[city]
-    h.description = fake.descriptions()
     h.email = fake.free_email()
     h.star = random.randint(1,5)
     h.image = "hotels/" + fake.hotelPhotos()
-    h.facility = concatRandom(hotel_facility, 6)
-    h.phone= fake.phone_number()
     h.save()
     return h
 
 def add_manager(mID):
-    m = hotelmanager.objects.get_or_create(manage_id= mID + 500,
-                                           hotel_name= fake.company(),
+    m = hotelmanager.objects.get_or_create(manage_id= fake.bothify(text= "M#########"),
                                            email= fake.free_email())[0]
     m.phone = fake.phone_number()
+    m.password = fake.password()
     m.save()
     return m
 
@@ -213,15 +216,18 @@ def add_roomtype(rid,hID, key):
     rPrice = roomtypes[key][0]
     rphoto = roomtypes[key][1]
     rGuests = roomtypes[key][2]
-    r = roomtype.objects.get_or_create(id=rid + 500,
+    xid= fake.bothify(text = "#########")
+    r = roomtype.objects.get_or_create(id=xid,
                                        hotel=hID,
                                        type=rType,
                                        price=rPrice,
-                                       facility=fake.room_facility(),
+                                       facility=concatRandom(hotel_facility, 3),
                                        image=rphoto,
                                        guests=rGuests
                                        )[0]
     r.save
+    return xid
+
 
 #Assigns a number of rooms to hotels based on a random range 2-6
 def assign_roomtypes(i, hID):
@@ -231,7 +237,8 @@ def assign_roomtypes(i, hID):
     types = random.sample(keys, roomrange)
     typeindex = 0
     for x in range(roomrange):        
-        add_roomtype(returnv + x, hID,types[typeindex])
+        num = add_roomtype(returnv + x, hID,types[typeindex])
+        add_user_room_booking(num)
         returnv += x
         typeindex += 1
     return returnv
@@ -282,6 +289,105 @@ def read_csv_to_dict():
 
     return data_dict
 
+def add_user_room_booking(roomtype):
+    user = add_user()
+    room = add_room(roomtype)
+    add_bookings(room, user)
+
+def add_room(roomtype):
+    num = fake.bothify(text = "#####")
+    roomx = room.objects.get_or_create(
+        Room_number = num,
+        type_id = roomtype
+    )[0]
+    roomx.save()
+    return roomx
+def add_booking_checkin(roomnumber , userid):
+    bookin = booking.objects.get_or_create(
+        ref_num = fake.bothify(text = "B#########"),
+        total_price = 500,
+        status = 1,
+        room_number = roomnumber,
+        user = userid,
+        reserved_name = fake.bothify(text = "??"),
+        reserved_phone = fake.phone_number(),
+        booking_date = fake.date_time(),
+        from_date = fake.date(),
+        to_date = fake.date()
+        )[0]
+    bookin.save()
+
+def add_booking_checkedin(roomnumber , userid):
+    bookin = booking.objects.get_or_create(
+        ref_num = fake.bothify(text = "B#########"),
+        total_price = 500,
+        status = 2,
+        room_number = roomnumber,
+        user = userid,
+        reserved_name = fake.bothify(text = "??"),
+        reserved_phone = fake.phone_number(),
+        booking_date = fake.date_time(),
+        from_date = fake.date(),
+        to_date = fake.date(),
+        check_in_date = fake.date_time(),
+        )[0]
+    bookin.save()
+
+def add_booking_checkedout(roomnumber , userid):
+    bookin = booking.objects.get_or_create(
+        ref_num = fake.bothify(text = "B#########"),
+        total_price = 500,
+        status = 3,
+        is_paid = 1,
+        room_number = roomnumber,
+        user = userid,
+        reserved_name = fake.bothify(text = "??"),
+        reserved_phone = fake.phone_number(),
+        booking_date = fake.date_time(),
+        from_date = fake.date(),
+        to_date = fake.date(),
+        check_in_date = fake.date_time(),
+        check_out_date = fake.date_time(),
+        )[0]
+    bookin.save()
+
+def add_booking_checked_review(roomnumber , userid):
+    bookin = booking.objects.get_or_create(
+        ref_num = fake.bothify(text = "B#########"),
+        total_price = 500,
+        status = 3,
+        is_paid = 1,
+        room_number = roomnumber,
+        user = userid,
+        reserved_name = fake.bothify(text = "??"),
+        reserved_phone = fake.phone_number(),
+        booking_date = fake.date_time(),
+        from_date = fake.date(),
+        to_date = fake.date(),
+        check_in_date = fake.date_time(),
+        check_out_date = fake.date_time(),
+        review_star = random.randint(1,5),
+        review_comment = fake.descriptions(),
+        review_date = fake.date_time(),
+        )[0]
+    bookin.save()
+
+def add_bookings(roomid, userid):
+    add_booking_checked_review(roomid, userid)
+    add_booking_checkedin(roomid, userid)
+    add_booking_checkedout(roomid, userid)
+    add_booking_checkin(roomid, userid)
+
+def add_user():
+    id = fake.bothify(text = "#########")
+    userx = user.objects.get_or_create(
+        user_id= id,
+        email = fake.free_email(),
+        phone = fake.phone_number(),
+        password = fake.password(),
+        username = fake.name())[0]
+    userx.save()
+    return userx
 
 def populate():
     city_countries = read_csv_to_dict()

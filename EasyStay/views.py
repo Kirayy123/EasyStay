@@ -603,14 +603,33 @@ def check_out_list(request):
 
 ############################################################################################
 def search_home(request):
-    return render(request, 'search/home.html')
+    return render(request, 'search/home.html')    
+
+def index(request):
+    return render(request, 'index.html')
+
+
+def search_rst(request):
+    if request.method == 'POST':
+        location = request.POST.get('location')
+        print('location:',location)
+        rsts = Hotel.objects.filter(position__icontains=location).all()
+        return render(request, 'search_rst.html', locals())
 
 def hotel_details(request,hid):
     context_hotel = {}
     try: 
         hoteldisplayed = hotel.objects.filter(id=hid)[0]
         roomsdisplayed = roomtype.objects.filter(hotel=hoteldisplayed)
-        context_hotel['Facility'] = hoteldisplayed.facility.split(',')
+
+        if hoteldisplayed.facility:
+            facility_list = ast.literal_eval(hoteldisplayed.facility)
+            formatted_facilities = ', '.join(facility_list)
+        else:
+            formatted_facilities = 'No facilities listed'
+    
+
+        context_hotel['Facility'] = formatted_facilities
         context_hotel['hotel'] = hoteldisplayed
         context_hotel['rooms'] = roomsdisplayed
         context_hotel['rating'] = range(hoteldisplayed.star)

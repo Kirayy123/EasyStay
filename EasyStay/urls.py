@@ -36,7 +36,7 @@ urlpatterns = [
                   path('manager/profile/edit', views.manager_profile_edit, name="manager_profile_edit"),
                   path('manager/profile/change_password', views.manager_change_pw, name="change_password"),
                 path('hotels/hoteldetails/<int:id>/', views.hotel_details, name="hotel_details"),
- 
-                    path('hotels/hoteldetails', views.show_random_hotel, name="random_hotel"),
-
+                path('hotels/hoteldetails', views.show_random_hotel, name="random_hotel"),
+                path('', views.index, name='index'),
+                path('search/', views.search_rst, name='search'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
