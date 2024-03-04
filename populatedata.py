@@ -23,8 +23,10 @@ roomtypes = { "Single" : (100,"images/room_single.jpeg",1), "Double" : (200,"ima
 
 roomtypesPhotos =  {"Single" : "images/room_single.jpeg","Double" : "images/room_double.jpeg","VIP" : "images/room_vip.jpeg","Penthouse" : "images/room_penthouse.jpeg","Self-Catered" : "images/room_self.jpeg","Deluxe" : "images/room_deluxe.jpeg"  }
 room_facility=["Hot-Tub", "Sauna", "Kitchen", "Dog-Friendly", "Sea Views", "Lounge", "Luxury", "Basic"]
-hotel_facility = ["En-suite","Swimming pool", "Tennis Court", "Beach Access", "Hot Tub", "Sauna", "Gym", "Concierge service",
-              "Family Friendly", "Dog friendly", "Cat friendly","City Views", "Restaurant", "Free breakfast"]
+hotel_facility = ['Wi-Fi','TV','Air conditioning','Private Bathroom','Room Service','Balcony','Sea View','Parking','Lift','Swimming Pool','Gym','Spa','Restaurant','Breakfast','Bar','Pets Friendly','Non-smoking Rooms','Conference Room','Facilities for disabled guests']
+
+
+
 
 
 hotelphotos = os.listdir("media/hotels/")

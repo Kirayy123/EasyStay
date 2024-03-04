@@ -623,15 +623,18 @@ def hotel_details(request,id):
         roomsdisplayed = roomtype.objects.filter(hotel=hoteldisplayed)
 
         if hoteldisplayed.facility:
-            facility_list = ast.literal_eval(hoteldisplayed.facility)
-            formatted_facilities = ','.join(facility_list)
+            formatted_facilities = ast.literal_eval(hoteldisplayed.facility)
         else:
             formatted_facilities = 'No facilities listed'
 
-        #context_hotel['Facility'] = filter(None,hoteldisplayed.facility.split(','))
+        roomfacilities = {}
+        for c in roomsdisplayed:
+            roomfacilities[c] = ast.literal_eval(c.facility)
+
         context_hotel['Facility'] = formatted_facilities
         context_hotel['hotel'] = hoteldisplayed
         context_hotel['rooms'] = roomsdisplayed
+        context_hotel['room_facilities'] = roomfacilities
         context_hotel['rating'] = range(hoteldisplayed.star)
         context_hotel['non_star'] = range(5- hoteldisplayed.star)
 
