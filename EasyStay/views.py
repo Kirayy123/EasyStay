@@ -1,5 +1,8 @@
+import ast
 import random
 import datetime
+
+from django.contrib import messages
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 
@@ -9,7 +12,8 @@ from django.urls import reverse
 
 from EasyStay import models
 from EasyStay.form import UserLoginForm, ManagerLoginForm, \
-    HotelInfoForm, RoomTypeForm, RoomTypeEditForm, RoomForm, HotelEditForm, ManagerInfoForm, ManagerInfoEditForm
+    HotelInfoForm, RoomTypeForm, RoomTypeEditForm, RoomForm, HotelEditForm, ManagerInfoForm, ManagerInfoEditForm, \
+    ChangePasswordForm
 
 from EasyStay.cbvs import CreateUserView, CreateManagerView
 from EasyStay.models import user, hotelmanager, hotel, roomtype, room, booking
@@ -79,6 +83,7 @@ def manager_login(request):
             context['from_url'] = request.GET.get('from_url')
         return render(request, 'login/manager_login.html', context)
 
+
 def manager_logout(request):
     if request.session.get("email", ""):
         del request.session["email"]
@@ -91,6 +96,7 @@ def manager_logout(request):
     if request.session.get("from_page", ""):
         del request.session["from_page"]
     return redirect(reverse("manager_login"))
+
 
 '''__Register__'''
 
@@ -139,7 +145,7 @@ def manager_home(request):
                 request.session['hotel_registered'] = True
                 return redirect('manager_home')
         else:
-            form = HotelInfoForm()  # 创建一个空表单实例
+            form = HotelInfoForm()
 
         context = {'form': form,
                    'id': id,
@@ -173,6 +179,13 @@ def manager_home(request):
                 total_star += book.review_star
                 count += 1
         star = total_star / count if count else 3
+        thishotel.star = int(star+0.5)
+        thishotel.save()
+        if thishotel.facility:
+            facility_list = ast.literal_eval(thishotel.facility)
+            formatted_facilities = ', '.join(facility_list)
+        else:
+            formatted_facilities = 'No facilities listed'
 
         context = {'id': id,
                    'manager_id': manager_id,
@@ -181,8 +194,11 @@ def manager_home(request):
                    'total_room': total_rooms,
                    'available_room': available_room,
                    'bookings': booking_count,
-                   'star': star}
+                   'formatted_facilities': formatted_facilities,
+                   'stars': range(thishotel.star),
+                   'non_stars': range(5 - thishotel.star)}
         return render(request, 'manager/home.html', context)
+
 
 def edit_hotel(request):
     id = request.session.get('id')
@@ -198,13 +214,14 @@ def edit_hotel(request):
             form.save()
             return redirect('manager_home')
     else:
-        form = HotelEditForm(instance=current_hotel)  # 创建一个空表单实例
+        form = HotelEditForm(instance=current_hotel)
 
     context = {'form': form,
                'id': id,
                'manager_id': manager_id,
                'from': 'edit'}
     return render(request, 'manager/home_addhotel.html', context)
+
 
 def manager_profile(request):
     id = request.session.get('id')
@@ -225,8 +242,31 @@ def manager_profile(request):
                'manager_id': manager_id,
                'manager': manager,
                'hotel': thishotel,
-               'form':form}
+               'form': form}
     return render(request, 'manager/profile.html', context)
+
+
+def manager_change_pw(request):
+    if request.method == 'POST':
+        form = ChangePasswordForm(data=request.POST)
+        if form.is_valid():
+            thisuser = hotelmanager.objects.filter(id=request.user.id)[0]
+            old_pw = thisuser.password
+            input_old = form.cleaned_data["old_password"]
+            input_new1 = form.cleaned_data["new_password1"]
+            input_new2 = form.cleaned_data["new_password2"]
+            if old_pw != input_old:
+                form.add_error("old_password", "Old Password not correct!")
+            elif input_new1 != input_new2:
+                form.add_error("new_password1", "The Confirmed Password not correct!")
+            else:
+                thisuser.password = input_new1
+                thisuser.save()
+                messages.success(request, 'Your password was successfully updated!')
+                return redirect('manager_profile')
+    else:
+        form = ChangePasswordForm()
+    return render(request, 'manager/change_password.html', {'form': form})
 
 
 def manager_profile_edit(request):
@@ -251,6 +291,7 @@ def manager_profile_edit(request):
                'form': form}
     return render(request, 'manager/profile_edit.html', context)
 
+
 '''__manager_RoomPage__'''
 
 
@@ -259,6 +300,16 @@ def manager_room(request):
     manager_id = request.session.get('manager_id')
     thishotel = hotel.objects.filter(manager=id)[0]
     room_types = roomtype.objects.filter(hotel=thishotel) if thishotel else []
+    if thishotel:
+        room_types = roomtype.objects.filter(hotel=thishotel)
+        for room_type in room_types:
+            if room_type.facility:
+                facility_list = ast.literal_eval(room_type.facility)
+                room_type.formatted_facilities = ', '.join(facility_list)
+            else:
+                room_type.formatted_facilities = 'No facilities listed'
+    else:
+        room_types = []
 
     context = {'id': id,
                'manager_id': manager_id,
@@ -276,7 +327,7 @@ def add_room_type(request):
 
         if form.is_valid():
             type_name = form.cleaned_data["type"]
-            if roomtype.objects.filter(hotel=thishotel,type=type_name).exists():
+            if roomtype.objects.filter(hotel=thishotel, type=type_name).exists():
                 form.add_error("type", "This room type has already exist.")
             else:
                 new_type = form.save(commit=False)
@@ -285,7 +336,7 @@ def add_room_type(request):
                 form.save_m2m()
                 return redirect('manager_room')
     else:
-        form = RoomTypeForm()  # 创建一个空表单实例
+        form = RoomTypeForm()
 
     room_types = roomtype.objects.filter(hotel=thishotel) if thishotel else []
 
@@ -311,7 +362,7 @@ def edit_room_type(request, room_type_id):
             form.save()
             return redirect('manager_room')
     else:
-        form = RoomTypeEditForm(instance=current_roomtype)  # 创建一个空表单实例
+        form = RoomTypeEditForm(instance=current_roomtype)
 
     room_types = roomtype.objects.filter(hotel=thishotel) if thishotel else []
 
@@ -322,6 +373,12 @@ def edit_room_type(request, room_type_id):
                'from': 'edit',
                'hotel': thishotel}
     return render(request, 'manager/room_add_type.html', context)
+
+
+def delete_roomtype(request, room_type_id):
+    room_type = get_object_or_404(roomtype, id=room_type_id)
+    room_type.delete()
+    return redirect('manager_room')
 
 
 def show_rooms(request, room_type_id):
@@ -355,10 +412,9 @@ def add_rooms(request, room_type_id):
                 new_room = form.save(commit=False)
                 new_room.type = thistype
                 new_room.save()
-                # new_room.save_m2m()
                 return redirect('show_rooms', room_type_id=thistype.id)
     else:
-        form = RoomForm()  # 创建一个空表单实例
+        form = RoomForm()
 
     rooms = room.objects.filter(type=thistype) if thistype else []
     context = {'form': form,
@@ -388,7 +444,7 @@ def edit_rooms(request, room_type_id, room_id):
                 form.save()
                 return redirect('show_rooms', room_type_id=thistype.id)
     else:
-        form = RoomForm(instance=current_room)  # 创建一个空表单实例
+        form = RoomForm(instance=current_room)
 
     rooms = room.objects.filter(type=thistype) if thistype else []
     context = {'form': form,
@@ -399,6 +455,13 @@ def edit_rooms(request, room_type_id, room_id):
                'from': 'edit',
                'hotel': thishotel}
     return render(request, 'manager/room_add_rooms.html', context)
+
+
+def delete_room(request, room_type_id, room_id):
+    thistype = roomtype.objects.filter(id=room_type_id)[0]
+    room_type = get_object_or_404(room, id=room_id)
+    room_type.delete()
+    return redirect('show_rooms', room_type_id=thistype.id)
 
 
 '''__manager_BookingPage__'''
@@ -433,6 +496,12 @@ def booking_list(request):
     if status:
         bookings = bookings.filter(status=status)
 
+    search_query = request.GET.get('search')
+    if search_query:
+        bookings = bookings.filter(ref_num=search_query)
+
+    bookings = bookings.order_by('status')
+
     context = {'id': id,
                'manager_id': manager_id,
                'bookings': bookings,
@@ -461,6 +530,12 @@ def check_in_list(request):
         print(start_date)
         check_in_list = check_in_list.filter(from_date=start_date)
 
+    search_query = request.GET.get('search')
+    if search_query:
+        check_in_list = bookings.filter(ref_num=search_query)
+
+    check_in_list = check_in_list.order_by('from_date')
+
     context = {'id': id,
                'manager_id': manager_id,
                'check_list': check_in_list,
@@ -472,6 +547,11 @@ def check_in_list(request):
         thisbooking = booking.objects.get(pk=booking_id)
         thisbooking.check_in_date = timezone.now()
         thisbooking.status = 2
+
+        thisroom = room.objects.get(id=thisbooking.room_number.id)
+        thisroom.availability = False
+        thisroom.save()
+
         thisbooking.save()
         return redirect('checkin')
 
@@ -495,6 +575,12 @@ def check_out_list(request):
         end_date = parse_date(end_date)
         check_out_list = check_out_list.filter(to_date=end_date)
 
+    search_query = request.GET.get('search')
+    if search_query:
+        check_out_list = bookings.filter(ref_num=search_query)
+
+    check_out_list = check_out_list.order_by('to_date')
+
     context = {'id': id,
                'manager_id': manager_id,
                'check_list': check_out_list,
@@ -506,6 +592,9 @@ def check_out_list(request):
         thisbooking = booking.objects.get(pk=booking_id)
         thisbooking.check_out_date = timezone.now()
         thisbooking.status = 3
+        thisroom = room.objects.get(id=thisbooking.room_number.id)
+        thisroom.availability = True
+        thisroom.save()
         thisbooking.save()
         return redirect('checkout')
 
@@ -517,12 +606,3 @@ def search_home(request):
     return render(request, 'search/home.html')
 
 
-def Test(request):
-    if request.method == 'POST':
-        image = models.roomtype(
-            image=request.FILES.get('photo')
-        )
-        image.save()
-        return HttpResponse('上传成功！')
-    else:
-        return render(request, 'test.html', locals())

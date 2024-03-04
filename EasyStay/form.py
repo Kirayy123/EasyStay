@@ -1,4 +1,5 @@
 from django import forms
+
 from EasyStay.models import user, hotelmanager, hotel, roomtype, room
 
 
@@ -16,6 +17,7 @@ class ManagerLoginForm(forms.Form):
 # ___Register
 class UserRegisterForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
 
     class Meta:
         model = user
@@ -40,6 +42,7 @@ class UserRegisterForm(forms.ModelForm):
 
 class ManagerRegisterForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
 
     class Meta:
         model = hotelmanager
@@ -63,7 +66,7 @@ class ManagerRegisterForm(forms.ModelForm):
 class ManagerInfoForm(ManagerRegisterForm):
     class Meta:
         model = hotelmanager
-        fields = ['manage_id', 'email', 'phone', 'password']
+        fields = ['manage_id', 'email', 'phone']
 
     def __init__(self, *args, **kwargs):
         super(ManagerInfoForm, self).__init__(*args, **kwargs)
@@ -71,12 +74,13 @@ class ManagerInfoForm(ManagerRegisterForm):
         self.fields['manage_id'].disabled = True
         self.fields['email'].disabled = True
         self.fields['phone'].disabled = True
-        self.fields['password'].disabled = True
 
         if 'confirm_password' in self.fields:
             del self.fields['confirm_password']
+        if 'password' in self.fields:
+            del self.fields['password']
 
-        new_order = ['manage_id', 'email', 'phone', 'password']
+        new_order = ['manage_id', 'email', 'phone']
         self.order_fields(new_order)
 
 
@@ -84,40 +88,45 @@ class ManagerInfoEditForm(ManagerRegisterForm):
     class Meta:
         model = hotelmanager
         fields = '__all__'
-        exclude = ['hotel_name']
+        exclude = ['hotel_name', 'password']
 
     def __init__(self, *args, **kwargs):
         super(ManagerInfoEditForm, self).__init__(*args, **kwargs)
         # read-only
         self.fields['manage_id'].disabled = True
 
-        new_order = ['manage_id', 'email', 'phone', 'password']
+        if 'confirm_password' in self.fields:
+            del self.fields['confirm_password']
+        if 'password' in self.fields:
+            del self.fields['password']
+
+        new_order = ['manage_id', 'email', 'phone', 'password', 'confirm_password']
         self.order_fields(new_order)
 
 
-class HotelInfoForm(forms.ModelForm):
-    FACILITY_CHOICES = [
-        ('wifi', 'Wi-Fi'),
-        ('tv', 'TV'),
-        ('parking', 'Parking'),
-        ('nonsmoking_rooms', 'Non-smoking rooms'),
-        ('private_bathroom', 'Private bathroom'),
-        ('pool', 'Swimming Pool'),
-        ('lift', 'Lift'),
-        ('air_conditioning', 'Air conditioning'),
-        ('gym', 'Gym'),
-        ('spa', 'Spa'),
-        ('restaurant', 'Restaurant'),
-        ('breakfast', 'Breakfast'),
-        ('sea_view', 'Sea view'),
-        ('pets_friendly', 'Pets friendly'),
-        ('balcony', 'Balcony'),
-        ('bar', 'Bar'),
-        ('conference_room', 'Conference Room'),
-        ('facilities_for_disabled_guests', 'Facilities for disabled guests'),
-        ('room_service', 'Room service'),
-    ]
+FACILITY_CHOICES = [
+    ('Wi-Fi', 'Wi-Fi'),
+    ('TV', 'TV'),
+    ('Air conditioning', 'Air conditioning'),
+    ('Private Bathroom', 'Private Bathroom'),
+    ('Room Service', 'Room service'),
+    ('Balcony', 'Balcony'),
+    ('Sea View', 'Sea view'),
+    ('Parking', 'Parking'),
+    ('Lift', 'Lift'),
+    ('Swimming Pool', 'Swimming Pool'),
+    ('Gym', 'Gym'),
+    ('Spa', 'Spa'),
+    ('Restaurant', 'Restaurant'),
+    ('Breakfast', 'Breakfast'),
+    ('Bar', 'Bar'),
+    ('Pets Friendly', 'Pets friendly'),
+    ('Non-smoking Rooms', 'Non-smoking Rooms'),
+    ('Conference Room', 'Conference Room'),
+    ('Facilities for disabled guests', 'Facilities for disabled guests')]
 
+
+class HotelInfoForm(forms.ModelForm):
     facility = forms.MultipleChoiceField(
         choices=FACILITY_CHOICES,
         widget=forms.CheckboxSelectMultiple,
@@ -143,42 +152,19 @@ class HotelEditForm(HotelInfoForm):
     class Meta:
         model = hotel
         fields = '__all__'
-        exclude = ['manager']
+        exclude = ['manager','star']
 
     def __init__(self, *args, **kwargs):
         super(HotelEditForm, self).__init__(*args, **kwargs)
         # read-only
         self.fields['hotel_id'].disabled = True
-        self.fields['star'].disabled = True
 
-        new_order = ['hotel_id', 'star'] + \
+        new_order = ['hotel_id'] + \
                     [field for field in self.fields if field not in ['manager', 'hotel_id', 'star']]
         self.order_fields(new_order)
 
 
 class RoomTypeForm(forms.ModelForm):
-    FACILITY_CHOICES = [
-        ('wifi', 'Wi-Fi'),
-        ('tv', 'TV'),
-        ('parking', 'Parking'),
-        ('nonsmoking_rooms', 'Non-smoking rooms'),
-        ('private_bathroom', 'Private bathroom'),
-        ('pool', 'Swimming Pool'),
-        ('lift', 'Lift'),
-        ('air_conditioning', 'Air conditioning'),
-        ('gym', 'Gym'),
-        ('spa', 'Spa'),
-        ('restaurant', 'Restaurant'),
-        ('breakfast', 'Breakfast'),
-        ('sea_view', 'Sea view'),
-        ('pets_friendly', 'Pets friendly'),
-        ('balcony', 'Balcony'),
-        ('bar', 'Bar'),
-        ('conference_room', 'Conference Room'),
-        ('facilities_for_disabled_guests', 'Facilities for disabled guests'),
-        ('room_service', 'Room service'),
-    ]
-
     facility = forms.MultipleChoiceField(
         choices=FACILITY_CHOICES,
         widget=forms.CheckboxSelectMultiple,
@@ -196,6 +182,8 @@ class RoomTypeForm(forms.ModelForm):
         widgets = {
             'image': forms.FileInput(),
         }
+        new_order = ['type', 'price', 'guests']
+        self.order_fields(new_order)
 
 
 class RoomTypeEditForm(RoomTypeForm):
@@ -214,3 +202,20 @@ class RoomForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RoomForm, self).__init__(*args, **kwargs)
         self.fields['Room_number'].initial = ''
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(
+        label="Old Password (Enter the old password)",
+        widget=forms.PasswordInput(attrs={'autocomplete': 'current-password', 'autofocus': True})
+    )
+    new_password1 = forms.CharField(
+        label="New Password (Enter the new password)",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'})
+    )
+    new_password2 = forms.CharField(
+        label="Confirm New Password (Enter the new password again)",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'})
+    )
