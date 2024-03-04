@@ -1,0 +1,112 @@
+{% extends "manager/base.html" %}
+{% load static %}
+
+{% block title %}Check In/Out {% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col">
+            {% if action == 'checkin' %}
+                <form method="get" action="{% url 'checkin' %}" class="mb-3">
+                    <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Enter Booking Reference to Search" name="search" value="{{ request.GET.search }}">
+                        <button class="btn btn-outline-secondary search" type="submit">Search</button>
+                    </div>
+                </form>
+                <form method="get" action="{% url 'checkin' %}" class="col g-3 d-flex align-items-center">
+                    <div class="col-auto">
+                        <label for="end_date" class="col-form-label me-2">Check-in Date:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" id="start_date" name="start_date" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary me-2 filter">Filter</button>
+                    </div>
+                    <div class="col-auto">
+                        <form method="get" action="{% url 'checkin' %}">
+                            <button type="submit" class="btn btn-secondary reset">Reset</button>
+                        </form>
+                    </div>
+                </form>
+            {% elif action == 'checkout' %}
+                <form method="get" action="{% url 'checkout' %}" class="mb-3">
+                    <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Enter Booking Reference to Search" name="search" value="{{ request.GET.search }}">
+                        <button class="btn btn-outline-secondary search" type="submit">Search</button>
+                    </div>
+                </form>
+                <form method="get" action="{% url 'checkout' %}" class="col g-3 d-flex align-items-center">
+                    <div class="col-auto">
+                        <label for="end_date" class="col-form-label me-2">Check-out Date:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" id="end_date" name="end_date" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary me-2 filter">Filter</button>
+                    </div>
+                    <div class="col-auto">
+                        <form method="get" action="{% url 'checkout' %}">
+                            <button type="submit" class="btn btn-secondary reset">Reset</button>
+                        </form>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <a href="{% url 'checkin' %}" class="btn btn-success">Check in</a>
+        <a href="{% url 'checkout' %}" class="btn btn-warning">Check out</a>
+    </div>
+
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th scope="col">Booking Reference</th>
+                <th scope="col">Reserved Name</th>
+                <th scope="col">Reserved Phone</th>
+                <th scope="col">Room Number</th>
+                <th scope="col">Check-in Date</th>
+                <th scope="col">Check-out Date</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in check_list %}
+                <tr>
+                    <td>{{ booking.ref_num }}</td>
+                    <td>{{ booking.reserved_name }}</td>
+                    <td>{{ booking.reserved_phone }}</td>
+                    <td>{{ booking.room_number.Room_number }}</td>
+                    <td>{{ booking.from_date }}</td>
+                    <td>{{ booking.to_date }}</td>
+                    <td>
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                            {% if action == 'checkin' %}
+                                <button type="submit" class="btn btn-success btn-sm">Check-in</button>
+                            {% elif action == 'checkout' %}
+                                <button type="submit" class="btn btn-warning btn-sm">Check-out</button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7">No bookings to display.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+

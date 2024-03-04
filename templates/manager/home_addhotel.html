@@ -1,0 +1,26 @@
+{% extends "manager/base.html" %}
+
+{% block title %}Add Hotel{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 myform-container">
+    <div class="mb-4 myformhead">
+        {% if from == 'add new' %}
+            <h2>You have not registered your hotel. Please register it here first!</h2>
+        {% else %}
+            <h2>Please edit your hotel information here!</h2>
+        {% endif %}
+    </div>
+    <form method="POST" class="form myform" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
+          <button class="btn btn-primary me-md-2 btn-submit" type="submit">Save</button>
+          <a class="btn btn-outline-secondary btn-return" href="{% url 'manager_home' %}">Return</a>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

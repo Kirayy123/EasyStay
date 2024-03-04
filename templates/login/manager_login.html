@@ -1,4 +1,5 @@
 {% extends "login/login.html" %}
+{% load static %}
 
 {% block welcome_message %}
     {% if from_url == "manager_register" %}
@@ -15,7 +16,7 @@
 {% block login_container %}
 
     <div class = "form">
-        <form method="post">
+        <form id="login_form" method="post">
             {% csrf_token %}
             {{form.as_p}}
             <div class="submit-button">
@@ -29,5 +30,7 @@
         </form>
         <div class="return-button"><a href="{% url 'login' %}">Return</a></div>
     </div>
+
+ <script src="{% static 'js/ShowPassword.js' %}"></script>
 
 {% endblock %}

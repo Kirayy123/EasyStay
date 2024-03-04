@@ -1,0 +1,25 @@
+{% extends "manager/base.html" %}
+
+{% block title %}Add Type{% endblock %}
+
+{% block content %}
+        <div class="container mt-5 myform-container">
+        <h2 class="mb-4 myformhead">
+            {% if from == 'add new' %}
+                Please add your room type here!
+            {% else %}
+                Please edit your room type here!
+            {% endif %}
+        </h2>
+        <form method="POST" class="form myform" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
+              <button class="btn btn-primary me-md-2 btn-submit" type="submit">Save</button>
+              <a class="btn btn-outline-secondary btn-return" href="{% url 'manager_room' %}">Return</a>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}
