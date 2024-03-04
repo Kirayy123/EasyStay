@@ -13,7 +13,6 @@ class user(models.Model):
 
 
 class hotelmanager(models.Model):
-    hotel_name = models.CharField(max_length=50, default=None)
     manage_id = models.CharField(max_length=10, default=None)
     email = models.EmailField(max_length=100, unique=True)
     phone = models.CharField(max_length=50, default='+0000000000')
@@ -24,14 +23,15 @@ class hotel(models.Model):
     manager = models.ForeignKey(hotelmanager, on_delete=models.CASCADE)
     hotel_id = models.CharField(max_length=10, default=None)
     name = models.CharField(max_length=100, default=None)
-    city = models.CharField(max_length=50, default='London', blank=True)
-    country = models.CharField(max_length=50, default='Great Britain', blank=True)
-    location = models.CharField(max_length=255, default='default_location')
+    country = models.CharField(max_length=50, default=None)###_________________new
+    city = models.CharField(max_length=50, default=None)
+    location = models.CharField(max_length=255, default=None)
+    postcode = models.CharField(max_length=50, default=None)###_________________newPost Code
     email = models.EmailField(max_length=100, unique=True)
-    phone = models.CharField(max_length=50, default='+0000000000')
+    phone = models.CharField(max_length=50, default=None)
     star = models.IntegerField(default=3)
-    description = models.TextField(default='No description provided.')
-    facility = models.TextField(default='Basic facilities.')
+    description = models.TextField(default=None)
+    facility = models.TextField(default=None)
     image = models.ImageField(upload_to='hotel_image', default=None)
 
 
@@ -40,21 +40,22 @@ class roomtype(models.Model):
     id = models.CharField(max_length=10, primary_key=True)
     hotel = models.ForeignKey(hotel, on_delete=models.CASCADE)
     type = models.CharField(max_length=50)
-    price = models.DecimalField(max_digits=12, decimal_places=2, default=100.00)
-    facility = models.TextField(default='Basic room facilities.')
+    price = models.DecimalField(max_digits=12, decimal_places=2, default=None)
+    guests = models.IntegerField(default=2)  ###_________________new
+    facility = models.TextField(default=None)
     image = models.ImageField(upload_to='room_image',default=None)
     guests = models.IntegerField(default=2)
 
 
 class room(models.Model):
     type = models.ForeignKey(roomtype, on_delete=models.CASCADE)
-    Room_number = models.CharField(max_length=10, default='001')
+    Room_number = models.CharField(max_length=10, default=None)
     availability = models.BooleanField(default=True)  # True for available, False for unavailable
 
 class booking(models.Model):
     user = models.ForeignKey(user, on_delete=models.CASCADE)
     room_number = models.ForeignKey(room, on_delete=models.CASCADE)
-    ref_num = models.CharField(max_length=50, default='REF0001')
+    ref_num = models.CharField(max_length=50, default=None)
     booking_date = models.DateTimeField(default=timezone.now)
 
     from_date = models.DateField(default=None)####
@@ -62,8 +63,9 @@ class booking(models.Model):
 
     total_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     is_paid = models.BooleanField(default=False)
-    reserved_name = models.CharField(max_length=50, default='Name')
-    reserved_phone = models.CharField(max_length=50, default='Phone')
+    reserved_name = models.CharField(max_length=50, default=None)
+    reserved_phone = models.CharField(max_length=50, default=None)
+
     status = models.IntegerField(default='1')  # '1' for wait check-in//'2'checked in //'3'checked out
 
     check_in_date = models.DateTimeField(null=True, blank=True)####

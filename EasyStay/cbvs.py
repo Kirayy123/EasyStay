@@ -2,7 +2,7 @@ from django.shortcuts import reverse, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from EasyStay.form import UserRegisterForm, ManagerRegisterForm
+from EasyStay.form import UserRegisterForm, ManagerRegisterForm, HotelInfoForm, RoomTypeEditForm
 
 from EasyStay.models import user, hotelmanager
 import random
@@ -24,9 +24,9 @@ class CreateUserView(CreateView):
 
         user_id = "U" + str(random_id)
 
-        new_user = form.save(commit=False)# Create, but don't save the new  instance.
+        new_user = form.save(commit=False)
         new_user.user_id = user_id
-        new_user.save()# Save the new instance.
+        new_user.save()
         form.save_m2m()
 
         self.object = new_user
