@@ -8,8 +8,8 @@
 {% endblock %}
 
 {% block main%}
-    
-<div class="container mt-5 rounded-4 p-2 h-auto contentcontainer" id="hotelsummary">     <!-- hotel details-->
+
+<div class="container-sm mt-5 rounded-4 p-2 h-auto contentcontainer" id="hotelsummary">     <!-- hotel details-->
     <div class="row ">
         <div class="row">
             <div class="col-sm-auto px-4 pb-1">
@@ -36,7 +36,7 @@
             </div>
 
         </div>
-       <div class = "col-sm-auto"> <!-- picture-->
+       <div class = "col-sm-auto d-flex align-items-center"> <!-- picture-->
        <img class="image_hotel img-thumbnail " src="{{hotel.image.url}}" class="img-fluid" width="350" height="350" alt="HOTELNAME">
         </div>
         <div class="col align-items-center justify-content-center">
@@ -48,7 +48,7 @@
                       </svg>
                 </div>
                 <div id="location" class="col  align-items-center justify-content-center">
-                    <div class="row align-items-center "> 
+                    <div class="row align-items-center "> <!-- Country/City/Address-->
                         <label class = "col-sm-auto">
                             {% if hotel %}
                             {{hotel.country}}
@@ -56,13 +56,13 @@
                             Uknown Location
                             {% endif %}
                         </label>                       
-                            <label class = "col-sm-auto">
+                        <label class = "col-sm-auto">
                                 {% if hotel %}
                                 {{hotel.city}}
                                 {% else %}
                                 Uknown Location
                                 {% endif %}
-                            </label>
+                        </label>
                             <label class = "col-sm-auto">
                                 {% if hotel %}
                                 {{hotel.location}}
@@ -81,7 +81,9 @@
                     {% if Facility %}
                     <ul class="list-inline">
                         {% for fac in Facility %}                 
-                            <li class="list-inline-item mx-4">
+                            <li class="list-inline-item mx-4"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                              </svg>
                                 {{fac}}
                             </li>                    
 
@@ -93,7 +95,7 @@
                 
             </div>
         </div>
-            <div class="row p-2"> <!-- details-->
+            <div class="row p-2 "> <!-- details-->
                 <p class="lead">
                     {% if hotel %}
                     {{hotel.description}}
@@ -118,7 +120,7 @@
             <h4>{{room.type}}</h4>
         </div>  
     </div>
-    <div class="row align-items-center d-flex">
+    <div class="row align-items-center d-flex my-auto">
         <div class="col mx-2"><!-- features-->
             <h6><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 mx-2" viewBox="0 0 16 16">
                 <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
@@ -133,11 +135,11 @@
             <h4>£{{room.price}}</h4>
         </div>
         <div class="col d-flex justify-content-center" ><!-- button-->
-            <a class="btn btn-primary btn-lg" href="{% url 'search_home' %}" target="_blank" role="button">Reserve</a>
+            <a class="btn btn-primary btn-lg" href="{% url 'random_hotel' %}" target="_blank" role="button">Reserve</a>
         </div>
     </div>
     </div>
-        <div class="col-sm-auto px-0"><!-- picture-->     
+        <div class="col-sm-auto pl-5"><!-- picture-->     
             <img class="image_hotel img-thumbnail px-0" src="{{room.image.url}}" class="img-fluid" width="250" height="250" alt="Room">      
         </div>
 </div>

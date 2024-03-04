@@ -9,6 +9,7 @@ urlpatterns = [
     path('Mregister/', views.manager_register, name="manager_register"),
     path('search/', views.search_home, name="search_home"),
     path('hotels/hoteldetails/<int:id>/', views.hotel_details, name="hotel_details"),
-    path('hotels/details', views.details, name="details"),
-     path('search/', views.search_rst, name='search'),
+    path('search/', views.search_rst, name='search'),
+    path('hotels/hoteldetails', views.show_random_hotel, name="random_hotel"),
+
 ] 

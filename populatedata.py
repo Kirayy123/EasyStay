@@ -8,10 +8,15 @@ from faker import Faker
 from faker.providers import DynamicProvider
 from EasyStay.models import hotel, user, hotelmanager, roomtype
 
+#This is just to populate the database with a random asssortment of hotels,
+# managers & room types. it usually results in about 500 hotels (number is utimately random)
+# uses images in media file and  a csv of the most populated cities as well as the python Faker module
+
 fake = Faker()
+
 numpercity =10
 
-roomtypes = { "Single" : (100,"images/room_single.jpeg",2), "Double" : (200,"images/room_double.jpeg",4), "VIP" : 
+roomtypes = { "Single" : (100,"images/room_single.jpeg",1), "Double" : (200,"images/room_double.jpeg",2), "VIP" : 
              (500,"images/room_vip.jpeg",4), "Penthouse" : (400,"images/room_penthouse.jpeg",6), 
              "Self-Catered" : (300,"images/room_self.jpeg",5), "Deluxe" : (250,"images/room_deluxe.jpeg",2)}
 
@@ -22,12 +27,11 @@ hotel_facility = ["En-suite","Swimming pool", "Tennis Court", "Beach Access", "H
               "Family Friendly", "Dog friendly", "Cat friendly","City Views", "Restaurant", "Free breakfast"]
 
 
-hotelphotos = os.listdir("media/hotels")
+hotelphotos = os.listdir("media/hotels/")
 photo_provider = DynamicProvider(
     provider_name='hotelPhotos',
-    elements=os.listdir("media/hotels")
+    elements=os.listdir("media\\hotels")
 )
-
 
 feature_provider = DynamicProvider(
     provider_name='features',
@@ -167,11 +171,9 @@ fake.add_provider(hoteldesc)
 fake.add_provider(photo_provider)
 
 file_path = 'worldcities.csv'
-num_rows_to_read = 50  # Specify the number of rows you want to read
+num_rows_to_read = 50  
 
-
-city_country = {}
-
+#creates a string of hotel features that is then parsed by the view method to display them seperately
 def concatRandom(list, range):
     sample = random.sample(list, range)
     str = ""
@@ -182,7 +184,7 @@ def concatRandom(list, range):
 
 
 def add_hotel(ID, man, city, city_countries):
-    h = hotel.objects.get_or_create(hotel_id=ID,
+    h = hotel.objects.get_or_create(hotel_id=ID +500,
                                     manager= man,
                                     city = city,
                                     name= fake.hotels(),
@@ -199,7 +201,7 @@ def add_hotel(ID, man, city, city_countries):
     return h
 
 def add_manager(mID):
-    m = hotelmanager.objects.get_or_create(manage_id= mID,
+    m = hotelmanager.objects.get_or_create(manage_id= mID + 500,
                                            hotel_name= fake.company(),
                                            email= fake.free_email())[0]
     m.phone = fake.phone_number()
@@ -207,12 +209,11 @@ def add_manager(mID):
     return m
 
 def add_roomtype(rid,hID, key):
-
     rType = key
     rPrice = roomtypes[key][0]
     rphoto = roomtypes[key][1]
     rGuests = roomtypes[key][2]
-    r = roomtype.objects.get_or_create(id=rid,
+    r = roomtype.objects.get_or_create(id=rid + 500,
                                        hotel=hID,
                                        type=rType,
                                        price=rPrice,
@@ -222,6 +223,7 @@ def add_roomtype(rid,hID, key):
                                        )[0]
     r.save
 
+#Assigns a number of rooms to hotels based on a random range 2-6
 def assign_roomtypes(i, hID):
     returnv = i
     roomrange =random.randint(2,6)
@@ -235,13 +237,6 @@ def assign_roomtypes(i, hID):
     return returnv
 
 
-def populate():
-    city_countries = read_csv_to_dict()
-    roomcount = 0
-    for key, country in city_countries.items():
-        print(key)
-        roomcount = populatepercity(roomcount,numpercity, key, city_countries)
-        roomcount +=1
 
 def populatepercity(count, numpercity, city, city_countries):  
         roomtypesCount = count
@@ -264,7 +259,7 @@ def iterate_existing_managers(hotelname):
         m.phone = fake.phone_number()
         
 
-#TAKEN From chatGPT (just to read a large csv file of cities)
+#TAKEN From chatGPT (just to read a large csv file of cities/countries into a dictionary)
 def read_csv_to_dict():
     file_path = 'worldcities.csv'
     num_rows = 50
@@ -288,7 +283,13 @@ def read_csv_to_dict():
     return data_dict
 
 
+def populate():
+    city_countries = read_csv_to_dict()
+    roomcount = 0
+    for key, country in city_countries.items():
+        print(key)
+        roomcount = populatepercity(roomcount,numpercity, key, city_countries)
+        roomcount +=1
  
 if __name__ == '__main__':
-    #print(read_csv_to_dict())
     populate()
