@@ -82,3 +82,14 @@ def manager_register(request):
 
 def search_home(request):
     return render(request, 'search/home.html')
+    
+def index(request):
+    return render(request, 'index.html')
+
+
+def search_rst(request):
+    if request.method == 'POST':
+        location = request.POST.get('location')
+        print('location:',location)
+        rsts = Hotel.objects.filter(position__icontains=location).all()
+        return render(request, 'search_rst.html', locals())
