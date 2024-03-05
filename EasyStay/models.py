@@ -72,3 +72,6 @@ class booking(models.Model):
     review_star = models.IntegerField(null=True, blank=True)
     review_comment = models.TextField(null=True, blank=True)
     review_date = models.DateTimeField(null=True, blank=True)
+
+    reply = models.TextField(null=True, blank=True)
+    reply_date = models.DateTimeField(null=True, blank=True)
