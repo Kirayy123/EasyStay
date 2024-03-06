@@ -1,0 +1,112 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: #cccccc; /* Set background color to light gray */
+  }
+
+  header {
+    background-color: #f6b269;
+    color: #fff;
+    padding: 30px 0;
+  }
+  
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  nav li {
+    display: inline;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  nav li:nth-child(1){
+    color: #347ded;
+  }
+
+  #confirm h1{
+    text-align: left;
+    padding-left: 20px;
+  }
+
+  #deals{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex-direction: column;
+      background-color: #fff;
+  }
+  #deals .deals-one,#deals .deals-two,#deals .deals-three,#deals .deals-four{
+      width: 45%;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      margin: 20px auto;
+      border-bottom: 2px solid #e0e0e0;
+  }
+
+  .deals-one h2{
+    width: 100%;
+    /* position: relative; */
+    text-align: left;
+  }
+  .deals-one .deals-one-bot{
+      display: flex;
+      justify-content: space-evenly;
+  }
+  .deals-one .deals-one-bot img{
+      width: 150px;
+      height: 120px;
+  }
+  .deals-one .deals-one-bot .deals-one-right{
+      margin-left: 15px;
+  }
+  .deals-one .deals-one-bot .deals-one-right img{
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .deals-two{
+      
+  }
+  .deals-two h2{
+      text-align: left;
+  }
+  .deals-two div{
+    width: 50%;
+    margin: auto;
+  }
+  .deals-two div p{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .deals-three{
+      margin-top: 20px;
+}
+.deals-three h2{
+    text-align: left;
+}
+.deals-three div{
+width: 66%;
+}
+.deals-three div p{
+  display: flex;
+  justify-content: space-between;
+}
+.deals-four{
+    margin-top: 20px;
+}
+.deals-four h2{
+    text-align: left;
+}
+.deals-four textarea{
+    width: 80%;
+}

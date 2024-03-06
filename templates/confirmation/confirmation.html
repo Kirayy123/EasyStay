@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Home Page</title>
+<link rel="stylesheet" href="css/confirmation.css">
+</head>
+<body>
+<header>
+  <nav>
+    <ul>
+      <li>Easystay</li>
+      <li>My Account</li> 
+    </ul>
+  </nav>
+</header>
+<main>
+  <section id="confirm">
+    <h1>Reserve confirmation</h1>
+  </section>
+  <section id="deals">
+      <div class="deals-one">
+          <h2>Park Piaza London</h2>
+          <div class="deals-one-bot">
+              <img src="image/confirm.jpg" alt="">
+              <div class="deals-one-right">
+                <p><img src="image/ring.png" alt=""> Non-refundable</p>
+                <p>Standard Room</p>
+                <p>1 Room</p>
+                <p><img src="image/caslender.png" alt=""> <input type="date" id="Check-in"> </p>
+                <p><img src="image/caslender.png" alt=""> <input type="date" id="Check-out"> </p>
+              </div>
+          </div>
+      </div>
+      <div class="deals-two">
+          <h2>Price Detail</h2>
+          <div>
+              <p><span>1 Room for 1 Night:</span><span>£255</span></p>
+              <p><span>Tax:</span><span>£25</span></p>
+              <p><span>Total:</span><span>£260</span></p>
+          </div>
+      </div>
+      <div class="deals-three">
+        <h2>Guest Info</h2>
+        <div>
+            <p><span>Reserved Name:</span><span><input type="text" id="reservedName"></span></p>
+            <p><span>Reserved Email:</span><span><input type="email" id="reservedEmail"></span></p>
+            <p><span>Reserved Phone Number:</span><span><input type="tel" id="reservedPhone"></span></p>
+        </div>
+      </div>
+      <div>
+        <button onclick="generateRandomNumber()">Confirm</button>
+      </div>
+  </section>
+</main>
+
+
+<script>
+  function generateRandomNumber() {
+    const reservationDate = document.getElementById('Check-in').value;
+    const outDate = document.getElementById('Check-out').value;
+    const reservedName = document.getElementById('reservedName').value;
+    const reservedEmail = document.getElementById('reservedEmail').value;
+    const reservedPhone = document.getElementById('reservedPhone').value;
+
+    const randomNumber = Math.floor(Math.random() * 1000); // Generates a random number between 0 and 999
+
+    // Display the extracted date and generated random number
+    console.log('Reservation Date:', reservationDate);
+    console.log('Reserved Name:', reservedName);
+    console.log('Reserved Email:', reservedEmail);
+    console.log('Reserved Phone Number:', reservedPhone);
+    console.log('Random Number:', randomNumber);
+  }
+</script>
+
+</body>
+</html>
