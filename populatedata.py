@@ -7,6 +7,7 @@ django.setup()
 from faker import Faker
 from faker.providers import DynamicProvider
 from EasyStay.models import hotel, user, hotelmanager, roomtype, user, room, booking
+from decimal import Decimal
 
 #This is just to populate the database with a random asssortment of hotels,
 # managers & room types. it usually results in about 500 hotels (number is utimately random)
@@ -23,8 +24,10 @@ roomtypes = { "Single" : (100,"images/room_single.jpeg",1), "Double" : (200,"ima
 
 roomtypesPhotos =  {"Single" : "images/room_single.jpeg","Double" : "images/room_double.jpeg","VIP" : "images/room_vip.jpeg","Penthouse" : "images/room_penthouse.jpeg","Self-Catered" : "images/room_self.jpeg","Deluxe" : "images/room_deluxe.jpeg"  }
 room_facility=["Hot-Tub", "Sauna", "Kitchen", "Dog-Friendly", "Sea Views", "Lounge", "Luxury", "Basic"]
-hotel_facility = ["En-suite","Swimming pool", "Tennis Court", "Beach Access", "Hot Tub", "Sauna", "Gym", "Concierge service",
-              "Family Friendly", "Dog friendly", "Cat friendly","City Views", "Restaurant", "Free breakfast"]
+hotel_facility = ['Wi-Fi','TV','Air conditioning','Private Bathroom','Room Service','Balcony','Sea View','Parking','Lift','Swimming Pool','Gym','Spa','Restaurant','Breakfast','Bar','Pets Friendly','Non-smoking Rooms','Conference Room','Facilities for disabled guests']
+
+
+
 
 
 hotelphotos = os.listdir("media/hotels/")
@@ -266,7 +269,6 @@ def iterate_existing_managers(hotelname):
         m.phone = fake.phone_number()
         
 
-#TAKEN From chatGPT (just to read a large csv file of cities/countries into a dictionary)
 def read_csv_to_dict():
     file_path = 'worldcities.csv'
     num_rows = 50
@@ -388,6 +390,24 @@ def add_user():
         username = fake.name())[0]
     userx.save()
     return userx
+
+
+def get_lat_long(city):
+    file_path = 'worldcities.csv'
+    data_dict = {}
+    with open(file_path, 'r', newline='', encoding='utf-8') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            if row.get('city') == city:
+                data_dict['lat'] = Decimal(row.get('lat'))
+                data_dict['long'] = Decimal(row.get('lng'))
+                break
+    if data_dict["lat"] == '' or data_dict['long'] == '':
+         data_dict['lat'] = 55.8617
+         data_dict['long'] = 4.2583
+    return data_dict
+
+
 
 def populate():
     city_countries = read_csv_to_dict()
