@@ -8,38 +8,42 @@
         <div class="row align-items-center">
             <div class="col-md-4">
               <div class="card" style="width: 24rem; height: 32rem">
+                  {#____ image of hotel ____#}
                   <img src="{{ hotel.image.url }}" class="card-img-top" alt="Hotel Image"
                        style="height: 100%; object-fit: cover;">
                 </div>
             </div>
             <div class="col-md-8">
             <div class="d-flex justify-content-between align-items-center mb-3">
+            {#____ hotel name ____#}
                 <h2 class="hotel-name">{{ hotel.name }}</h2>
-
+            {#____ star rating ____#}
                 <div class="star-rating">
                     {% for _ in stars %}
-                        <i class="fas fa-star"></i> <!-- 实心星星 -->
+                        <i class="fas fa-star"></i>
                     {% endfor %}
                     {% for _ in non_stars %}
-                        <i class="far fa-star"></i> <!-- 空心星星 -->
+                        <i class="far fa-star"></i>
                     {% endfor %}
                 </div>
+            {#____ edit button ____#}
                 <a href="{% url 'edit_hotel' %}" class="btn btn-primary add-new-room">Edit Hotel Info</a>
             </div>
 
 
 
             <div class="hotel-info">
+                {#____ show hotel information ____#}
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Hotel ID: {{ hotel.hotel_id }}</li>
-                    <li class="list-group-item">Star Rating: {{ hotel.star }}</li>
-                    <li class="list-group-item">Country: {{ hotel.country }}</li>
-                    <li class="list-group-item">City: {{ hotel.city }}</li>
-                    <li class="list-group-item">Location: {{ hotel.location }}</li>
-                    <li class="list-group-item">Postcode: {{ hotel.postcode }}</li>
-                    <li class="list-group-item">Email: {{ hotel.email }}</li>
-                    <li class="list-group-item">Phone: {{ hotel.phone }}</li>
-                    <li class="list-group-item">Facilities: {{ formatted_facilities }}</li>
+                    <li class="list-group-item"><strong>Hotel ID: </strong> {{ hotel.hotel_id }}</li>
+                    <li class="list-group-item"><strong>Star Rating: </strong> {{ hotel.star }}</li>
+                    <li class="list-group-item"><strong>Country: </strong> {{ hotel.country }}</li>
+                    <li class="list-group-item"><strong>City: </strong>{{ hotel.city }}</li>
+                    <li class="list-group-item"><strong>Location: </strong>{{ hotel.location }}</li>
+                    <li class="list-group-item"><strong>Postcode: </strong>{{ hotel.postcode }}</li>
+                    <li class="list-group-item"><strong>Email: </strong>{{ hotel.email }}</li>
+                    <li class="list-group-item"><strong>Phone: </strong>{{ hotel.phone }}</li>
+                    <li class="list-group-item"><strong>Facilities: </strong>{{ formatted_facilities }}</li>
                 </ul>
             </div>
         </div>
@@ -48,6 +52,7 @@
 
     <div class="container mt-3">
       <div class="card-group">
+          {#____ show number of room information ____#}
         <div class="card card-hotel-info">
           <div class="card-body text-center">
             <h5 class="card-title card-num-title">Total Rooms</h5>
@@ -64,6 +69,12 @@
           <div class="card-body text-center">
             <h5 class="card-title card-num-title">Sold Out Room Today</h5>
             <p class="card-text card-num-text">{{ bookings }}</p>
+          </div>
+        </div>
+          <div class="card card-hotel-info">
+          <div class="card-body text-center">
+            <h5 class="card-title card-num-title">Awaiting Checkin Today</h5>
+            <p class="card-text card-num-text">{{ awaiting_checkin }}</p>
           </div>
         </div>
       </div>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <div>
+        <div>Search Home!</div>
+        {% block welcome_message %}
+
+        {% endblock %}
+    <div>
+        <a href="{% url 'logout' %}" class="icon-button" title="Logout">
+        <i class="fas fa-sign-out-alt fa-lg"></i>
+      </a>
+    </div>
+
+    <a href="{% url 'user_booking' type.id %}"> booking </a>
+    <a href="{% url 'user_change_password'%}"> change password</a>
+
+
+    </div>
+
+
+</body>
+</html>
