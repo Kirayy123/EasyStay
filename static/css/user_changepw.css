@@ -1,0 +1,88 @@
+body {
+    background-color: #fffbe7;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+}
+
+
+
+/*____________________forms*/
+.myform-container {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h2.myformhead {
+    margin-top:50px;
+    color: #333;
+    text-align: center;
+}
+
+.myform p {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.myform label {
+    margin-top:50px;
+    display: block;
+    margin-bottom: .5rem;
+    color: #666;
+}
+
+/*____________________ input*/
+.myform input[type="text"],
+.myform input[type="number"],
+.myform input[type="email"],
+.myform input[type="password"],
+.myform select,
+.myform textarea {
+    width: 97%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height:50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.help-text {
+    display: block;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin-top: -10px;
+}
+
+/*____________________ button*/
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+
+.btn-submit, .btn-return {
+    padding: 10px 15px;
+    font-size: 16px;
+    height:45px;
+    width:80px;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        color:#666;
+        padding: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+}
