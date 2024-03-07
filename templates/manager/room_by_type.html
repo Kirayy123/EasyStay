@@ -6,6 +6,7 @@
 {% block content %}
     <h2>{{ type.type }}</h2>
     <div class="add-room-type mb-3">
+    {# ___ Add Room button ___ #}
         <button class="btn btn-primary add-new-room" onclick="location.href='{% url 'add_rooms' room_type.id %}'">
             + Add New Rooms
         </button>
@@ -14,6 +15,7 @@
     <div class="container mt-5">
       <h2 class="mb-4">Room List</h2>
       {% for room in rooms %}
+          {# ___ show Room in cards ___ #}
       <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-8">
@@ -24,7 +26,7 @@
           </div>
           <div class="col-md-4 d-flex align-items-center justify-content-end">
             <div class="card-body">
-              <form action="{% url 'delete_rooms' room_type_id=room_type.id room_id=room.id %}" method="post" onsubmit="return confirmDelete();">
+              <form action="{% url 'delete_rooms' room_type_id=room_type.id room_id=room.id %}" method="post" onsubmit="return confirmInformation();">
                   <a href="{% url 'update_rooms' room_type_id=room_type.id room_id=room.id %}" class="btn btn-warning me-2 edit-room">Edit</a>
                   {% csrf_token %}
                   <input type="submit" value="Delete" class="btn btn-danger delete-room"/>
@@ -40,8 +42,8 @@
 
 
     <button class="btn btn-secondary mt-3 btn-return" onclick="location.href='{% url 'manager_room' %}'">
-        return
+        Return
     </button>
 
-    <script src="{% static 'js/confirmDelete.js' %}"></script>
+    <script src="{% static 'js/ConfirmInformation.js' %}"></script>
 {% endblock %}

@@ -75,11 +75,14 @@ body {
     background-color: #fffbe7;
     border-width:4px;
     border-style:dashed solid;
+    height:200px;
+    margin-top:40px;
 }
 .card-num-title {
-    color: #495057;
+    color: #000000;
     font-size: 20px;
     padding-top:20px;
+    margin-top:15px;
 }
 
 .card-num-text {
@@ -97,7 +100,12 @@ body {
 }
 
 
-/*____________________hotel home page*/
+/*____________________room type page*/
+.card-title a.type-title:hover {
+  color: #ba8000;
+  text-decoration: none;
+}
+
 .add-new-type,.add-new-room{
     background-color:  #d1a545;
     border-color: #d1a545;
@@ -137,7 +145,7 @@ body {
     color: #555;
 }
 
-/*____________________hotel home page*/
+/*____________________checkin/booking page*/
 .search{
     color:white;
     background-color: #d1a545;
@@ -151,21 +159,34 @@ body {
     height:35px;
 }
 
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+  background-color: #ffeda700; !important;
+}
 
 /*____________________buttons*/
+.btn-submit, .btn-return{
+    width:75px;
+    height:40px;
+    margin-top:45px;
+}
+
 .btn-submit{
     background-color: #d1a545;
     border-color: #d1a545;
-    width:70px;
-    height:35px;
+    margin-left:250px;
 }
 
 .btn-return{
     color:white;
     background-color: #dc3545de;
     border-color: #dc3545de;
-    width:70px;
-    height:35px;
+    margin-left:50px;
+}
+
+.change-password{
+    margin-top:50px;
+    margin-left:290px;
 }
 
 /*____________________forms*/
@@ -175,17 +196,15 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 800px;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h2.myformhead {
-    margin-bottom: 1rem !important;
+    margin-top:50px;
     color: #333;
     text-align: center;
 }
-
-/* Style overrides for form elements */
 
 .myform p {
     margin-bottom: 0.5rem;
@@ -193,28 +212,39 @@ h2.myformhead {
 }
 
 .myform label {
+    margin-top:50px;
     display: block;
     margin-bottom: .5rem;
     color: #666;
 }
 
-/* Style for input fields */
+/*____________________ input*/
 .myform input[type="text"],
 .myform input[type="number"],
 .myform input[type="email"],
 .myform input[type="password"],
 .myform select,
 .myform textarea {
-    width: 100%;
+    width: 97%;
     padding: 10px;
     margin-bottom: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    height:40px;
-    width:700px
+    height:50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* Specific styles for checkboxes */
+.help-text {
+    display: block;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin-top: -10px;
+}
+
+
+/*____________________ checkbox*/
 .myform .checkbox, .form .checkbox label {
     display: inline-block;
     margin-right: 15px;
@@ -230,3 +260,50 @@ h2.myformhead {
         margin-bottom: 1rem;
     }
 }
+
+
+/*____________________ small window for booking details*/
+#details-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* hidden by default */
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4); /* semi-transparent backdrop */
+    z-index: 1000; /* ensure it's on top of other elements */
+}
+
+#details-container {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px; /* adjust width for a smaller pop-up */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-top: 60px;
+}
+
+#details-container button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.close-button {
+    font-size: 24px; /* Large size for the 'x' */
+    line-height: 24px; /* Align the 'x' within the button */
+    width: 32px; /* Width of the close button */
+    height: 32px; /* Height of the close button */
+    border: none; /* Remove border */
+    background: transparent; /* Transparent background */
+    cursor: pointer; /* Cursor indicates clickable item */
+    outline: none; /* Remove outline to avoid focus ring */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
