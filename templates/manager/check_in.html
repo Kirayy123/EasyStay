@@ -9,16 +9,13 @@
     <div class="row mb-3">
         <div class="col">
             {% if action == 'checkin' %}
-                {#____ show check in information ____#}
                 <form method="get" action="{% url 'checkin' %}" class="mb-3">
                     <div class="input-group">
-                            {#____ user_booking by reference number ____#}
                             <input type="text" class="form-control" placeholder="Enter Booking Reference to Search" name="search" value="{{ request.GET.search }}">
                         <button class="btn btn-outline-secondary search" type="submit">Search</button>
                     </div>
                 </form>
                 <form method="get" action="{% url 'checkin' %}" class="col g-3 d-flex align-items-center">
-                    {#____ filter by check in date ____#}
                     <div class="col-auto">
                         <label for="end_date" class="col-form-label me-2">Check-in Date:</label>
                     </div>
@@ -35,16 +32,13 @@
                     </div>
                 </form>
             {% elif action == 'checkout' %}
-                {#____ show check out information ____#}
                 <form method="get" action="{% url 'checkout' %}" class="mb-3">
-                    {#____ user_booking by reference number ____#}
                     <div class="input-group">
                             <input type="text" class="form-control" placeholder="Enter Booking Reference to Search" name="search" value="{{ request.GET.search }}">
                         <button class="btn btn-outline-secondary search" type="submit">Search</button>
                     </div>
                 </form>
                 <form method="get" action="{% url 'checkout' %}" class="col g-3 d-flex align-items-center">
-                    {#____ filter by check out date ____#}
                     <div class="col-auto">
                         <label for="end_date" class="col-form-label me-2">Check-out Date:</label>
                     </div>
@@ -71,32 +65,27 @@
         <a href="{% url 'checkout' %}" class="btn btn-warning">Check out</a>
     </div>
 
-    <table class="table text-center table-hover">
-    {#____ show information within table ____#}
+    <table class="table text-center">
         <thead>
             <tr>
-                <th scope="col">Reference Number</th>
+                <th scope="col">Booking Reference</th>
                 <th scope="col">Reserved Name</th>
                 <th scope="col">Reserved Phone</th>
+                <th scope="col">Room Number</th>
                 <th scope="col">Check-in Date</th>
                 <th scope="col">Check-out Date</th>
-                <th scope="col">Total Days</th>
-                <th scope="col">Total Price</th>
-                <th scope="col">Room Number</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
             {% for booking in check_list %}
-                <tr class="booking-row" data-id="{{ booking.id }}" onclick="showDetails('{{ booking.id }}')">
+                <tr>
                     <td>{{ booking.ref_num }}</td>
                     <td>{{ booking.reserved_name }}</td>
                     <td>{{ booking.reserved_phone }}</td>
+                    <td>{{ booking.room_number.Room_number }}</td>
                     <td>{{ booking.from_date }}</td>
                     <td>{{ booking.to_date }}</td>
-                    <td>{{ booking.total_days }}</td>
-                    <td>£{{ booking.total_price }}</td>
-                    <td>{{ booking.room_number.Room_number }}</td>
                     <td>
                         <form method="post" class="d-inline">
                             {% csrf_token %}
@@ -117,17 +106,6 @@
         </tbody>
     </table>
 </div>
-
-
-{#___ booking detail window ___#}
-<div id="details-backdrop" style="display:none;" onclick="hideDetails();">
-    <div id="details-container" onclick="event.stopPropagation();">
-        <div id="details"></div>
-        <button onclick="hideDetails();" class="close-button">&times;</button>
-    </div>
-</div>
-
-<script src="{% static 'js/bookingDetail.js' %}"></script>
 
 {% endblock %}
 

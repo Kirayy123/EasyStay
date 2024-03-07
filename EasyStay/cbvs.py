@@ -7,13 +7,11 @@ from EasyStay.form import UserRegisterForm, ManagerRegisterForm, HotelInfoForm, 
 from EasyStay.models import user, hotelmanager
 import random
 
-'''__User Register View__'''
-'''
-Get a random user number starting with U, and check with no duplicate
-'''
+
 class CreateUserView(CreateView):
     model = user
     form_class = UserRegisterForm
+    # fields = "__all__"
     template_name = "login/user_register.html"
     success_url = "login"
 
@@ -33,18 +31,13 @@ class CreateUserView(CreateView):
 
         self.object = new_user
 
-        #After register, jump back to login page and show the user number, that can login with email
         return redirect(reverse('login') + f'?uid={user_id}&from_url=user_register')
 
-'''Manager Register View__'''
-'''
-Get a random manager number starting with M, and check with no duplicate
-Also auto generate a hotel number starting with H
-The manager must fill the hotel information when first login to the web, and then they can manager their hotel
-'''
+
 class CreateManagerView(CreateView):
     model = hotelmanager
     form_class = ManagerRegisterForm
+    # fields = "__all__"
     template_name = "login/manager_register.html"
     success_url = reverse_lazy('manager_login')
 
@@ -64,5 +57,5 @@ class CreateManagerView(CreateView):
         form.save_m2m()
 
         self.object = new_manager
-        # After register, jump back to login page and show the manager number, and can login with email
+
         return redirect(reverse('manager_login') + f'?uid={manage_id}&from_url=manager_register')

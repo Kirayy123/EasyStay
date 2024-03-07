@@ -10,8 +10,8 @@ body, html {
 }
 
 .register-container {
-    min-height: 700px;
-    width: 700px;
+    min-height: 550px;
+    width: 500px;
     margin: 100px auto;
     background: #fff;
     border-radius: 10px;
@@ -54,7 +54,7 @@ body, html {
 .register-container .form p input {
     clear: both;
     padding: 10px;
-    width: 70%;
+    width: 60%;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -62,10 +62,6 @@ body, html {
     border-radius: 4px;
 }
 
-.register-container .form .helptext {
-    font-size:15px;
-    color:#797979;
-}
 
 .register-container .form p .submit-button {
     width: 35%;
