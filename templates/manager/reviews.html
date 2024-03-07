@@ -1,0 +1,95 @@
+{% extends "manager/base.html" %}
+{% load static %}
+
+{% block title %}Room{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <form method="get" action="{% url 'review_filter' %}">
+    <div class="mb-3">
+        <label for="roomTypeSelect" class="form-label"><strong>Filter by Room Type:</strong></label>
+        <select id="roomTypeSelect" class="form-select" name="room_type" onchange="this.form.submit()">
+        {#____ filter by room type ____#}
+            <option value="">All Room Types</option>
+            {% for room_type in room_types %}
+                <option value="{{ room_type.type }}" {% if request.GET.room_type == room_type.type %}selected{% endif %}>
+                    {{ room_type.type }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+
+
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            {% for review in reviews_bookings %}
+            {#____ show review information in card ____#}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title review"><strong>{{ review.room_number.type.type }}</strong></h5>
+                        </div>
+                        <div class="col text-end">
+                            <p class="card-text"> stay from
+                                <strong>{{ review.from_date }}</strong> to
+                                <strong>{{ review.to_date }}</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <p class="card-text"><strong>Reference Number:</strong> {{ review.ref_num }}</p>
+                        </div>
+                        <div class="col text-end">
+                            <p class="card-text"><strong>Review Date:</strong> {{ review.review_date }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p class="card-text"><strong>Username:</strong> {{ review.user.username }}</p>
+                    </div>
+                    <div class="row">
+                        <p class="card-text"><strong>Comment:</strong> {{ review.review_comment }}</p>
+                    </div>
+                    <div class="row">
+                        <div class="star-rating">
+                            <p class="card-text">
+                            <strong>Rating:</strong>
+                            {% for _ in review.stars %}
+                                <i class="fas fa-star"></i>
+                            {% endfor %}
+                            {% for _ in review.non_stars %}
+                                <i class="far fa-star"></i>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    {% if review.reply %}
+                        {#____ if have replyed, Show Reply ____#}
+                        <p><strong>Reply:</strong> {{ review.reply }}</p>
+                    {% else %}
+                        {#____ if not replyed, Reply Review ____#}
+                        <form method="post" action="{% url 'reply_to_review' review.id %}">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Reply to this review" name="reply">
+                                <button class="btn btn-outline-secondary" type="submit">Send</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p>No reviews yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

@@ -6,6 +6,7 @@
     <div class="container mt-5 myform-container">
       <h2 class="mb-4 myformhead">Edit Your Profile Here</h2>
       <form method="post" class="myform">
+      {#____ Edit manager information ____#}
         {% csrf_token %}
         {{ form.as_p }}
         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
