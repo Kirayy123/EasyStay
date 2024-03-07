@@ -618,6 +618,23 @@ def search_rst(request):
         rsts = Hotel.objects.filter(position__icontains=location).all()
         return render(request, 'search_rst.html', locals())
 
+def user_profile(request, id):
+    u = user.objects.get(id=id)
+    reservations = booking.objects.filter(user_id=u.user_id)
+    context = {}
+    context['user'] = u
+    context['reservations'] = reservations 
+    return render(request, 'user/userProfile.html', context)
+
+def booking_management(request, id):
+   u = user.objects.get(id=id)
+   reservations = booking.objects.filter(user_id=u.user_id)
+   context = {}
+   context['user'] = u
+   context['reservations'] = reservations 
+   return render(request, 'user/bookingManagement.html', context)
+
+
 def hotel_details(request,id):
     context_hotel = {}
     try: 
@@ -647,12 +664,6 @@ def hotel_details(request,id):
         context_hotel['map_api'] = mapAPI.get_key()
         context_hotel['lat'] = lat_long['long']
         context_hotel['long'] = lat_long['lat']
-
-
-
-
-
-
 
     except hotel.DoesNotExist:
         context_hotel['hotel'] = None

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_ext %}
+
+<link href="{% static 'css/blog.css' %}" rel="stylesheet">
+<link href="{% static 'css/list-groups.css' %}" rel="stylesheet">
+<link href="{% static 'css/hoteldetails.css' %}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'css/bookingManagement.css' %}">
+{% endblock %}
+
+{% block main%}
+    {%if user %}
+    {% for res in reservations %}
+    <div class="container">
+        <div class="left-panel">
+            <div class="booking-info">
+                <h2>Upcoming</h2>
+                <p><strong>Booking No.</strong> 0123456</p>
+                <p><strong>Reference Number</strong> {{res.ref_num}}</p>
+                <p><strong>Confirmation No.</strong> 154211111</p>
+                <p><strong>Booking Date</strong> 18:00, Jan 30, 2024</p>
+                <button>Review</button>
+                <button>Book Again</button>
+                <button>Cancel</button>
+            </div>
+            <div class="contact-info">
+                <h2>Contact Info</h2>
+                <p><strong>Email</strong> {{res.email}}/p>
+                <p><strong>Contact Number</strong> {{res.phone}}</p>
+            </div>
+        </div>
+    </div> 
+    {% endfor %}
+    <div class="right-panel">
+        <div class="hotel-info">
+            <div class="hotel-image">
+                <img src="{{res.hotel.image}}" alt="Park Plaza London">
+            </div>
+            <div class="hotel-details">
+                <h2>{{res.hotel.name}}</h2>
+                <p>{{res.location}}</p>
+                <p><strong>Call Hotel</strong> {{res.phone}}</p>
+                <h3>{{res.room.type}}</h3>
+                <p><strong>Price For:</strong> 1 Adult</p>
+                <p><strong>Bed:</strong> 1 queen bed</p>
+                <p><strong>Smoking:</strong> Non-smoking</p>
+            </div>        
+        <div class="price-details">
+            <h2>Price Detail</h2>
+            <p><strong>1 Room for 1 Night:</strong> £255</p>
+            <p><strong>Tax:</strong> £5</p>
+            <p><strong>Total:</strong> £260</p>
+        </div>
+    </div>
+</div>
+<footer>
+    <p>© 2024 EasyStay. All rights reserved.</p>
+</footer>
+{% endif %}
+{% endblock %}
