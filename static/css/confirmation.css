@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: #fffbe7;
+}
+
+#confirm h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-top:90px;
+    margin-bottom:10px;
+}
+
+#deals{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex-direction: column;
+  }
+
+#deals .deals-one,#deals .deals-two,#deals .deals-three,#deals .deals-four{
+      width: 45%;
+      padding: 10px;
+      margin: 20px auto;
+  }
+
+#deals .deals-two,#deals .deals-three,#deals .deals-four{
+    border-top: 2px solid #e0e0e0;
+  }
+
+
+.deals-one h2, .deals-two h2, .deals-three h2{
+    text-align: left;
+    font-size:30px;
+  }
+
+.deals-one h3{
+    font-size:20px;
+  }
+
+.deals-one .deals-one-bot{
+      display: flex;
+      justify-content: space-evenly;
+  }
+
+.deals-one .deals-one-bot img{
+      width: 280px;
+      height: 180px;
+  }
+
+
+.deals-two h2,.deals-three h2{
+      text-align: left;
+  }
+
+.deals-two div,.deals-three div{
+    width: 50%;
+    margin: auto;
+  }
+
+.deals-two div p,.deals-three div p{
+    display: flex;
+    justify-content: space-between;
+  }
+
+.deals-two input{
+    width:220px;
+    height:25px;
+}
+.deals-two label,.deals-three label{
+    height:20px;
+    margin-top:7px;
+}
+
+button, .btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    height:40px;
+    width:160px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top:50px;
+}
+
+/* Styling for confirm button */
+button.confirm-booking {
+    background-color: #4caf50d9; /* Green background */
+    color: white;
+}
+
+/* Styling for cancel button */
+button.btn-return {
+    background-color: #f44336c9;
+    color: white;
+    margin-left: 20px;
+}
+
+.meaasgae{
+    font-size:20px;
+    color:#f44336f2;
+    font-weight:bold;
+    text-align: center;
+}

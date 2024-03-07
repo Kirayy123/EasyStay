@@ -54,15 +54,21 @@ body, html {
     margin: 0.5em 0;
 }
 
-.form input[type="text"],
 .form input[type="password"],
 .form input[type="email"],
 .form input[type="submit"] {
-    width: 100%;
+    width: 90%;
     padding: 0.75em;
     margin-bottom: 1em;
+    margin-left: 1em;
     border: 2px solid #d1a545;
     border-radius: 4px;
+}
+
+.form label {
+    margin-bottom: 1em;
+    margin-left: 1em;
+    font-size:18px;
 }
 
 .submit-button {

@@ -2,9 +2,9 @@
 
 {% block welcome_message %}
     {% if from_url == "user_register" %}
-        <div class="welcome-message">Registered Successfully, Your Account Number is: {{ user_id }}</div>
+        <div class="welcome-message">Register Successfully, Your Account Number is: {{ user_id }}</div>
     {% else %}
-        <div class="welcome-message">To Book Hotel, Please Login Here!</div>
+        <div class="welcome-message">To Book Hotle, Please Login Here!</div>
         <div class="welcome-message2">
             Or Click Here to Login as <a href="{% url "manager_login" %}">HotelManager</a>
         </div>
@@ -24,7 +24,7 @@
             <div class="register-password">
                     <a href="{% url 'user_register' %}">Register Here. </a>
                     or
-                    <a href="">Forgot Password?</a>
+                    <a href="{% url 'forgot_password' %}">Forgot Password?</a>
             </div>
         </form>
         <div class="return-button"><a href="{% url 'login' %}">Return</a></div>
