@@ -18,12 +18,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from EasyStay.views import manager_login, login_home
+from EasyStay.views import search_home
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   ###########################################################
-                  path('', login_home, name="login"),
+                  path('', search_home, name="test"),
                   ###########################################################
                   path('easystay/', include("EasyStay.urls")),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

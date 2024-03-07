@@ -5,6 +5,7 @@ import datetime
 import re
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q
 from django.forms import model_to_dict
@@ -45,7 +46,11 @@ def login_home(request):
                     request.session['id'] = thisuser.id
                     # successful login
                     request.session.save()
-                    return redirect("test")
+                    if request.session.get('from') == 'booking':
+                        type = request.session.get('type')
+                        return redirect("user_booking", type)
+                    else:
+                        return redirect("test")
         return render(request, 'login/user_login.html', {'form': form})
 
     else:
@@ -634,12 +639,14 @@ def get_booking_details(request, booking_id):
         details = model_to_dict(detail)
         details['room_number'] = detail.room_number.Room_number
         details['room_type'] = detail.room_number.type.type
-        details['total_days'] = (detail.to_date-detail.from_date).days
+        details['total_days'] = (detail.to_date - detail.from_date).days
         details['booking_date'] = detail.booking_date.strftime('%Y-%m-%d %H:%M:%S')
         details['bcheck_in_date'] = detail.from_date.strftime('%Y-%m-%d')
         details['bcheck_out_date'] = detail.to_date.strftime('%Y-%m-%d')
-        details['check_in_date'] = detail.check_in_date.strftime('%Y-%m-%d %H:%M:%S') if detail.check_in_date else 'have not check in'
-        details['check_out_date'] = detail.check_out_date.strftime('%Y-%m-%d %H:%M:%S') if detail.check_out_date else 'have not check in'
+        details['check_in_date'] = detail.check_in_date.strftime(
+            '%Y-%m-%d %H:%M:%S') if detail.check_in_date else 'have not check in'
+        details['check_out_date'] = detail.check_out_date.strftime(
+            '%Y-%m-%d %H:%M:%S') if detail.check_out_date else 'have not check in'
         # Serialize the Python dictionary to a JSON string and return an HttpResponse
         return JsonResponse(json.dumps(details, cls=DjangoJSONEncoder), safe=False, content_type='application/json')
     else:
@@ -861,69 +868,75 @@ def get_date_booking(request, type_id):
     rooms_for_type = room.objects.filter(type=thistype)
     user_id = request.session.get('id')
 
-    if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            start_date = form.cleaned_data['start_date']
-            end_date = form.cleaned_data['end_date']
-            # check whether the select date is valid
-            if start_date < end_date:
-                total_days = (end_date - start_date).days
-                totalprice = thistype.price * total_days
-                reserved_name = form.cleaned_data['reserved_name']
-                reserved_phone = form.cleaned_data['reserved_phone']
+    if user_id == None:
+        request.session['from'] = 'booking'
+        request.session['type'] = type_id
+        request.session.save()
+        return redirect('login')
+    else:
+        if request.method == 'POST':
+            form = BookingForm(request.POST)
+            if form.is_valid():
+                start_date = form.cleaned_data['start_date']
+                end_date = form.cleaned_data['end_date']
+                # check whether the select date is valid
+                if start_date < end_date:
+                    total_days = (end_date - start_date).days
+                    totalprice = thistype.price * total_days
+                    reserved_name = form.cleaned_data['reserved_name']
+                    reserved_phone = form.cleaned_data['reserved_phone']
 
-                thisuser = user.objects.get(id=user_id)
+                    thisuser = user.objects.get(id=user_id)
 
-                available_room = None
-                for aroom in rooms_for_type:
-                    # check free rooms within the selected date
-                    overlapping_bookings = booking.objects.filter(
-                        room_number=aroom,
-                        from_date__lt=end_date,  # from date less than end date
-                        to_date__gt=start_date  # end date greater than start date
-                    ).exists()
-                    if not overlapping_bookings:
-                        available_room = aroom
-                        break
+                    available_room = None
+                    for aroom in rooms_for_type:
+                        # check free rooms within the selected date
+                        overlapping_bookings = booking.objects.filter(
+                            room_number=aroom,
+                            from_date__lt=end_date,  # from date less than end date
+                            to_date__gt=start_date  # end date greater than start date
+                        ).exists()
+                        if not overlapping_bookings:
+                            available_room = aroom
+                            break
 
-                if available_room:
-                    # if have free room, create booking with information
-                    booking_set = set(booking.objects.all().values_list('ref_num', flat=True))
-                    ref_number = "B" + str(random.randint(100000000, 999999999))
-
-                    while ref_number in booking_set:
+                    if available_room:
+                        # if have free room, create booking with information
+                        booking_set = set(booking.objects.all().values_list('ref_num', flat=True))
                         ref_number = "B" + str(random.randint(100000000, 999999999))
 
-                    new_booking = booking(
-                        user=thisuser,
-                        room_number=available_room,
-                        from_date=start_date,
-                        to_date=end_date,
-                        total_price=totalprice,
-                        ref_num=ref_number,
-                        booking_date=timezone.now(),
-                        reserved_name=reserved_name,
-                        reserved_phone=reserved_phone
-                    )
-                    new_booking.save()
-                    return redirect('confirm_booking', booking_id=new_booking.id)
+                        while ref_number in booking_set:
+                            ref_number = "B" + str(random.randint(100000000, 999999999))
+
+                        new_booking = booking(
+                            user=thisuser,
+                            room_number=available_room,
+                            from_date=start_date,
+                            to_date=end_date,
+                            total_price=totalprice,
+                            ref_num=ref_number,
+                            booking_date=timezone.now(),
+                            reserved_name=reserved_name,
+                            reserved_phone=reserved_phone
+                        )
+                        new_booking.save()
+                        return redirect('confirm_booking', booking_id=new_booking.id)
 
 
+                    else:
+                        messages.error(request, 'All rooms are booked for the selected dates.')
+                        context = {'form': form, 'type': thistype, 'from': 'no_room'}
+                        return render(request, 'user_booking/booking_form.html', context)
                 else:
-                    messages.error(request, 'All rooms are booked for the selected dates.')
-                    context = {'form': form, 'type': thistype, 'from': 'no_room'}
+                    messages.error(request, 'End date must be after the start date.')
+                    context = {'form': form, 'type': thistype, 'from': 'date_error'}
                     return render(request, 'user_booking/booking_form.html', context)
-            else:
-                messages.error(request, 'End date must be after the start date.')
-                context = {'form': form, 'type': thistype, 'from': 'date_error'}
-                return render(request, 'user_booking/booking_form.html', context)
 
-    else:
-        form = BookingForm()
+        else:
+            form = BookingForm()
 
-    context = {'form': form, 'type': thistype}
-    return render(request, 'user_booking/booking_form.html', context)
+        context = {'form': form, 'type': thistype}
+        return render(request, 'user_booking/booking_form.html', context)
 
 
 '''__ confirm booking __'''
@@ -951,62 +964,3 @@ def cancel_booking(request, booking_id):
     typeid = thisbooking.room_number.type.id
     thisbooking.delete()
     return redirect('user_booking', type_id=typeid)
-
-
-
-
-
-
-
-###############################################################################################33
-def forgot_password(request):
-    if request.method == 'POST':
-        request.session['verification_code'] = '1234'
-        input_code = request.POST.get('code')
-
-        if input_code == request.session.get('verification_code'):
-            request.session['user_email'] = request.POST.get('email')
-            request.session['from_url'] = request.GET.get('from_url')
-            return render(request, 'login/set_new_password.html')
-        else:
-            messages.error(request, 'The code entered is incorrect.')
-
-    return render(request, 'login/forgot_password.html')
-
-
-def set_new_password(request):
-    user_email = request.session.get('user_email', None)
-    from_url = request.session.get('from_url', None)
-
-    thisuser=0
-    if from_url == 'user_login':
-        thisuser = user.objects.filter(email=user_email)[0].id
-    elif from_url == 'manager_login':
-        thisuser = user.objects.filter(email=user_email)[0].id
-
-    if thisuser == 0:
-        messages.error(request, 'Email not registed')
-        return redirect('forgot_password')
-
-    context = {'user_email': user_email}
-
-    if request.method == 'POST':
-        new_password = request.POST.get('new_password')
-        confirm_password = request.POST.get('confirm_new_password')
-        if len(new_password) < 8:  # len longer than 8
-            messages.error( 'Your password is too short.')
-        elif not any(char.isdigit() for char in new_password):
-            messages.error(request, 'Your should contain at least one digit.')
-        elif not any(char.isupper() for char in new_password):
-            messages.error(request, 'Your password should contain at least one uppercase letter.')
-        elif not re.search(r"[!@#$%^&*(),.?\":{}|<>]", new_password):
-            messages.error(request, 'Your password should contain at least one symbol.')
-        elif confirm_password != new_password:
-            messages.error(request, 'Password does not match.')
-        else:
-            thisuser.password=new_password
-            thisuser.save()
-            messages.success(request, 'Your password has been updated.')
-            return redirect('login')
-
-    return render(request, 'login/set_new_password.html', context)

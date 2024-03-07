@@ -11,8 +11,6 @@ urlpatterns = [
                   path('logout/', views.logout, name="logout"),
                   path('Uregister/', views.user_register, name="user_register"),
                   path('Mregister/', views.manager_register, name="manager_register"),
-                  path('forgot_password/', views.forgot_password, name="forgot_password"),
-                  path('set_new_password/', views.set_new_password, name="set_new_password"),
 
                   # ManagerPage
                   path('manager/', views.manager_home, name="manager_home"),
