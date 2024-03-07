@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Home Page</title>
+    <link href="{% static 'css/confirmation.css' %}" rel="stylesheet" >
+</head>
+<body>
+
+<main>
+  <section id="confirm">
+    <h1>Reserve confirmation</h1>
+  </section>
+  <section id="deals">
+      <div class="deals-one">
+
+          <h2>{{ booking.room_number.type.hotel.name }}</h2>
+
+          <div class="deals-one-bot">
+              <img src="{{ booking.room_number.type.image.url }}" alt="Hotel Image">
+              <div class="deals-one-right">
+
+                <h3>{{ booking.room_number.type.type }}</h3>
+                <p>£{{ booking.room_number.type.price }} one night</p>
+                <p>{{ booking.room_number.type.guests }} guests</p>
+
+                <p type="date" id="reservationDate">Check in Date: {{ booking.from_date }} </p>
+                <p type="date" id="reservationDate">Check out Date: {{ booking.to_date }} </p>
+              </div>
+          </div>
+      </div>
+      <div class="deals-two">
+          <h2>Price Detail</h2>
+          <div>
+              <p><span>Total Days:</span><span>{{ booking.total_days }}</span></p>
+              <p><span>Price per Night:</span><span>£{{ booking.room_number.type.price }}</span></p>
+              <p><span>Total Price:</span><span>£{{ booking.total_price }}</span></p>
+          </div>
+      </div>
+      <div class="deals-three">
+        <h2>Guest Info</h2>
+        <div>
+            <p><span>Reserved Name:</span><span>{{ booking.reserved_name }}</span></p>
+            <p><span>Reserved Phone Number:</span><span>{{ booking.reserved_phone }}</span></p>
+        </div>
+      </div>
+      <div>
+        <button onclick="confirmBooking()" class="confirm-booking">Confirm Booking</button>
+        <button class="btn btn-secondary mt-3 btn-return" onclick="confirmCancelBooking('{{ booking.id }}')">Cancel Booking</button>
+      </div>
+
+  </section>
+</main>
+
+    <script src="{% static 'js/ConfirmInformation.js' %}"></script>
+</body>
+</html>
