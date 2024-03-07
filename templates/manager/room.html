@@ -6,15 +6,14 @@
 {% block content %}
     <div class="container mt-5">
         <div class="d-flex justify-content-end mb-3">
-        {# ___ Add new room button ___ #}
             <button onclick="location.href='{% url 'add_room_type' %}'" class="btn btn-primary add-new-type">
                 + Add New Room Type
             </button>
         </div>
 
+
     <div class="row">
             {% for room_type in room_types %}
-                {# ___ show room type in cards ___ #}
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         <img src="{{ room_type.image.url }}" class="card-img-top" alt="Room Image"
@@ -27,7 +26,7 @@
                             <p class="card-text type-text2">Facilities: {{ room_type.formatted_facilities }}</p>
                         </div>
                         <div class="card-footer bg-white">
-                            <form action="{% url 'delete_room_type' room_type.id %}" method="post" onsubmit="return confirmInformation();">
+                            <form action="{% url 'delete_room_type' room_type.id %}" method="post" onsubmit="return confirmDelete();">
                                 <a href="{% url 'update_room_type' room_type.id %}" class="btn btn-warning me-2 edit-room-type">Edit</a>
                                 {% csrf_token %}
                                 <input type="submit" value="Delete" class="btn btn-danger delete-room-type"/>
@@ -42,5 +41,5 @@
         </div>
     </div>
 
-    <script src="{% static 'js/ConfirmInformation.js' %}"></script>
+    <script src="{% static 'js/confirmDelete.js' %}"></script>
 {% endblock %}

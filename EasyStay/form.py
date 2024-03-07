@@ -1,18 +1,12 @@
-import re
-
 from django import forms
 
-from EasyStay.models import user, hotelmanager, hotel, roomtype, room, booking
-
-'''__User Login Form__'''
+from EasyStay.models import user, hotelmanager, hotel, roomtype, room
 
 
+# ___Login
 class UserLoginForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=100)
     password = forms.CharField(label='Password', max_length=30, widget=forms.PasswordInput)
-
-
-'''__Manager Login Form__'''
 
 
 class ManagerLoginForm(forms.Form):
@@ -20,36 +14,10 @@ class ManagerLoginForm(forms.Form):
     password = forms.CharField(label='Password', max_length=30, widget=forms.PasswordInput)
 
 
-'''__ Password Check Function __'''
-
-
-def checkpassword(self, password, confirm_password):
-    if password is None:
-        return
-    if len(password) < 8:  # len longer than 8
-        self.add_error('password', 'Your password is too short.')
-    elif not any(char.isdigit() for char in password):  # contain digit
-        self.add_error('password', 'Your should contain at least one digit.')
-    elif not any(char.isupper() for char in password):  # contain uppsercase
-        self.add_error('password', 'Your password should contain at least one uppercase letter.')
-    elif not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):  # contain symbol
-        self.add_error('password', 'Your password should contain at least one symbol.')
-    elif confirm_password != password:  # the confirmed password should be the same as the input password
-        self.add_error('confirm_password', 'Password does not match.')
-
-
-'''__ User Register Form__'''
-
-
+# ___Register
 class UserRegisterForm(forms.ModelForm):
-    confirm_password = forms.CharField(
-        widget=forms.PasswordInput(),
-        label="Confirm Password")
-    password = forms.CharField(
-        widget=forms.PasswordInput(),
-        label="Password",
-        help_text="Your password must be at least 8 characters long, \n"
-                  "contain at least one uppercase, one digit and one special character")
+    confirm_password = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
 
     class Meta:
         model = user
@@ -68,17 +36,13 @@ class UserRegisterForm(forms.ModelForm):
         cleaned_data = super(UserRegisterForm, self).clean()
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
-        checkpassword(self, password, confirm_password)
-
-
-'''__ Manager Register Form __'''
+        if confirm_password != password:
+            self.add_error('confirm_password', 'Password does not match.')
 
 
 class ManagerRegisterForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password")
-    password = forms.CharField(widget=forms.PasswordInput(), label="Password",
-                               help_text="Your password must be at least 8 characters long, \n"
-                                         "contain at least one uppercase, one digit and one special character")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
 
     class Meta:
         model = hotelmanager
@@ -95,10 +59,8 @@ class ManagerRegisterForm(forms.ModelForm):
         cleaned_data = super(ManagerRegisterForm, self).clean()
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
-        checkpassword(self, password, confirm_password)
-
-
-'''__ Manager Information Form __'''
+        if confirm_password != password:
+            self.add_error('confirm_password', 'Password does not match.')
 
 
 class ManagerInfoForm(ManagerRegisterForm):
@@ -108,7 +70,7 @@ class ManagerInfoForm(ManagerRegisterForm):
 
     def __init__(self, *args, **kwargs):
         super(ManagerInfoForm, self).__init__(*args, **kwargs)
-        # read-only in the profile page
+        # read-only
         self.fields['manage_id'].disabled = True
         self.fields['email'].disabled = True
         self.fields['phone'].disabled = True
@@ -122,17 +84,15 @@ class ManagerInfoForm(ManagerRegisterForm):
         self.order_fields(new_order)
 
 
-'''__ Manager Information Edition Form __'''
-
-
 class ManagerInfoEditForm(ManagerRegisterForm):
     class Meta:
         model = hotelmanager
-        fields = ['manage_id', 'email', 'phone']
+        fields = '__all__'
+        exclude = ['hotel_name', 'password']
 
     def __init__(self, *args, **kwargs):
         super(ManagerInfoEditForm, self).__init__(*args, **kwargs)
-        # read-only, the manager number can not be modified
+        # read-only
         self.fields['manage_id'].disabled = True
 
         if 'confirm_password' in self.fields:
@@ -140,11 +100,10 @@ class ManagerInfoEditForm(ManagerRegisterForm):
         if 'password' in self.fields:
             del self.fields['password']
 
-        new_order = ['manage_id', 'email', 'phone']
+        new_order = ['manage_id', 'email', 'phone', 'password', 'confirm_password']
         self.order_fields(new_order)
 
 
-'''__ The choices can be choose in facility filed __'''
 FACILITY_CHOICES = [
     ('Wi-Fi', 'Wi-Fi'),
     ('TV', 'TV'),
@@ -165,8 +124,6 @@ FACILITY_CHOICES = [
     ('Non-smoking Rooms', 'Non-smoking Rooms'),
     ('Conference Room', 'Conference Room'),
     ('Facilities for disabled guests', 'Facilities for disabled guests')]
-
-'''__ Hotel Information Form __'''
 
 
 class HotelInfoForm(forms.ModelForm):
@@ -191,26 +148,20 @@ class HotelInfoForm(forms.ModelForm):
         }
 
 
-'''__ Hotel Edition Form __'''
-
-
 class HotelEditForm(HotelInfoForm):
     class Meta:
         model = hotel
         fields = '__all__'
-        exclude = ['manager', 'star']
+        exclude = ['manager','star']
 
     def __init__(self, *args, **kwargs):
         super(HotelEditForm, self).__init__(*args, **kwargs)
-        # read-only, the hotel number can not be modified
+        # read-only
         self.fields['hotel_id'].disabled = True
-        # reorder the information sequence that displayed
+
         new_order = ['hotel_id'] + \
                     [field for field in self.fields if field not in ['manager', 'hotel_id', 'star']]
         self.order_fields(new_order)
-
-
-'''__ Room Type Form __'''
 
 
 class RoomTypeForm(forms.ModelForm):
@@ -235,17 +186,11 @@ class RoomTypeForm(forms.ModelForm):
         self.order_fields(new_order)
 
 
-'''__ Room Type Edition Form __'''
-
-
 class RoomTypeEditForm(RoomTypeForm):
     class Meta:
         model = roomtype
         fields = '__all__'
         exclude = ['hotel']
-
-
-'''__ Room Information Form __'''
 
 
 class RoomForm(forms.ModelForm):
@@ -259,43 +204,18 @@ class RoomForm(forms.ModelForm):
         self.fields['Room_number'].initial = ''
 
 
-'''__ Change Password Form __'''
-
-
 class ChangePasswordForm(forms.Form):
     old_password = forms.CharField(
         label="Old Password (Enter the old password)",
         widget=forms.PasswordInput(attrs={'autocomplete': 'current-password', 'autofocus': True})
     )
-    password = forms.CharField(
+    new_password1 = forms.CharField(
         label="New Password (Enter the new password)",
         strip=False,
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-        help_text="Your password must be at least 8 characters long, \n"
-                  "contain at least one uppercase, one digit and one special character"
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'})
     )
-    confirm_password = forms.CharField(
+    new_password2 = forms.CharField(
         label="Confirm New Password (Enter the new password again)",
         strip=False,
         widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'})
     )
-
-    def clean(self):
-        cleaned_data = super(ChangePasswordForm, self).clean()
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
-        checkpassword(self, password, confirm_password)
-
-
-'''__ Booking Form __'''
-
-
-class BookingForm(forms.ModelForm):
-    start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='Check in date')
-    end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='Check out date')
-    reserved_name = forms.CharField(max_length=50)
-    reserved_phone = forms.CharField(max_length=50)
-
-    class Meta:
-        model = booking
-        fields = ['start_date', 'end_date', 'reserved_name', 'reserved_phone']

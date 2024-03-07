@@ -12,7 +12,6 @@
             {% endif %}
         </h2>
         <form method="POST" class="form myform" enctype="multipart/form-data">
-            {# ___ Add/Edit Room type information ___ #}
             {% csrf_token %}
             {{ form.as_p }}
             <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
