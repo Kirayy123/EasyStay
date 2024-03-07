@@ -1,40 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 {% load static %}
-<head>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/userProfile.css' %}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-</head>
-<body>
+{% block css_ext %}
+
+<link href="{% static 'css/blog.css' %}" rel="stylesheet">
+<link href="{% static 'css/list-groups.css' %}" rel="stylesheet">
+<link href="{% static 'css/hoteldetails.css' %}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'css/userProfile.css' %}">
+{% endblock %}
+
+{% block main%}
+    {%if user %}
+
     <header class="page-header">
         <h1>EasyStay</h1>
-        <h2>User Name</h2>
+        <h2>{{user.username}}</h2>
     </header>
     <div class="profile-pic">
         <img src="{% static 'images/blank_picture.webp' %}" alt="User Profile Picture">
     </div>    
     <main>
         <section id="active-reservations">
+            {% if reservations %}
+            {% for res in reservations %}
             <h2>Active Reservations</h2>
             <ul>
-                <li><a href="{% url 'booking_management' %}"><span>Park Plaza London</span>  <img src="{% static 'images/hotel5.jpg' %}" alt="Hotel Image"> <span>Check in date: [26/04/24]</span></a></li>
-                <li><a href="{% url 'booking_management' %}"><span>Wyndham Stockholm</span>  <img src="{% static 'images/hotel2.jpg' %}" alt="Hotel Image"> <span>Check in date: [15/08/24]</span></a></li>
+                <li><a href="{% url 'booking_management' %}"><span>{{res.hotel.name}}</span>  <img src="{{res.hotel.image}}" alt="Hotel Image"> <span>Check in date: [26/04/24]</span></a></li>
+                <li><a href="{% url 'booking_management' %}"><span>{{res.hotel.name}}</span>  <img src="{{res.hotel.image}}" alt="Hotel Image"> <span>Check in date: [15/08/24]</span></a></li>
                 <!-- Add more reservations as needed -->
             </ul>
+            {% endfor %}
+            {% endif %}
         </section>
+        {% if reservations %}
+        {% for res in reservations %}
         <section id="past-bookings">
             <h2>Past Bookings</h2>
             <ul>
-                <li><a href="#">Aethos Milan <img src="{% static 'images/hotel3.jpg' %}" alt="Hotel Image"> Review: 4/5</a></li>
-                <li><a href="#">Edinburgh Mariott  <img src="{% static 'images/hotel4.jpg' %}" alt="Hotel Image"> Review: 5/5</a></li>
+                <li><a href="#">{{res.hotel.name}} <img src="{{res.hotel.image}}" alt="{{res.hotel.image}}"> {{res.review_star}}</a></li>
+                <li><a href="#">{{res.hotel.name}} <img src="{{res.hotel.image}}" alt="{{res.hotel.image}}"> {{res.review_star}}</a></li>
                 <!-- Add more bookings as needed -->
             </ul>
+            {% endfor %}
+            {% endif %}
         </section>
     </main>
     <footer>
         <p>© 2024 EasyStay. All rights reserved.</p>
     </footer>
-</body>
-</html>
+    {% endif %}
+{% endblock %}

@@ -83,8 +83,19 @@ def manager_register(request):
 def search_home(request):
     return render(request, 'search/home.html')
 
-def user_profile(request):
-    return render(request, 'user/userProfile.html')
+def user_profile(request, id):
+    u = user.objects.get(id=id)
+    reservations = booking.objects.filter(user_id=u.user_id)
+    context = {}
+    context['user'] = u
+    context['reservations'] = reservations 
+    return render(request, 'user/userProfile.html', context)
 
-def booking_management(request):
-    return render(request, 'user/bookingManagement.html')
+def booking_management(request, id):
+   u = user.objects.get(id=id)
+   reservations = booking.objects.filter(user_id=u.user_id)
+   context = {}
+   context['user'] = u
+   context['reservations'] = reservations 
+   return render(request, 'user/bookingManagement.html', context)
+

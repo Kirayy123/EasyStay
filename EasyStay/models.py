@@ -50,6 +50,7 @@ class room(models.Model):
 
 class booking(models.Model):
     user = models.ForeignKey(user, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(hotel, on_delete=models.CASCADE)
     room_number = models.ForeignKey(room, on_delete=models.CASCADE)
     ref_num = models.CharField(max_length=50, default='REF0001')
     booking_date = models.DateTimeField(default=timezone.now)
@@ -69,3 +70,6 @@ class booking(models.Model):
     review_star = models.IntegerField(null=True, blank=True)
     review_comment = models.TextField(null=True, blank=True)
     review_date = models.DateTimeField(null=True, blank=True)
+
+    reply = models.TextField(null=True, blank=True)
+    reply_date = models.DateTimeField(null=True, blank=True)
