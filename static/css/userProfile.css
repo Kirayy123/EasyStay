@@ -1,0 +1,64 @@
+/* userProfile.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: black; 
+}
+
+.page-header {
+    background-color: orange;
+    color: white;
+    padding: 15px;
+}
+
+.profile-pic img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#active-reservations img, #past-bookings img {
+    margin-left: 100px; /* Adjust this value as needed */
+    width: 150px;
+    height: 100px;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+#active-reservations a , #past-bookings a {
+    display: flex; /* Changed from block to flex */
+    align-items: center; /* Align items vertically */
+    padding: 5px;
+    margin: 5px 0;
+    background-color: #fff;
+    color: black;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+    font-weight: normal;
+}
+#active-reservations span, #past-bookings span {
+    font-weight: normal; /* This ensures all spans under reservations and bookings are normal weight */
+}
+
+
+#past-bookings  {
+    font-weight: normal; /* Make the review rating stand out */
+}
+
+#active-reservations a:hover, #past-bookings a:hover {
+    background-color: #f0f0f0;
+}
+
+footer {
+    background-color: #555;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}

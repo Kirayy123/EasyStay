@@ -1,0 +1,123 @@
+/* _________________________Base */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fffbe7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* _______________________Header */
+.main-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.main-header .main-title {
+    font-size: 3rem;
+    color: #d1a545;
+}
+
+.welcome-message, .welcome-message2 {
+    font-size: 1.1rem;
+    color: #666;
+    margin: 1rem 0;
+}
+
+.welcome-message a, .welcome-message2 a {
+    color: #d1a545;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* _______________Login */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.form {
+    margin-top: 1em;
+}
+
+.form label {
+    display: block;
+    text-align: left;
+    margin: 0.5em 0;
+}
+
+.form input[type="text"],
+.form input[type="password"],
+.form input[type="email"],
+.form input[type="submit"] {
+    width: 100%;
+    padding: 0.75em;
+    margin-bottom: 1em;
+    border: 2px solid #d1a545;
+    border-radius: 4px;
+}
+
+.submit-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.submit-button input[type="submit"] {
+    width: 50%;
+    padding: 0.75em;
+    margin-top: 0.5em;
+    border-radius: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: block;
+    background: #d1a545;
+    color: #fff;
+    justify-content: center;
+}
+
+.register-password {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+.register-password a {
+    color: #d1a545;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.return-button a {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-top: 20px;
+    display: inline-block;
+    background: #d1a545;
+    color: #fff;
+    border-radius: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    width: auto;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-header .main-title {
+        font-size: 2.5rem;
+    }
+}

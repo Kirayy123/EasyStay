@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_ext %}
+
+<link href="{% static 'css/blog.css' %}" rel="stylesheet">
+<link href="{% static 'css/list-groups.css' %}" rel="stylesheet">
+<link href="{% static 'css/hoteldetails.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps.css" />
+<script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
+{% endblock %}
+
+{% block main%}
+
+<div class="container-sm mt-5 rounded-4 p-2 h-auto contentcontainer" id="hotelsummary">     <!-- hotel details-->
+    <div class="row ">
+        <div class="row">
+            <div class="col-sm-auto px-4 pb-1">
+                <h2 class="display-4">
+                    {% if hotel %}
+                    {{hotel.name}}
+                    {% else %}
+                    UNKNOWN HOTEL
+                    {% endif %}
+                </h2>
+            </div>
+            <div class="col d-flex align-items-center ">
+                <h4>
+                    <div class="star-rating">
+                        {% for _ in rating %}
+                            <i class="fas fa-star"></i> <!-- 实心星星 -->
+                        {% endfor %}
+                        {% for _ in non_star %}
+                            <i class="far fa-star"></i> <!-- 空心星星 -->
+                        {% endfor %}
+                    </div>
+                    
+                </h4>
+            </div>
+
+        </div>
+       <div class = "col-sm-auto d-flex align-items-center"> <!-- picture-->
+       <img class="image_hotel img-thumbnail " src="{{hotel.image.url}}" class="img-fluid" width="350" height="350" alt="HOTELNAME">
+        </div>
+        <div class="col align-items-center justify-content-center">
+            <div class="row my-4"><!-- location-->
+                <div class="col-sm-auto ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24 " height="24" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                        <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                      </svg>
+                </div>
+                <div id="location" class="col  align-items-center justify-content-center">
+                    <div class="row align-items-center "> <!-- Country/City/Address-->
+                        <label class = "col-sm-auto">
+                            {% if hotel %}
+                            {{hotel.country}}
+                            {% else %}
+                            Uknown Location
+                            {% endif %}
+                        </label>                       
+                        <label class = "col-sm-auto">
+                                {% if hotel %}
+                                {{hotel.city}}
+                                {% else %}
+                                Uknown Location
+                                {% endif %}
+                        </label>
+                            <label class = "col-sm-auto">
+                                {% if hotel %}
+                                {{hotel.location}}
+                                {% else %}
+                                Uknown Location
+                                {% endif %}
+                            </label>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="container my-4 "><!-- features-->
+                <div class="row d-flex justify-content-between px-4">
+                
+                    {% if Facility %}
+                    <ul class="list-inline">
+                        {% for fac in Facility %}                 
+                            <li class="list-inline-item mx-4"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                              </svg>
+                                {{fac}}
+                            </li>                    
+
+                         {% endfor %}
+                        </ul>
+                    {% else %}
+                    Uknown Features
+                    {% endif %}
+                
+            </div>
+        </div>
+            <div class="row p-2 "> <!-- details-->
+                <p class="lead">
+                    {% if hotel %}
+                    {{hotel.description}}
+                    {% else %}
+                    Nestled in the heart of a vibrant city, the Crystal Oasis Hotel offers a luxurious retreat with modern amenities and timeless elegance. 
+                    The sleek architecture welcomes guests into a sophisticated lobby adorned with contemporary art, setting the tone for a stylish stay. 
+                    Spacious rooms boast panoramic views of the city skyline, while the hotel's gourmet restaurant tantalizes taste buds with a fusion of local and international flavors. With a rooftop pool, fitness center, and attentive concierge service, the Crystal Oasis Hotel promises a memorable blend of comfort and sophistication for both business and leisure travelers
+                    {% endif %}
+                    </p>
+            </div>
+
+        </div>       
+</div>
+</div>
+{% if rooms %}
+{% for room in rooms %}
+<div class="container w-100 mt-2 rounded-4 p-2 contentcontainer h-100" id="room">
+    <div class="row d-flex justify-content-between  w-100">
+    <div class="col">
+    <div class="row">
+        <div class="col-sm-auto mx-3 mt-1 p-1"><!-- RoomType-->
+            <h4>{{room.type}}</h4>
+        </div>  
+    </div>
+    <div class="row align-items-center d-flex my-auto">
+        <div class="col mx-2"><!-- features-->
+            
+              {% for key, value in room_facilities.items%}
+              {% if room == key %}
+              {% for item in value %}
+              <h6><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 mx-2" viewBox="0 0 16 16">
+                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+              </svg>
+              {{item}} 
+              {% endfor %}
+              {% endif %}
+              {% endfor %}
+      
+            </h6>
+        </div>
+        <div class="col"><!-- guests-->
+            <h2><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+              </svg> {{room.guests}}</h2>
+        </div>
+        <div class="col"><!-- Price-->
+            <h4>£{{room.price}}</h4>
+        </div>
+        <div class="col d-flex justify-content-center" ><!-- button-->
+            <a class="btn btn-primary btn-lg" href="{% url 'booking_management' id=1 %}" target="_blank" role="button">Reserve</a>
+        </div>
+    </div>
+    </div>
+        <div class="col-sm-auto pl-5"><!-- picture-->     
+            <img class="image_hotel img-thumbnail px-0" src="{{room.image.url}}" class="img-fluid" width="250" height="250" alt="Room">      
+        </div>
+</div>
+</div>
+{% endfor %}
+{% endif %}
+<!-- this is not ideal -exposing API keys - but i couldn't work out how to proxy in time !-->
+<div class="container w-100 mt-2 rounded-4 p-2 contentcontainer h-100" id="room">
+    <div class="row d-flex align-center w-100 h-250">
+            <div class="col rounded-4 d-flex mx-3 w-100" id="map"></div>
+                <script>
+                    var coords = ["{{lat}}" *1, "{{long}}"*1]
+                  var map = tt.map({
+                    key: "{{map_api}}",
+                    container: "map",
+                    center: coords,
+                    zoom : 9
+                  })
+                  </script>
+            </div> 
+            <div class="row">  
+            <div class="col d-flex  mx-4 justify-content-between ">
+                {% if hotel%}
+                <label>{{hotel.postcode}}</label>
+                <label>{{hotel.phone}}</label>
+                <label>{{hotel.email}}</label>
+            </div>
+        </div>
+                {% endif %}
+</div>
+
+
+{% endblock %}
+
+ 

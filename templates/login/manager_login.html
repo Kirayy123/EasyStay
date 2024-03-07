@@ -1,0 +1,36 @@
+{% extends "login/login.html" %}
+{% load static %}
+
+{% block welcome_message %}
+    {% if from_url == "manager_register" %}
+        <div class="welcome-message">Register Successfully, Your Account Number is: {{ user_id }}</div>
+    {% else %}
+        <div class="welcome-message">To Manage Hotel, Please Login Here!</div>
+        <div class="welcome-message">
+            Or Click Here to Login as <a href="{% url "login" %}">Guest</a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block login_container %}
+
+    <div class = "form">
+        <form id="login_form" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div class="submit-button">
+                <input type="submit" value="Login"/>
+            </div>
+            <div class="register-password">
+                    <a href="{% url 'manager_register' %}">Register Here. </a>
+                    or
+                    <a href="">Forgot Password?</a>
+            </div>
+        </form>
+        <div class="return-button"><a href="{% url 'login' %}">Return</a></div>
+    </div>
+
+ <script src="{% static 'js/ShowPassword.js' %}"></script>
+
+{% endblock %}

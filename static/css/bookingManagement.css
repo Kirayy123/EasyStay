@@ -1,0 +1,81 @@
+.site-header {
+    background-color: orange; /* Change this color as needed */
+    color: white;
+    padding: 10px 20px;
+    font-size: 24px; /* Adjust the font size as needed */
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    margin: 20px;
+}
+
+.left-panel, .right-panel {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.left-panel {
+    margin-right: 20px;
+}
+
+.right-panel {
+    flex-grow: 1;
+}
+
+h2 {
+    color: #333;
+    margin-top: 0;
+}
+
+button {
+    background-color: orange;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 10px 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+p strong {
+    display: inline-block;
+    min-width: 150px;
+}
+
+.hotel-info, .price-details {
+    margin-bottom: 20px;
+}
+
+.hotel-info {
+    display: flex;
+    align-items: center; /* Adjust this as needed */
+    margin-bottom: 20px;
+}
+
+.hotel-image img {
+    width: 200px; /* Adjust the size as needed */
+    height: auto;
+    border-radius: 10px; /* Optional: for rounded corners */
+    margin-right: 20px;
+}
+
+.hotel-details {
+    flex-grow: 1;
+}
