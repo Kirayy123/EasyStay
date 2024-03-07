@@ -149,7 +149,7 @@
             <h4>£{{room.price}}</h4>
         </div>
         <div class="col d-flex justify-content-center" ><!-- button-->
-            <a class="btn btn-primary btn-lg" href="{% url 'booking_management' id=1 %}" target="_blank" role="button">Reserve</a>
+            <a class="btn btn-primary btn-lg" href="{% url 'user_booking' room.id %}" target="_blank" role="button">Reserve</a>
         </div>
     </div>
     </div>

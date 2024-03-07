@@ -46,7 +46,7 @@
         </div>
       </div>
       <div>
-        <button onclick="confirmBooking()" class="confirm-booking">Confirm Booking</button>
+        <button onclick= "location.href='{% url 'index' %}'" class="confirm-booking">Confirm Booking</button>
         <button class="btn btn-secondary mt-3 btn-return" onclick="confirmCancelBooking('{{ booking.id }}')">Cancel Booking</button>
       </div>
 

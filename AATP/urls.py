@@ -26,4 +26,5 @@ urlpatterns = [
                   path('', login_home, name="login"),
                   ###########################################################
                   path('easystay/', include("EasyStay.urls")),
+                  path('booking/', include('booking.urls'))
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

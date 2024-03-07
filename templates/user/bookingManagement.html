@@ -14,14 +14,22 @@
     <div class="container">
         <div class="left-panel">
             <div class="booking-info">
-                <h2>Upcoming</h2>
-                <p><strong>Booking No.</strong> 0123456</p>
-                <p><strong>Reference Number</strong> {{res.ref_num}}</p>
-                <p><strong>Confirmation No.</strong> 154211111</p>
-                <p><strong>Booking Date</strong> 18:00, Jan 30, 2024</p>
-                <button>Review</button>
-                <button>Book Again</button>
-                <button>Cancel</button>
+                <div class="card-footer">
+                    {% if res.review_comment %}
+                    {% if review.reply % }
+                        {#____ if have replyed, Show Reply ____#}
+                        <p><strong>Reply:</strong> {{ review.reply }}</p>
+                    {% else %}
+                        {#____ if not replyed, Reply Review ____#}
+                        <form method="post" action="{% url 'reply_to_review' review.id %}">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Reply to this review" name="reply">
+                                <button class="btn btn-outline-secondary" type="submit">Send</button>
+                            </div>
+                        </form>
+                   
+                    {% endif %}
             </div>
             <div class="contact-info">
                 <h2>Contact Info</h2>

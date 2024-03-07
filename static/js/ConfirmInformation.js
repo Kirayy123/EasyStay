@@ -7,7 +7,7 @@ function confirmBooking() {
             var userConfirmed = window.confirm("Are you sure you want to confirm this booking?");
             if (userConfirmed) {
                 alert("Booking confirmed!");
-                window.location.href = '/easystay/test/';
+                window.location.href = '/easystay/userProfile/';
             }
         }
 

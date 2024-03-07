@@ -8,15 +8,11 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/userProfile.css' %}">
 {% endblock %}
 
-{% block main%}
-    {%if user %}
-
-    <header class="page-header">
-        <h1>EasyStay</h1>
-        <h2>{{user.username}}</h2>
-    </header>
+{% block main %}
+    {% if user %}
     <div class="profile-pic">
-        <img src="{% static 'images/blank_picture.webp' %}" alt="User Profile Picture">
+        <h2>{{user.username}}</h2>
+        <a href="{% url 'user_change_password'%}">Change Password</a>
     </div>    
     <main>
         <section id="active-reservations">
@@ -24,9 +20,8 @@
             {% for res in reservations %}
             <h2>Active Reservations</h2>
             <ul>
-                <li><a href="{% url 'booking_management' %}"><span>{{res.hotel.name}}</span>  <img src="{{res.hotel.image}}" alt="Hotel Image"> <span>Check in date: [26/04/24]</span></a></li>
-                <li><a href="{% url 'booking_management' %}"><span>{{res.hotel.name}}</span>  <img src="{{res.hotel.image}}" alt="Hotel Image"> <span>Check in date: [15/08/24]</span></a></li>
-                <!-- Add more reservations as needed -->
+                <li><a href="{% url 'booking_management' %}"><span>{{res.room_number.type.hotel.name}}</span>  <img src="{{res.room_number.type.hotel.image.url}}" alt="Hotel Image"> <span>From: {{res.from_date}}</span></a></li>
+               
             </ul>
             {% endfor %}
             {% endif %}
@@ -36,8 +31,7 @@
         <section id="past-bookings">
             <h2>Past Bookings</h2>
             <ul>
-                <li><a href="#">{{res.hotel.name}} <img src="{{res.hotel.image}}" alt="{{res.hotel.image}}"> {{res.review_star}}</a></li>
-                <li><a href="#">{{res.hotel.name}} <img src="{{res.hotel.image}}" alt="{{res.hotel.image}}"> {{res.review_star}}</a></li>
+                <li><a href="#">{{res.room_number.type.hotel.name}} <img src="{{ res.room_number.type.hotel.image.url }}" alt="{{res.hotel.image}}">{{res.room_number.type.hotel.star}}</a></li>
                 <!-- Add more bookings as needed -->
             </ul>
             {% endfor %}
