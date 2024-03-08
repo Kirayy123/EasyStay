@@ -131,18 +131,21 @@
     
 </svg>
 <header>
-    <div class="px-3 py-2 text-bg-warning">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <div class="px-2 py-2 text-bg-warning">
+        <div class="container-fluid">
+            <div class= "d-flex align-items-center justify-content-space justify-content-lg-start">
+            
+                <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" onClick="window.history.back()" width="24" height="24" fill="currentColor" class="bi bi-arrow-90deg-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1.146 4.854a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H12.5A2.5 2.5 0 0 1 15 6.5v8a.5.5 0 0 1-1 0v-8A1.5 1.5 0 0 0 12.5 5H2.707l3.147 3.146a.5.5 0 1 1-.708.708z"/>
+                  </svg>
                 <a href="/"
-                   class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                   class="d-flex align-items-center mx-3 my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
                     <!--                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">-->
                     <!--                        <use xlink:href="#bootstrap"/>-->
                     <!--                    </svg>-->
                     <h1 style="color:blue;">Easystay</h1>
-                    <input type=button value="Previous Page" onClick="window.history.back()">
                 </a>
-
+            
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                     <li>
                         <a href="#" class="nav-link text-secondary">
@@ -171,6 +174,9 @@
                                 <use xlink:href="#people-circle"/>
                             </svg>
                         </a>
+                        <a href="{% url 'logout' %}" class="icon-button" title="Logout">
+                            <i class=""fas fa-sign-out-alt fa-lg></i>
+                          </a>
                     </li>
                 </ul>
             </div>

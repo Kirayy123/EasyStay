@@ -49,7 +49,11 @@ def login_home(request):
                     request.session['id'] = thisuser.id
                     # successful login
                     request.session.save()
-                    return redirect("index")
+                    if request.session.get('from') == 'booking':
+                        type = request.session.get('type')
+                        return redirect('user_booking', type)
+                    else:
+                        return redirect("user_profile")
         return render(request, 'login/user_login.html', {'form': form})
 
     else:
@@ -864,6 +868,12 @@ def get_date_booking(request, type_id):
     thistype = roomtype.objects.filter(id=type_id).first()
     rooms_for_type = room.objects.filter(type=thistype)
     user_id = request.session.get('id')
+
+    if user_id == None:
+        request.session['from'] = 'booking'
+        request.session['type'] = type_id
+        request.session.save()
+        return redirect('login')
 
     if request.method == 'POST':
         form = BookingForm(request.POST)
