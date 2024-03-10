@@ -4,6 +4,7 @@ from AATP import settings
 from EasyStay import views
 from django.urls import path
 
+
 urlpatterns = [
                   # LoginPage
                   path('login/', views.login_home, name="login"),
@@ -42,6 +43,10 @@ urlpatterns = [
                   path('manager/profile', views.manager_profile, name="manager_profile"),
                   path('manager/profile/edit', views.manager_profile_edit, name="manager_profile_edit"),
                   path('manager/profile/change_password', views.manager_change_pw, name="change_password"),
+                path('hotels/hoteldetails/<int:id>/', views.hotel_details, name="hotel_details"),
+                path('hotels/hoteldetails', views.show_random_hotel, name="random_hotel"),
+                path('', views.index, name='index'),
+                path('search/', views.search_rst, name='search'),
 
                   path('user/change_password', views.user_change_pw, name="user_change_password"),
 

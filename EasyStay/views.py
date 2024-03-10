@@ -25,6 +25,7 @@ from EasyStay.form import UserLoginForm, ManagerLoginForm, \
 
 from EasyStay.cbvs import CreateUserView, CreateManagerView
 from EasyStay.models import user, hotelmanager, hotel, roomtype, room, booking
+from EasyStay import mapAPI
 
 '''__Login__'''
 '''
