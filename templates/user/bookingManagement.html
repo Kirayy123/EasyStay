@@ -74,8 +74,24 @@
            <div class="form-group mb-3">
             <p>Leave a Review:</p>
                <textarea type="text" class="form-control row m-2" placeholder="Review" name="review"></textarea>
-            <p>Leave a Rating:</p>
-               <input type="text" class="form-control row" placeholder="Star" name="star">
+            <p>Leave a Rating:</p>  
+               <input  id="ratingvalue"type="text" class="form-control row" placeholder="Star" name="star">
+               <!-- taken from https://getbootstrap.com/docs/4.0/components/button-group/ -->
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                  <button type="button" onclick="reviewValue(1,this)" class="btn btn-secondary">1</button>
+                  <button type="button" onclick="reviewValue(2,this)" class="btn btn-secondary">2</button>
+                  <button type="button" onclick="reviewValue(3,this)" class="btn btn-secondary">3</button>
+                  <button type="button" onclick="reviewValue(4,this)" class="btn btn-secondary">4</button>
+                  <button type="button" onclick="reviewValue(5,this)" class="btn btn-secondary">5</button>                                    
+                </div>
+                <script>
+                    function reviewValue(inputValue, el){
+                        $('#ratingvalue').value = inputValue
+                        $(el).css()
+                    }
+                </script>
+            </div>
                <button class="btn btn-outline-secondary" type="submit">Send</button>
                {% endif %}
            </div>

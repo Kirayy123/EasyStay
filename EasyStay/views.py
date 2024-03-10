@@ -682,8 +682,8 @@ def review_list(request):
     bookings_with_review.order_by('review_date')
 
     for bookings in bookings_with_review:  # get the star of each review and show in star icon
-        bookings.stars = range(bookings.review_star)
-        bookings.non_stars = range(5 - bookings.review_star)
+        bookings.stars = range(bookings.star)
+        bookings.non_stars = range(5 - bookings.star)
 
     context = {'id': id,
                'manager_id': manager_id,

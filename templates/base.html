@@ -7,6 +7,8 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/headers.css' %}" rel="stylesheet">
     <link href="{% static 'css/features.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
     {% block css_ext %}
     {% endblock %}
     <style>
@@ -147,13 +149,7 @@
                 </a>
             
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-                    <li>
-                        <a href="#" class="nav-link text-secondary">
-                            <svg class="bi d-block mx-auto mb-1" width="24" height="24">
-                                <use xlink:href="#home"/>
-                            </svg>
-                        </a>
-                    </li>
+                   
                     <li>
                         <a href="{% url 'user_profile' %}" class="nav-link text-white">
                             <svg class="bi d-block mx-auto mb-1" width="24" height="24">
@@ -162,10 +158,13 @@
                         </a>
                        </li>
                        <li>
-                        <a href="{% url 'logout' %}" class="nav-link " title="Logout">
+                        <!-- <a href="{% url 'logout' %}" class="nav-link " title="Logout">
                             <svg class="bi d-block mx-auto mb-1" width="24" height="24">
                             <use xlink:href="#people-circle"/>
                         </svg>
+                          </a> -->
+                          <a href="{% url 'logout' %}" class="nav-link " title="Logout">
+                            <i class="fas fa-sign-out-alt fa-2x"></i>
                           </a>
                         </li>
                     </li>

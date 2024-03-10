@@ -7,6 +7,8 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/headers.css' %}" rel="stylesheet">
     <link href="{% static 'css/features.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
     {% block css_ext %}
     {% endblock %}
     <style>
@@ -170,6 +172,11 @@
                             </svg>
                         </a>
                     </li>
+                    <li>
+                        <a href="{% url 'logout' %}" class="nav-link " title="Logout">
+                          <i class="fas fa-sign-out-alt fa-2x"></i>
+                        </a>
+                      </li>
                 </ul>
             </div>
         </div>

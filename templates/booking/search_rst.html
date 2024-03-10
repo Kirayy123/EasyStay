@@ -3,6 +3,8 @@
 {% block css_ext %}
 <link href="{% static 'css/blog.css' %}" rel="stylesheet">
 <link href="{% static 'css/list-groups.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
 {% endblock %}
 {% block main %}
 <main class="container">
@@ -76,7 +78,20 @@
                     <img style="width: 200px; height: 250px" src="{{ rst.image.url }}">
                 </div>
                 <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary">star_rating: {{ rst.star }}</strong>
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <div class="col d-flex align-items-center ">
+                            <h4>
+                                <div class="star-rating">
+                                    {% for _ in rst.stars %}
+                                        <i class="fas fa-star"></i> <!-- 实心星星 -->
+                                    {% endfor %}
+                                    {% for _ in rst.non_stars %}
+                                        <i class="far fa-star"></i> <!-- 空心星星 -->
+                                    {% endfor %}
+                                </div>
+                                
+                            </h4>
+                        </div>
                     <h3 class="mb-0">{{ rst.name }}</h3>
                     <hr>
                     <div class="mb-1 text-muted">€{{ rst.phone }}</div>
