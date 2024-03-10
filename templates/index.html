@@ -21,8 +21,14 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                 </div>
-
             </form>
+            <script>
+                function toLowerCaseInput(){
+                    var locationInput = document.getElementById('locationInput');
+                    locationInput.value = locationInput.value.toLowerCase();
+
+                }
+            </script>
         </div>
     </div>
     <div class="container px-4 py-5" id="custom-cards">

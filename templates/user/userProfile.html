@@ -10,34 +10,156 @@
 
 {% block main %}
     {% if user %}
-    <div class="profile-pic">
-        <h2>{{user.username}}</h2>
-        <a href="{% url 'user_change_password'%}">Change Password</a>
-    </div>    
-    <main>
-        <section id="active-reservations">
+    <div class="container-fluid">
+    <div class="profile-pic d-flex flex-row align-items-center">
+        <div class="p-2"><h2>{{user.username}}</h2></div>
+        <div class="p-2">
+            <a href="{% url 'user_change_password'%}"> Change Password</a>
+            {% if messages%}
+                {% for message in messages%}
+                    {{message}}
+                {% endfor %}
+            {% endif %}
+        
+        </div>
+    </div> 
+    
+    <!-- UPCOMING BOOKINGS -->
+    <div class="container" id="active-reservations">  
+        <h4>Upcoming Bookings </h4>       
             {% if reservations %}
-            {% for res in reservations %}
-            <h2>Active Reservations</h2>
-            <ul>
-                <li><a href="{% url 'booking_management' %}"><span>{{res.room_number.type.hotel.name}}</span>  <img src="{{res.room_number.type.hotel.image.url}}" alt="Hotel Image"> <span>From: {{res.from_date}}</span></a></li>
-               
-            </ul>
+            {% for res in reservations %}            
+            {% if res.status == 4%}
+            <div class="card mb-1">
+                <a class="m-0 p-0" href="{% url 'booking_management' res.id %}">
+                <div class="card-body">                    
+                    <div class="row d-flex justify-content-between align-items-center">
+                        
+                        <div class="col-sm-auto px-0 mx-0 align-items-start h-100">
+                            <img class="img-thumbnail px-0 mx-2 h-100 " src="{{res.room_number.type.hotel.image.url}}" class="img-fluid"  alt="Room">
+                        </div>
+                        <div class="col">
+                            <h4 class="card-title review">{{ res.room_number.type.hotel.name }}</h4>
+                            <h5 class="card-title review">{{ res.room_number.type.hotel.city }}</h5>
+                            <h5 class="card-title review"><strong>{{ res.room_number.type.type }}</strong></h5>
+                            <p class="my-1"><strong>Reference Number:</strong> {{ res.ref_num }}</p>
+                            <p class="my-1"><strong>Account Name:</strong> {{ res.user.username }}</p>
+                        </div>
+                        <div class="col d-flex flex-column align-items-center">                             
+                            <p class="card-text">From:<strong> {{ res.from_date }}</strong> </p>
+                            </span><p class="card-text">To:<strong> {{ res.to_date }}</strong></p>
+                        </div>
+                        <div class="col text-end">                            
+                               <h5><strong>£{{ res.total_price }}</strong></h5>
+                               {% if res.is_paid%}
+                               <p>Pre-paid</p>
+                               {% else %}
+                               <p>Payment Outstanding</p>
+                               {% endif %}
+                    </div>
+                
+                </div>
+            
+            </div>
+        </a>
+            </div>
+            {% endif %}
+            {% endfor %}
+    </div>
+           
+            
+<!-- ACTIVE RESERVATIONS -->
+<div class="container" id="active-reservations">  
+    <h4>Active Reservations</h4>
+            {% for res in reservations %}            
+            {% if res.status == 4%}
+ 
+            <div class="card mb-1">
+                <a class="m-0 p-0" href="{% url 'booking_management' res.id %}">
+                <div class="card-body">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="col-sm-auto px-0 mx-0 align-items-start h-100">
+                            <img class="img-thumbnail px-0 mx-2 h-100 " src="{{res.room_number.type.hotel.image.url}}" class="img-fluid"  alt="Room">
+                        </div>                        
+                        
+                        <div class="col">
+                            <h4 class="card-title review">{{ res.room_number.type.hotel.name }}</h4>
+                            <h5 class="card-title review">{{ res.room_number.type.hotel.city }}</h5>
+                            <h5 class="card-title review"><strong>{{ res.room_number.type.type }}</strong></h5>
+                            <p class="my-1" ><strong>Reference Number:</strong> {{ res.ref_num }}</p>
+                            <p class="my-1"><strong>Account Name:</strong> {{ res.user.username }}</p>
+                        </div>
+                        
+                        <div class="col text-end">   
+                            {%if res.check_in_date %}                         
+                               <h5><strong>Checked-In:</strong> {{res.check_in_date}}</h5>
+                               {% else %}
+                               <h5><strong>Not Checked In</strong></h5>
+                               {% endif %}
+                            
+                            {%if res.check_out_date %} 
+                            <h5><strong>Check-out:</strong> {{res.check_out_date}}</h5>
+                            {% else %}
+                            <h5><strong>Not Checked Out</strong></h5>
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+            </a>
+        </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+<!-- Past Bookings -->
+    
+        <div class="container" id="active-reservations">  
+            <h4>Past Bookings</h4>
+            {% for res in reservations %}            
+            {% if res.status == 4%}
+            <div class="card mb-1">
+                <a class="m-0 p-0" href="{% url 'booking_management' res.id %}">
+                <div class="card-body">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="col-sm-auto px-0 mx-0 align-items-start h-100">
+                            <img class="img-thumbnail px-0 mx-2 h-100 " src="{{res.room_number.type.hotel.image.url}}" class="img-fluid"  alt="Room">
+                        </div>
+                        <div class="col">
+                            <h4 class="card-title review">{{ res.room_number.type.hotel.name }}</h5>
+                            <h5 class="card-title review">{{ res.room_number.type.hotel.city }}</h5>
+                            <h5 class="card-title review"><strong>{{ res.room_number.type.type }}</strong></h5>
+                        </div>
+                        <div class="col text-end">
+                            
+                            <p class="card-text"> Checked In:
+                                {% if res.check_in_date%}
+                                <strong>{{ res.check_in_date }}</strong> 
+                                {% else %}
+                                <strong>Unknown</strong></p>
+                                {% endif %}                            
+                            <p class="card-text"> Checked Out:
+                            {% if res.check_in_date%}
+                             <strong>{{ res.check_out_date }}</strong></p>
+                             {% else %}
+                             <strong>Unknown</strong></p>
+                            {% endif %}
+                            <p class="card-text"> Booking Reference:
+                            <strong>{{ res.ref_num }}</strong></p>                          
+
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        
+                    </div>
+                </div> 
+                </a>    
+            </div>
+            
+            {% endif %}
             {% endfor %}
             {% endif %}
-        </section>
-        {% if reservations %}
-        {% for res in reservations %}
-        <section id="past-bookings">
-            <h2>Past Bookings</h2>
-            <ul>
-                <li><a href="#">{{res.room_number.type.hotel.name}} <img src="{{ res.room_number.type.hotel.image.url }}" alt="{{res.hotel.image}}">{{res.room_number.type.hotel.star}}</a></li>
-                <!-- Add more bookings as needed -->
-            </ul>
-            {% endfor %}
-            {% endif %}
-        </section>
-    </main>
+       
     <footer>
         <p>© 2024 EasyStay. All rights reserved.</p>
     </footer>

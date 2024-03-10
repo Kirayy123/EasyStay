@@ -19,11 +19,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from EasyStay.views import manager_login, login_home, search_home
+from booking.views import index
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   ###########################################################
-                  path('', search_home, name="test"),
+                  path('', index, name="index"),
                   ###########################################################
                   path('easystay/', include("EasyStay.urls")),
                   path('booking/', include('booking.urls'))

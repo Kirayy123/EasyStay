@@ -9,6 +9,7 @@ urlpatterns = [
                   path('login/', views.login_home, name="login"),
                   path('login/manager', views.manager_login, name="manager_login"),
                   path('logout/', views.logout, name="logout"),
+                  path('Mlogout/', views.manager_logout, name="manager_logout"),
                   path('Uregister/', views.user_register, name="user_register"),
                   path('Mregister/', views.manager_register, name="manager_register"),
                   path('forgot_password/', views.forgot_password, name="forgot_password"),
@@ -47,11 +48,13 @@ urlpatterns = [
                   path('user/booking/<int:type_id>/', views.get_date_booking, name="user_booking"),
                   path('booking/confirm/<int:booking_id>/', views.confirm_booking, name='confirm_booking'),
                   path('booking/cancel/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
+
                   path('test/', views.search_home, name="test"),
                   path('hotels/hoteldetails/<int:id>/', views.hotel_details, name="hotel_details"),
-                  path('hotels/hoteldetails', views.show_random_hotel, name="random_hotel"),
+                  
                   path('userProfile/ ', views.user_profile, name='user_profile'),
-                  path('booking_management/', views.booking_management, name='booking_management'),
+                  path('booking_management/<int:id>/', views.booking_management, name='booking_management'),
+                  path('booking_management/review/<int:id>/', views.review_booking, name='review_booking'),
                   
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

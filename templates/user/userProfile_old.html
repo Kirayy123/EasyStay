@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_ext %}
+
+<link href="{% static 'css/blog.css' %}" rel="stylesheet">
+<link href="{% static 'css/list-groups.css' %}" rel="stylesheet">
+<link href="{% static 'css/hoteldetails.css' %}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'css/userProfile.css' %}">
+{% endblock %}
+
+{% block main %}
+    {% if user %}
+    <div class="container-fluid">
+    <div class="profile-pic d-flex flex-row align-items-center">
+        <div class="p-2"><h2>{{user.username}}</h2></div>
+        <div class="p-2">
+            <a href="{% url 'user_change_password'%}"> Change Password</a>            
+                {% if messages%}
+                {{message}}
+                {% endif %}
+        </div>
+    </div>        
+    <div class="container-fluid" id="active-reservations">
+            <h4>Upcoming Bookings </h4>
+            {% if reservations %}
+            {% for res in reservations %}            
+            {% if res.status == 1%}
+                <div class="container-fluid">
+                    <div class="row">             
+                    <a href="{% url 'booking_management' %}">
+                        <span><h5 class="mx-3">{{res.room_number.type.hotel.name}}</h5></span>  
+                        <img src="{{res.room_number.type.hotel.image.url}}" alt="Hotel Image"> 
+                        <span>From: {{res.from_date}}</span>
+                        <span>To: {{res.to_date}}</span>
+                    </a>   
+                </div>               
+                </div>
+
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="container-fluid" id="active-reservations">
+            <h4>Current Reservations</h4>
+            {% if reservations %}
+            {% for res in reservations %}            
+            {% if res.status == 2%}
+                <div class="container-fluid">
+                    <a href="{% url 'booking_management' %}">
+                    <div class="row align-items-start justify-content-center ">             
+                   
+                        <span class="col"><h5 class="mx-3">{{res.room_number.type.hotel.name}}</h5></span>  
+                        <div class="col"><img src="{{res.room_number.type.hotel.image.url}}" alt="Hotel Image"> </div>
+                        <span class="col">From: {{res.from_date}}</span>
+                        <span class="col">To: {{res.to_date}}</span>
+                    </div>
+                    </a>                                  
+                </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+    <div class="container-fluid" id="past-bookings">
+        <h4>Past Bookings</h4>
+        {% if reservations %}
+        {% for res in reservations %}
+        {% if res.status == 3 %}
+        <div class="container-fluid">
+            <div class="row">             
+            <a href="{% url 'booking_management' %}">
+                <span><h5 class="mx-3">{{res.room_number.type.hotel.name}}</h5></span>  
+                <img src="{{res.room_number.type.hotel.image.url}}" alt="Hotel Image"> 
+            </a>   
+        </div>               
+        </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+</div>
+    
+</div>
+    <footer>
+        <p>© 2024 EasyStay. All rights reserved.</p>
+    </footer>
+    {% endif %}
+{% endblock %}

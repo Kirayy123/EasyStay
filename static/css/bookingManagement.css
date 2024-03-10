@@ -50,13 +50,26 @@ button {
     cursor: pointer;
 }
 
+.panel{
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#checkout{
+    background-color: #0056b3;
+}
+#checkout:hover{
+    background-color: orange;
+}
+
 button:hover {
     background-color: #0056b3;
 }
 
 p strong {
     display: inline-block;
-    min-width: 150px;
 }
 
 .hotel-info, .price-details {
@@ -67,6 +80,7 @@ p strong {
     display: flex;
     align-items: center; /* Adjust this as needed */
     margin-bottom: 20px;
+    
 }
 
 .hotel-image img {
@@ -78,4 +92,8 @@ p strong {
 
 .hotel-details {
     flex-grow: 1;
+}
+
+label{
+    white-space: nowrap;
 }

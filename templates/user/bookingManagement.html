@@ -1,68 +1,92 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block css_ext %}
-
-<link href="{% static 'css/blog.css' %}" rel="stylesheet">
-<link href="{% static 'css/list-groups.css' %}" rel="stylesheet">
-<link href="{% static 'css/hoteldetails.css' %}" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{% static 'css/bookingManagement.css' %}">
 {% endblock %}
 
 {% block main%}
-    {%if user %}
-    {% for res in reservations %}
-    <div class="container">
-        <div class="left-panel">
-            <div class="booking-info">
-                <div class="card-footer">
-                    {% if res.review_comment %}
-                    {% if review.reply % }
-                        {#____ if have replyed, Show Reply ____#}
-                        <p><strong>Reply:</strong> {{ review.reply }}</p>
-                    {% else %}
-                        {#____ if not replyed, Reply Review ____#}
-                        <form method="post" action="{% url 'reply_to_review' review.id %}">
-                            {% csrf_token %}
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Reply to this review" name="reply">
-                                <button class="btn btn-outline-secondary" type="submit">Send</button>
-                            </div>
-                        </form>
-                   
-                    {% endif %}
-            </div>
-            <div class="contact-info">
-                <h2>Contact Info</h2>
-                <p><strong>Email</strong> {{res.email}}/p>
-                <p><strong>Contact Number</strong> {{res.phone}}</p>
+  
+<div class="container">
+    <div class="row">
+    <div class="left-panel col-sm-auto">
+                <h3>{{res.room_number.type.hotel.name}}</h3> 
+                <h5>Contact Info</h5>
+                <strong>Email:</strong> <p>{{res.room_number.type.hotel.email}}</p>
+                <strong>Contact Number:</strong> <p>{{res.room_number.type.hotel.phone}}</p>
+                <strong>Address:</strong> <p>{{res.room_number.type.hotel.location}}</p>
+                <strong>City:</strong> <p>{{res.room_number.type.hotel.city}}</p>
+                <strong>Postcode:</strong><p>{{res.room_number.type.hotel.postcode}}</p>
+    </div> 
+    <div class="container col">
+        <div class=" right-panel">
+        <div class="row">
+            <h2>Room Details</h2>
+        </div> 
+        <div class="row">    
+            <div class="hotel-info">
+                <div class="hotel-image">
+                    <img src="{{res.room_number.type.image.url}}" alt="Room Image">
+                </div>
+                <div class="hotel-details">
+                    <h4>{{res.room_number.type.type}}</h4>
+                    <strong>Features</strong>
+                    {% for fac in facilities%}
+                    <p class="my-1">{{fac}}</p>
+                    {% endfor %}
+                </div> 
             </div>
         </div>
-    </div> 
-    {% endfor %}
-    <div class="right-panel">
-        <div class="hotel-info">
-            <div class="hotel-image">
-                <img src="{{res.hotel.image}}" alt="Park Plaza London">
-            </div>
-            <div class="hotel-details">
-                <h2>{{res.hotel.name}}</h2>
-                <p>{{res.location}}</p>
-                <p><strong>Call Hotel</strong> {{res.phone}}</p>
-                <h3>{{res.room.type}}</h3>
-                <p><strong>Price For:</strong> 1 Adult</p>
-                <p><strong>Bed:</strong> 1 queen bed</p>
-                <p><strong>Smoking:</strong> Non-smoking</p>
-            </div>        
-        <div class="price-details">
-            <h2>Price Detail</h2>
-            <p><strong>1 Room for 1 Night:</strong> £255</p>
-            <p><strong>Tax:</strong> £5</p>
-            <p><strong>Total:</strong> £260</p>
+        <div class="row mx-0">        <!-- IF NOT CHECKED IN/OUT SHOW BUTTON : ELSE SHOW CHECK IN/OUT DATE -->
+        
+        {%if res.check_in_date %}                         
+        <h5><strong>Checked-In:</strong> {{res.check_in_date}}</h5>
+        {% else %}
+        <label class><strong>Check In From:</strong> {{res.from_date}}</label>
+        {% endif %}        
+        
+         {%if res.check_out_date %} 
+         <h5><strong>Checked-out:</strong> {{res.check_out_date}}</h5>
+         {% else %}
+         <label><strong>Check Out On:</strong> {{res.to_date}}</label>
+         {% endif %}         
+        </div>
+    </div>
+</div>      
+    <div class="container right-panel col">             
+        <div class=" col-sm-auto">
+            <h2>Price Details</h2>
+            <strong>1 Night:</strong> <p>£{{res.room_number.type.price}}</p>
+            <strong>Nights:</strong> <p>{{nights}}</p>
+            <strong>Total:</strong><p>£{{res.total_price}}</p>
         </div>
     </div>
 </div>
+</div>
+    <div class="row right-panel">    
+    <div class="content right-panel col">
+        {%if res.review_comment %} 
+        <p><strong>Comment: </strong>{{res.review_comment}}</p>
+        <p><strong>Rating: </strong>{{res.review_star}}</p>
+        <p><strong>Date: </strong>{{res.review_date}}</p>
+        {% else %}
+        <form method="post" action="{% url 'review_booking' res.id %}">
+           {% csrf_token %}
+           <div class="form-group mb-3">
+            <p>Leave a Review:</p>
+               <textarea type="text" class="form-control row m-2" placeholder="Review" name="review"></textarea>
+            <p>Leave a Rating:</p>
+               <input type="text" class="form-control row" placeholder="Star" name="star">
+               <button class="btn btn-outline-secondary" type="submit">Send</button>
+               {% endif %}
+           </div>
+       </form>
+    </div>
+   </div>
+</div>
+</div>
+
 <footer>
     <p>© 2024 EasyStay. All rights reserved.</p>
 </footer>
-{% endif %}
+
 {% endblock %}

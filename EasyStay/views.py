@@ -53,7 +53,7 @@ def login_home(request):
                         type = request.session.get('type')
                         return redirect('user_booking', type)
                     else:
-                        return redirect("user_profile")
+                        return redirect("index")
         return render(request, 'login/user_login.html', {'form': form})
 
     else:
@@ -110,8 +110,11 @@ logout, delete current user information, and direct back to login page
 
 def logout(request):
     request.session.flush()
-    return redirect(reverse("login"))
+    return redirect(reverse("index"))
 
+def manager_logout(request):
+    request.session.flush()
+    return redirect(reverse("manager_login"))
 
 '''__Register__'''
 '''
@@ -305,6 +308,9 @@ And the confirmed password must be the same as the new password
 
 
 def manager_change_pw(request):
+    messages.set_level(request, messages.SUCCESS)
+    messages.get_messages(request).used = True
+    
     if request.method == 'POST':
         form = ChangePasswordForm(data=request.POST)
         if form.is_valid():
@@ -318,7 +324,7 @@ def manager_change_pw(request):
             else:
                 thisuser.password = input_new1
                 thisuser.save()
-                messages.success(request, 'Your password was successfully updated!')
+                messages.success(request, 'Password Changed Successfully!')
                 return redirect('manager_profile')
     else:
         form = ChangePasswordForm()
@@ -330,6 +336,9 @@ def manager_change_pw(request):
 
 
 def user_change_pw(request):
+    messages.set_level(request, messages.SUCCESS)
+    messages.get_messages(request).used = True
+    
     if request.method == 'POST':
         form = ChangePasswordForm(data=request.POST)
         if form.is_valid():
@@ -343,7 +352,7 @@ def user_change_pw(request):
             else:
                 thisuser.password = input_new1
                 thisuser.save()
-                messages.success(request, 'Your password was successfully updated!')
+                messages.success(request, ' Password Changed Successfully!')
                 return redirect('user_profile')
     else:
         form = ChangePasswordForm()
@@ -1026,40 +1035,47 @@ def set_new_password(request):
 #@login_required
 def user_profile(request):
     id = request.session.get('id')
-    u = user.objects.get(id=id)
-    reservations = booking.objects.filter(user_id=id)
-    context = {}
-    context['user'] = u
-    context['reservations'] = reservations 
-    return render(request, 'user/userProfile.html', context)
+    if id != None:
+        u = user.objects.get(id=id)
+        reservations = booking.objects.filter(user_id=id)
+        context = {}
+        context['user'] = u
+        context['reservations'] = reservations 
+        return render(request, 'user/userProfile.html', context)
+    else:
+        return redirect(login_home)
 
-def booking_management(request):
-   u = request.session.get('id')
-   reservations = booking.objects.filter(user=u)
+def booking_management(request,id):
+   reservation = booking.objects.get(id=id)
    context = {}
-   context['user'] = u
-   context['reservations'] = reservations 
+   context['res'] = reservation 
+   context['nights'] = round(reservation.total_price / reservation.room_number.type.price, 2)
+   context['facilities'] = ast.literal_eval(reservation.room_number.type.facility)
+   context['star'] = range(reservation.room_number.type.hotel.star)
+   context['non_star'] = range(5- reservation.room_number.type.hotel.star)
    return render(request, 'user/bookingManagement.html', context)
 
 
+#Displays the details and room-types of the hotel after being selected in search page
 def hotel_details(request,id):
     context_hotel = {}
     try: 
         hoteldisplayed = hotel.objects.get(id=id)
         roomsdisplayed = roomtype.objects.filter(hotel=hoteldisplayed)
 
+        #splits the string of hotel facilities into a list of elements
         if hoteldisplayed.facility:
             formatted_facilities = ast.literal_eval(hoteldisplayed.facility)
         else:
             formatted_facilities = 'No facilities listed'
 
+        #splits the room facilities list up per room type
         roomfacilities = {}
-        for c in roomsdisplayed:
-            roomfacilities[c] = ast.literal_eval(c.facility)
+        for r in roomsdisplayed:
+            roomfacilities[r] = ast.literal_eval(r.facility)
         
-        #very silly: reads a csv file of 50,000 cities and gets the listed coordinates
-        #probaly would use the tomtom api directly to search the coords
-        #but counldn't find out how to integrate that with django
+        #crudely reads a csv file of 50,000 cities to find the correct lat/long 
+        #to centre the mapdisplay
         lat_long = populatedata.get_lat_long(hoteldisplayed.city)
 
         context_hotel['Facility'] = formatted_facilities
@@ -1078,8 +1094,24 @@ def hotel_details(request,id):
 
     return render(request, 'hotels/hotel_details.html', context_hotel)
 
-def show_random_hotel(request):
-    hotels = hotel.objects.all()
-    randHotel = random.choice(hotels)
-    return hotel_details(request, randHotel.hotel_id)
 
+def review_booking(request,id):
+    if request.method == 'POST':
+        thisbooking = get_object_or_404(booking, id=id)
+
+        review_message = request.POST.get('review')
+        review_star = request.POST.get('star')
+
+        if review_message:
+            thisbooking.review_comment = review_message
+            thisbooking.review_star = review_star
+            thisbooking.review_date = datetime.datetime.now()
+            thisbooking.save()
+        #     messages.success(request, 'Your review was successfully posted.')
+        # else:
+        #     messages.error(request, 'Your review and star cannot be empty.')
+
+        return redirect('booking_management',id)
+    else:
+        messages.error(request, 'Invalid request method.')
+        return redirect('booking_management',id)

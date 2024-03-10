@@ -20,8 +20,8 @@
         {% csrf_token %}
         {{ form.as_p }}
           <div class="button-container">
-              <button onclick="changePassword(event)" class="btn btn-primary btn-submit" type="submit">Save</button>
-              <button class="btn btn-secondary btn-return" onclick="location.href='{% url 'test' %}'">Return</button>
+              <button onclick="location.href='{% url 'user_profile' %}'" class="btn btn-primary btn-submit" type="submit">Save</button>
+              <button class="btn btn-secondary btn-return" onclick="location.href='{% url 'user_profile' %}'">Return</button>
           </div>
       </form>
     </div>
