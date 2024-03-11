@@ -28,79 +28,46 @@
     <div class="container px-4 py-5" id="custom-cards">
         <h2 class="pb-2 border-bottom">Not sure where to go? Perfect.</h2>
 
-        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-            <div class="col">
-                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
-                     style="background-image: url({% static 'images/unsplash-photo-1.jpg' %}); height: 350px;">
-                    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                        <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">London</h3>
-                        <ul class="d-flex list-unstyled mt-auto">
-                            <li class="me-auto"></li>
-                            <li class="d-flex align-items-center me-3">
-                                <svg class="bi me-2" width="1em" height="1em">
-                                    <use xlink:href="#geo-fill"/>
-                                </svg>
-                                <small>London</small>
-                            </li>
-                            <li class="d-flex align-items-center">
-                                <svg class="bi me-2" width="1em" height="1em">
-                                    <use xlink:href="#calendar3"/>
-                                </svg>
-                                <small>3d</small>
-                            </li>
-                        </ul>
+        <!-- Carousel start -->
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'images/unsplash-photo-1.JPG' %}" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>London</h5>
+                        <p>Explore the heart of England.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/unsplash-photo-2.jpg' %}" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Glasgow</h5>
+                        <p>A cultural hotspot with a rich history.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/unsplash-photo-3.JPG' %}" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Manchester</h5>
+                        <p>Known for its premier league football and vibrant music scene.</p>
                     </div>
                 </div>
             </div>
-
-            <div class="col">
-                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
-                     style="background-image: url({% static 'images/unsplash-photo-2.jpg' %}); height: 350px;">
-                    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                        <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Glasgow</h3>
-                        <ul class="d-flex list-unstyled mt-auto">
-                            <li class="me-auto"></li>
-                            <li class="d-flex align-items-center me-3">
-                                <svg class="bi me-2" width="1em" height="1em">
-                                    <use xlink:href="#geo-fill"/>
-                                </svg>
-                                <small>Glasgow</small>
-                            </li>
-                            <li class="d-flex align-items-center">
-                                <svg class="bi me-2" width="1em" height="1em">
-                                    <use xlink:href="#calendar3"/>
-                                </svg>
-                                <small>4d</small>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
-                     style="background-image: url({% static 'images/unsplash-photo-3.jpg' %}); height: 350px;">
-                    <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-                        <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Manchester</h3>
-                        <ul class="d-flex list-unstyled mt-auto">
-                            <li class="me-auto"></li>
-                            <li class="d-flex align-items-center me-3">
-                                <svg class="bi me-2" width="1em" height="1em">
-                                    <use xlink:href="#geo-fill"/>
-                                </svg>
-                                <small>Manchester</small>
-                            </li>
-                            <li class="d-flex align-items-center">
-                                <svg class="bi me-2" width="1em" height="1em">
-                                    <use xlink:href="#calendar3"/>
-                                </svg>
-                                <small>5d</small>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
+        <!-- Carousel end -->
     </div>
 </main>
 {% endblock %}
