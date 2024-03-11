@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+<main>
+    <div class="px-3 py-2 mt-5">
+        <div class="container d-flex flex-wrap justify-content-center">
+            <form class="col-12 col-lg-10 mb-2 mb-lg-0" role="search" action="{% url 'search' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="search" class="form-control" placeholder="Where are you going?" name="location" value="{{ location }}">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="date" class="form-control" name="check-in-date">
+                    </div>——
+                    <div class="col-sm-3">
+                        <input type="date" class="form-control" name="check-out-date">
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container px-4 py-5" id="custom-cards">
+        <h2 class="pb-2 border-bottom">Not sure where to go? Perfect.</h2>
+
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="d-flex h-100 align-items-center justify-content-center" style="background-image: url({% static 'images/unsplash-photo-1.jpg' %}); height: 350px; background-size: cover; background-position: center;">
+                        <div class="carousel-caption d-none d-md-block text-bg-dark">
+                            <h5>London</h5>
+                            <small>London</small>
+                            <p>3d</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex h-100 align-items-center justify-content-center" style="background-image: url({% static 'images/unsplash-photo-2.jpg' %}); height: 350px; background-size: cover; background-position: center;">
+                        <div class="carousel-caption d-none d-md-block text-bg-dark">
+                            <h5>Glasgow</h5>
+                            <small>Glasgow</small>
+                            <p>4d</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="d-flex h-100 align-items-center justify-content-center" style="background-image: url({% static 'images/unsplash-photo-3.jpg' %}); height: 350px; background-size: cover; background-position: center;">
+                        <div class="carousel-caption d-none d-md-block text-bg-dark">
+                            <h5>Manchester</h5>
+                            <small>Manchester</small>
+                            <p>5d</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</main>
+{% endblock %}
