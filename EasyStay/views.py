@@ -26,6 +26,30 @@ from EasyStay.form import UserLoginForm, ManagerLoginForm, \
 from EasyStay.cbvs import CreateUserView, CreateManagerView
 from EasyStay.models import user, hotelmanager, hotel, roomtype, room, booking
 
+
+
+
+'''__Home Page__'''
+
+def index(request):
+    return render(request, 'index.html')
+
+
+'''__Search Results__'''
+
+def search_rst(request):
+    if request.method == 'POST':
+        location = request.POST.get('location')
+        print('location:',location)
+        rsts = hotel.objects.filter(Q(city__icontains=location)|
+                                    Q(country__icontains=location)).all()
+        for rst in rsts:  # get the star of each review and show in star icon
+            rst.stars = range(rst.star)
+            rst.non_stars = range(5 - rst.star)
+
+        return render(request, 'search/search_rst.html', locals())
+
+
 '''__Login__'''
 '''
 login as guest and direct to guest home page
@@ -1032,9 +1056,9 @@ def set_new_password(request):
             messages.success(request, 'Your password has been updated.')
             return redirect('login')
 
-#@login_required
 def user_profile(request):
     id = request.session.get('id')
+    #if user is logged into their account it will show them their account page
     if id != None:
         u = user.objects.get(id=id)
         reservations = booking.objects.filter(user_id=id)
@@ -1043,6 +1067,7 @@ def user_profile(request):
         context['reservations'] = reservations 
         return render(request, 'user/userProfile.html', context)
     else:
+        #else it will direct them to the user login page
         return redirect(login_home)
 
 def booking_management(request,id):
@@ -1051,8 +1076,11 @@ def booking_management(request,id):
    context['res'] = reservation 
    context['nights'] = round(reservation.total_price / reservation.room_number.type.price, 2)
    context['facilities'] = ast.literal_eval(reservation.room_number.type.facility)
+
+    #used to render the amount of filled starts corresponding with the hotel rating
    context['star'] = range(reservation.room_number.type.hotel.star)
    context['non_star'] = range(5- reservation.room_number.type.hotel.star)
+
    return render(request, 'user/bookingManagement.html', context)
 
 
@@ -1074,7 +1102,7 @@ def hotel_details(request,id):
         for r in roomsdisplayed:
             roomfacilities[r] = ast.literal_eval(r.facility)
         
-        #crudely reads a csv file of 50,000 cities to find the correct lat/long 
+        #reads a csv file of 50,000 cities to find the correct lat/long 
         #to centre the mapdisplay
         lat_long = populatedata.get_lat_long(hoteldisplayed.city)
 

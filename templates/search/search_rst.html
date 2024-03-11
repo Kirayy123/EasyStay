@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% block css_ext %}
 <link href="{% static 'css/blog.css' %}" rel="stylesheet">
@@ -62,7 +62,7 @@
             </label>
             <label class="form-check form-check-inline">
                 <input class="form-check-input" type="checkbox">
-                <span class="form-check-label">breakfast included</span>
+                <span class="form-check-label">breakfask included</span>
             </label>
         </div>
     </div>
@@ -74,28 +74,25 @@
         <div class="col-md-12">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col-auto d-none d-lg-block">
-                    <img style="width: 200px; height: 250px" src="{{ rst.image.url }}">
-                </div>
+                    <img style="width: 250px; height: 250px" src="{{ rst.image.url }}">
+                </div>                
                 <div class="col p-4 d-flex flex-column position-static">
-                    <div class="col d-flex align-items-center ">
-                        <h4>
-                            <div class="star-rating">
-                                {% for _ in rst.stars %}
-                                    <i class="fas fa-star"></i> <!-- 实心星星 -->
-                                {% endfor %}
-                                {% for _ in rst.non_stars %}
-                                    <i class="far fa-star"></i> <!-- 空心星星 -->
-                                {% endfor %}
-                            </div>
-                            
-                        </h4>
-                    </div>
-                </div>
                     <h3 class="mb-0">{{ rst.name }}</h3>
+                    <div class="col-sm-auto d-flex align-items-center ">
+                        <div class="star-rating">
+                            {% for _ in rst.stars %}
+                                <i class="fas fa-star"></i> <!-- 实心星星 -->
+                            {% endfor %}
+                            {% for _ in rst.non_stars %}
+                                <i class="far fa-star"></i> <!-- 空心星星 -->
+                            {% endfor %}
+                        </div>
+                    </div>                    
                     <hr>
-                    <div class="mb-1 text-muted">€{{ rst.price }}</div>
+                    <div class="mb-1 text-muted">{{ rst.city }}, {{rst.country}}</div>
                     <p class="card-text mb-auto">{{ rst.position }}</p>
-                    <a href="#" class="stretched-link">reserve</a>
+                    <a href="{% url 'hotel_details' id=rst.id %}" class="stretched-link"></a>
+                    
                 </div>
             </div>
         </div>

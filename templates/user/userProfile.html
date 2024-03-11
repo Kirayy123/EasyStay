@@ -29,7 +29,7 @@
         <h4>Upcoming Bookings </h4>       
             {% if reservations %}
             {% for res in reservations %}            
-            {% if res.status == 4%}
+            {% if res.status == 1%}
             <div class="card mb-1">
                 <a class="m-0 p-0" href="{% url 'booking_management' res.id %}">
                 <div class="card-body">                    
@@ -72,7 +72,7 @@
 <div class="container" id="active-reservations">  
     <h4>Active Reservations</h4>
             {% for res in reservations %}            
-            {% if res.status == 4%}
+            {% if res.status == 2%}
  
             <div class="card mb-1">
                 <a class="m-0 p-0" href="{% url 'booking_management' res.id %}">

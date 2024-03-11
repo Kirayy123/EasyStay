@@ -25,7 +25,6 @@
                 </h2>
             </div>
             <div class="col d-flex align-items-center ">
-                <h4>
                     <div class="star-rating">
                         {% for _ in rating %}
                             <i class="fas fa-star"></i> <!-- 实心星星 -->
@@ -35,7 +34,6 @@
                         {% endfor %}
                     </div>
                     
-                </h4>
             </div>
 
         </div>
@@ -161,7 +159,7 @@
 {% endif %}
 <!-- this is not ideal -exposing API keys - but i couldn't work out how to proxy in time !-->
 <div class="container w-100 mt-2 rounded-4 p-2 contentcontainer h-100" id="room">
-    <div class="row mx-0 d-flex flex-row align-items-centre justify-content-centre w-100 h-250">
+    <div class="row mx-0 my-2 d-flex flex-row align-items-centre justify-content-centre w-100 h-250">
             <div class="col rounded-4 d-flex mx-3 w-100" id="map"></div>
                 <script>
                     var coords = ["{{lat}}" *1, "{{long}}"*1]

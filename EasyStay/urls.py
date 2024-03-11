@@ -5,6 +5,8 @@ from EasyStay import views
 from django.urls import path
 
 urlpatterns = [
+                path('search/', views.search_rst, name='search'),
+
                   # LoginPage
                   path('login/', views.login_home, name="login"),
                   path('login/manager', views.manager_login, name="manager_login"),
@@ -43,16 +45,18 @@ urlpatterns = [
                   path('manager/profile/edit', views.manager_profile_edit, name="manager_profile_edit"),
                   path('manager/profile/change_password', views.manager_change_pw, name="change_password"),
 
-                  path('user/change_password', views.user_change_pw, name="user_change_password"),
-
+                
+                #Room Booking
                   path('user/booking/<int:type_id>/', views.get_date_booking, name="user_booking"),
                   path('booking/confirm/<int:booking_id>/', views.confirm_booking, name='confirm_booking'),
                   path('booking/cancel/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
 
-                  path('test/', views.search_home, name="test"),
+                  #Hotel Details
                   path('hotels/hoteldetails/<int:id>/', views.hotel_details, name="hotel_details"),
                   
+                  #Guest User Profile and Booking Management
                   path('userProfile/ ', views.user_profile, name='user_profile'),
+                  path('user/change_password', views.user_change_pw, name="user_change_password"),
                   path('booking_management/<int:id>/', views.booking_management, name='booking_management'),
                   path('booking_management/review/<int:id>/', views.review_booking, name='review_booking'),
                   

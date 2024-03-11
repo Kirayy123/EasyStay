@@ -2,6 +2,7 @@
 {% load static %}
 {% block css_ext %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/bookingManagement.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block main%}
@@ -36,7 +37,7 @@
                 </div> 
             </div>
         </div>
-        <div class="row mx-0">        <!-- IF NOT CHECKED IN/OUT SHOW BUTTON : ELSE SHOW CHECK IN/OUT DATE -->
+        <div class="row mx-0">        <!-- IF NOT CHECKED IN/OUT SHOW TO/FROM DATE: ELSE SHOW CHECK IN/OUT DATE -->
         
         {%if res.check_in_date %}                         
         <h5><strong>Checked-In:</strong> {{res.check_in_date}}</h5>
@@ -66,8 +67,20 @@
     <div class="content right-panel col">
         {%if res.review_comment %} 
         <p><strong>Comment: </strong>{{res.review_comment}}</p>
-        <p><strong>Rating: </strong>{{res.review_star}}</p>
-        <p><strong>Date: </strong>{{res.review_date}}</p>
+
+        
+        <p class="my-0"><strong>Rating:</strong></p>
+        <div class="col-sm-auto  d-flex align-items-center ">
+            <div class="star-rating">
+                {% for _ in star %}
+                    <i class="fas fa-star"></i> <!-- 实心星星 -->
+                {% endfor %}
+                {% for _ in non_star %}
+                    <i class="far fa-star"></i> <!-- 空心星星 -->
+                {% endfor %}
+            </div>            
+        </div>
+        <p class="my-2"><strong>Review Date: </strong>{{res.review_date}}</p>
         {% else %}
         <form method="post" action="{% url 'review_booking' res.id %}">
            {% csrf_token %}
@@ -75,10 +88,12 @@
             <p>Leave a Review:</p>
                <textarea type="text" class="form-control row m-2" placeholder="Review" name="review"></textarea>
             <p>Leave a Rating:</p>  
-               <input  id="ratingvalue"type="text" class="form-control row" placeholder="Star" name="star">
+
+            <!--hiding the input box so the value is set by the buttons instead  -->
+               <input  hidden id="ratingvalue"type="text" class="form-control row" placeholder="Star" name="star">
                <!-- taken from https://getbootstrap.com/docs/4.0/components/button-group/ -->
             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                <div class="btn-group mr-2" role="group" aria-label="First group">
+                <div id="reviewbuttons" class="btn-group mr-2" role="group" aria-label="First group">
                   <button type="button" onclick="reviewValue(1,this)" class="btn btn-secondary">1</button>
                   <button type="button" onclick="reviewValue(2,this)" class="btn btn-secondary">2</button>
                   <button type="button" onclick="reviewValue(3,this)" class="btn btn-secondary">3</button>
@@ -87,8 +102,14 @@
                 </div>
                 <script>
                     function reviewValue(inputValue, el){
-                        $('#ratingvalue').value = inputValue
-                        $(el).css()
+                        // sets input value to button value
+                        $('#ratingvalue').val(inputValue);
+                        
+                        // hides other buttons and only displays selected                        
+                        $('#reviewbuttons').children().hide()                        
+                        $(el).show();
+                        $(el).css("background-color", "yellow");
+                        $(el).css("color", "black");
                     }
                 </script>
             </div>
