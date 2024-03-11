@@ -1,6 +1,8 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.shortcuts import render
 import json
+import requests
+
 
 
 
@@ -20,12 +22,25 @@ def get_key():
     
     return key
 
-def display_Map(request):
-    sdkURl = "https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"
+def getLat_Long(city):
+    qUrl = "https://api.tomtom.com/search/2/geocode/" + city +".json?storeResult=false&view=Unified&key=" + get_key()
+    params = {
+        'query' : city, 
+        'ext' : 'json', 
+        'key' : get_key()}
 
-    getParams =  {"key": get_key() , "container" : "map"}
-    response = requests.get(sdkURl,params=getParams)
+    response = requests.get(qUrl)
     response.raise_for_status()
+    position = response.json()
+    lat = position['results'][0]['position']['lat']
+    lng = position['results'][0]['position']['lon']
+    coords = {}
+    coords['lat'] = lng
+    coords['long'] = lat
+    print(coords)
+    return coords
+
+
 
 
 

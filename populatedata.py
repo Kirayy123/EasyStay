@@ -405,6 +405,7 @@ def get_lat_long(city):
     if data_dict["lat"] == '' or data_dict['long'] == '':
          data_dict['lat'] = 55.8617
          data_dict['long'] = 4.2583
+    csv_file.close()
     return data_dict
 
 

@@ -1113,8 +1113,10 @@ def hotel_details(request,id):
         context_hotel['rating'] = range(hoteldisplayed.star)
         context_hotel['non_star'] = range(5- hoteldisplayed.star)
         context_hotel['map_api'] = mapAPI.get_key()
-        context_hotel['lat'] = lat_long['long']
-        context_hotel['long'] = lat_long['lat']
+
+        coords = mapAPI.getLat_Long(hoteldisplayed.city)
+        context_hotel['lat'] = coords['lat']
+        context_hotel['long'] = coords['long']
 
     except hotel.DoesNotExist:
         context_hotel['hotel'] = None
