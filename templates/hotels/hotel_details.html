@@ -12,7 +12,7 @@
 
 {% block main%}
 
-<div class="container-sm mt-5 rounded-4 p-2 h-auto contentcontainer" id="hotelsummary">     <!-- hotel details-->
+<div class="container-sm mt-5 rounded-4 p-2 h-auto shadow" id="hotelsummary">     <!-- hotel details-->
     <div class="row ">
         <div class="row">
             <div class="col-sm-auto px-4 pb-1">
@@ -113,7 +113,7 @@
 </div>
 {% if rooms %}
 {% for room in rooms %}
-<div class="container w-100 mt-2 rounded-4 p-2 contentcontainer h-100" id="room">
+<div class="container w-100 mt-2 rounded-4 p-2 shadow h-100" id="room">
     <div class="row d-flex justify-content-between  w-100">
     <div class="col">
     <div class="row">
@@ -158,7 +158,7 @@
 {% endfor %}
 {% endif %}
 <!-- this is not ideal -exposing API keys - but i couldn't work out how to proxy in time !-->
-<div class="container w-100 mt-2 rounded-4 p-2 contentcontainer h-100" id="room">
+<div class="container w-100 mt-2 rounded-4 p-2 h-100" id="room">
     <div class="row mx-0 my-2 d-flex flex-row align-items-centre justify-content-centre w-100 h-250">
             <div class="col rounded-4 d-flex mx-3 w-100" id="map"></div>
                 <script>
@@ -174,9 +174,9 @@
             <div class="row">  
             <div class="col d-flex  mx-4 justify-content-between ">
                 {% if hotel%}
-                <label><strong>{{hotel.postcode}}</strong></label>
-                <label><strong>{{hotel.phone}}</strong></label>
-                <label><strong>{{hotel.email}}</strong></label>
+                <label>{{hotel.postcode}}</label>
+                <label>{{hotel.phone}}</label>
+                <label>{{hotel.email}}</label>
             </div>
         </div>
                 {% endif %}
