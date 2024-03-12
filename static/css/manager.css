@@ -37,7 +37,7 @@ body {
 
 .sidebar ul li a {
     color: #495057;
-    font-size: 25px;
+    font-size: 23px;
     font-family: "Gill Sans", sans-serif;
     font-weight: 900;
     padding: 20px;
@@ -161,7 +161,7 @@ body {
 
 .table-hover tbody tr:hover td,
 .table-hover tbody tr:hover th {
-  background-color: #ffeda700; !important;
+  background-color: #ffeda700 !important;
 }
 
 /*____________________buttons*/

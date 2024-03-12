@@ -33,7 +33,7 @@ hotel_facility = ['Wi-Fi','TV','Air conditioning','Private Bathroom','Room Servi
 hotelphotos = os.listdir("media/hotels/")
 photo_provider = DynamicProvider(
     provider_name='hotelPhotos',
-    elements=os.listdir("media\\hotels")
+    elements=os.listdir("media/hotels/")
 )
 
 feature_provider = DynamicProvider(

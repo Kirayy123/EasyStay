@@ -7,19 +7,21 @@ import requests
 
 
 def get_key():
-    key = None    
-    try:
-        with open('map.key', 'r') as file:
-            key = file.readline().strip()
-    except:
-        try:
-            with open('../map.key') as file:
-                key = file.readline().strip()
-        except:
-            raise IOError('map key not found')
-    if not key:
-        raise KeyError('map key not found')
-    
+    key = 'ToCFmPC8oKry1IxVENwddP1yt2BKDBXl'  
+
+    #reading file does not work in pythonAnywhere deployment  
+    # try:
+    #     with open('map.key', 'r') as file:
+    #         key = file.readline().strip()
+    # except:
+    #     try:
+    #         with open('../map.key') as file:
+    #             key = file.readline().strip()
+    #     except:
+    #         raise IOError('map key not found')
+    # if not key:
+    #     raise KeyError('map key not found')
+    #file.close()
     return key
 
 def getLat_Long(city):
@@ -39,12 +41,3 @@ def getLat_Long(city):
     coords['long'] = lat
     print(coords)
     return coords
-
-
-
-
-
-
-
-# def get_Lat_Long(request):
-#     requests.get()

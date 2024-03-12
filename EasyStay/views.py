@@ -3,7 +3,7 @@ import json
 import random
 import datetime
 import populatedata
-from EasyStay import mapAPI
+from EasyStay import mapAPI, weatherAPI
 
 
 from django.contrib import messages
@@ -40,14 +40,15 @@ def index(request):
 def search_rst(request):
     if request.method == 'POST':
         location = request.POST.get('location')
-        print('location:',location)
         rsts = hotel.objects.filter(Q(city__icontains=location)|
-                                    Q(country__icontains=location)).all()
+                                    Q(country__icontains=location)).all()        
+
         for rst in rsts:  # get the star of each review and show in star icon
             rst.stars = range(rst.star)
             rst.non_stars = range(5 - rst.star)
-
+            rst.desc = rst.description
         return render(request, 'search/search_rst.html', locals())
+
 
 
 '''__Login__'''
@@ -706,8 +707,8 @@ def review_list(request):
     bookings_with_review.order_by('review_date')
 
     for bookings in bookings_with_review:  # get the star of each review and show in star icon
-        bookings.stars = range(bookings.star)
-        bookings.non_stars = range(5 - bookings.star)
+        bookings.stars = range(bookings.review_star)
+        bookings.non_stars = range(5 - bookings.review_star)
 
     context = {'id': id,
                'manager_id': manager_id,
@@ -1101,10 +1102,6 @@ def hotel_details(request,id):
         roomfacilities = {}
         for r in roomsdisplayed:
             roomfacilities[r] = ast.literal_eval(r.facility)
-        
-        #reads a csv file of 50,000 cities to find the correct lat/long 
-        #to centre the mapdisplay
-        lat_long = populatedata.get_lat_long(hoteldisplayed.city)
 
         context_hotel['Facility'] = formatted_facilities
         context_hotel['hotel'] = hoteldisplayed
@@ -1114,9 +1111,16 @@ def hotel_details(request,id):
         context_hotel['non_star'] = range(5- hoteldisplayed.star)
         context_hotel['map_api'] = mapAPI.get_key()
 
+        #get latitude and longitude from TomTom API to centre the map 
         coords = mapAPI.getLat_Long(hoteldisplayed.city)
         context_hotel['lat'] = coords['lat']
         context_hotel['long'] = coords['long']
+
+        #use lat & long to get weather information from OpenWeather
+        weather = weatherAPI.get_weather(coords['lat'], coords['long'])
+        context_hotel['weather'] = weather['description']
+        context_hotel['icon'] = weather['icon']
+        context_hotel['temp'] = weather['temp']
 
     except hotel.DoesNotExist:
         context_hotel['hotel'] = None
