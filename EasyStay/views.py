@@ -41,7 +41,7 @@ def search_rst(request):
     if request.method == 'POST':
         location = request.POST.get('location')
         rsts = hotel.objects.filter(Q(city__icontains=location)|
-                                    Q(country__icontains=location)).all()        
+                                    Q(country__icontains=location)).all() 
 
         for rst in rsts:  # get the star of each review and show in star icon
             rst.stars = range(rst.star)
@@ -1117,7 +1117,7 @@ def hotel_details(request,id):
         context_hotel['long'] = coords['long']
 
         #use lat & long to get weather information from OpenWeather
-        weather = weatherAPI.get_weather(coords['lat'], coords['long'])
+        weather = weatherAPI.get_weather(hoteldisplayed.city)
         context_hotel['weather'] = weather['description']
         context_hotel['icon'] = weather['icon']
         context_hotel['temp'] = weather['temp']

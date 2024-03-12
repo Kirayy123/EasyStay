@@ -72,15 +72,14 @@
                                 {% endif %}
                             </label>  
                     </div>
-                    <div class="row mt-3">
-                    {% if hotel %} 
-                            <label class="col-sm-auto">Weather:</label>
+                    <div class="row mt-3">  <!-- Weather Information-->
+                            <div class="col-sm-auto">                            
+                                <img src="{{icon}}" alt="weather icon" height="30" width="30">
+                                </div>
                             <label class="col-sm-auto"><i>{{weather}}</i></label> 
                             <label class="col-sm-auto">{{temp}}C</label>             
-                            <div class="col-sm-auto">                            
-                            <img src="{{icon}}" alt="weather icon" height="30" width="30">
-                            </div>
-                            {% endif %}
+                            
+                         
                     </div>
                 </div>
             </div>

@@ -44,7 +44,9 @@
                   {{ form.as_p }}
                   <p class="button-container">
                     <button type="submit" class="confirm-booking">Confirm Info.</button>
-                    <button class="btn btn-secondary mt-3 btn-return" onclick="location.href='{% url 'index' %}'">Return</button>
+                    <button class="btn btn-secondary mt-3 btn-return" onclick="location.href='{% url 'hotel_details' type.hotel.id %}'";>Return</button>
+                    
+
                 </p>
               </form>
           </div>
