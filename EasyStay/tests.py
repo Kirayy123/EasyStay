@@ -1,9 +1,7 @@
 import os
 from datetime import timedelta
 
-from django.contrib.messages.storage.fallback import FallbackStorage
 from django.core.files import File
-from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
 from django.test import TestCase
@@ -126,7 +124,6 @@ class ManagerHomeWithHotelInfoTests(TestCase):
                 image=self.image
             )
 
-        # 如果需要为roomtype设置image字段，确保已经有了一个有效的文件路径
         test_image_room = os.path.join(settings.BASE_DIR, 'media', 'room_image', 'test.jpg')
         with open(test_image_room, 'rb') as file:
             self.image = File(file, name='test.jpg')
@@ -151,13 +148,11 @@ class ManagerHomeWithHotelInfoTests(TestCase):
 
 class ChangePasswordTests(TestCase):
     def setUp(self):
-        # 直接使用 create 方法创建 hotelmanager 实例，密码为明文
         self.user = hotelmanager.objects.create(
             email="user@example.com",
-            password="old_password",  # 明文密码
+            password="old_password",
             manage_id="M123456"
         )
-        # 模拟登录
         self.client.login(email="user@example.com", password="old_password")
         self.url = reverse('change_password')
 
@@ -194,7 +189,6 @@ class ManagerRoomPageTests(TestCase):
                 image=self.image
             )
 
-        # 如果需要为roomtype设置image字段，确保已经有了一个有效的文件路径
         test_image_room = os.path.join(settings.BASE_DIR, 'media', 'room_image', 'test.jpg')
         with open(test_image_room, 'rb') as file:
             self.image = File(file, name='test.jpg')
@@ -252,51 +246,36 @@ class ManagerRoomPageTests(TestCase):
         self.assertRedirects(response, reverse('manager_room'), msg_prefix="Successful redirect expected")
 
     def test_show_rooms(self):
-        # Make a GET request to show_rooms view
         response = self.client.get(reverse('show_rooms', kwargs={'room_type_id': self.room_type2.id}))
-        # Check if the response is successful
         self.assertEqual(response.status_code, 200)
-        # Check if the template used is correct
         self.assertTemplateUsed(response, 'manager/room_by_type.html')
-        # Check if room_type, rooms, id, manager_id, and hotel are present in the context
         self.assertIn('room_type', response.context)
         self.assertIn('rooms', response.context)
         self.assertIn('id', response.context)
         self.assertIn('manager_id', response.context)
         self.assertIn('hotel', response.context)
-        # Check if the room_type in the context matches the room_type used in the test
         self.assertEqual(response.context['room_type'], self.room_type2)
-        # Check if the number of rooms in the context matches the number of rooms created in the test
         self.assertEqual(len(response.context['rooms']), 2)
 
     def test_add_rooms_get(self):
-        # Make a GET request to add_rooms view
         response = self.client.get(reverse('add_rooms', kwargs={'room_type_id': self.room_type2.id}))
-        # Check if the response is successful
         self.assertEqual(response.status_code, 200)
-        # Check if the template used is correct
         self.assertTemplateUsed(response, 'manager/room_add_rooms.html')
-        # Check if the form is present in the context
         self.assertIn('form', response.context)
 
     def test_add_rooms_post_success(self):
-        # Make a POST request to add_rooms view with valid form data
         form_data = {
-            'Room_number': '111',  # Unique room number
+            'Room_number': '111',
             'availability': True
-            # Add other required fields as necessary
         }
         response = self.client.post(reverse('add_rooms', kwargs={'room_type_id': self.room_type2.id}), form_data)
-        # Check if the response is a redirect
         self.assertRedirects(response, reverse('show_rooms', kwargs={'room_type_id': self.room_type2.id}))
 
 
 
     def test_edit_rooms_access(self):
-        # 发起编辑房间信息的GET请求
         response = self.client.get(
             reverse('update_rooms', kwargs={'room_type_id': self.room_type2.id, 'room_id': self.room1.id}))
-        # 检查响应状态码和使用的模板
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'manager/room_add_rooms.html')
 
@@ -313,19 +292,17 @@ class ManagerRoomPageTests(TestCase):
     def test_delete_room(self):
         response = self.client.delete(
             reverse('delete_rooms', kwargs={'room_type_id': self.room_type2.id, 'room_id': self.room1.id}))
-        # 我们应该检查房间是否被删除，而不是房间类型
         self.assertFalse(room.objects.filter(id=self.room1.id).exists())
 
     def test_delete_room_redirection(self):
         response = self.client.delete(
             reverse('delete_rooms', kwargs={'room_type_id': self.room_type2.id, 'room_id': self.room1.id}))
-        # 应该重定向到正确的页面，即该房间类型的房间列表页面
+
         self.assertRedirects(response, reverse('show_rooms', kwargs={'room_type_id': self.room_type2.id}),
                              msg_prefix="Successful redirect expected")
 
 class BookingListTestCase(TestCase):
     def setUp(self):
-        # 创建一个测试用户
         self.user = user.objects.create(
             username='testuser',
             password='password123',
@@ -334,7 +311,6 @@ class BookingListTestCase(TestCase):
             phone='11112321'
         )
 
-        # 创建一个酒店经理
         self.manager = hotelmanager.objects.create(
             email="manager@example.com",
             phone="+1234567890",
@@ -342,7 +318,6 @@ class BookingListTestCase(TestCase):
             manage_id="M123456789"
         )
 
-        # 创建一个酒店
         self.hotel = hotel.objects.create(
             manager=self.manager,
             hotel_id="H123456789",
@@ -358,7 +333,6 @@ class BookingListTestCase(TestCase):
             image="hotel_image/test.jpg"
         )
 
-        # 创建一个房型
         self.room_type = roomtype.objects.create(
             hotel=self.hotel,
             type="Single",
@@ -368,14 +342,12 @@ class BookingListTestCase(TestCase):
             image="room_image/test.jpg"
         )
 
-        # 创建一个房间
         self.room = room.objects.create(
             type=self.room_type,
             Room_number="101",
             availability=True
         )
 
-        # 创建一个预订
         self.booking = booking.objects.create(
             user=self.user,
             room_number=self.room,
@@ -410,20 +382,15 @@ class BookingListTestCase(TestCase):
             review_date = timezone.now()
         )
 
-        # 设置session以模拟登录状态
         session = self.client.session
         session['id'] = self.manager.id
         session['manager_id'] = self.manager.manage_id
         session.save()
 
     def test_booking_list(self):
-        # 发起GET请求
         response = self.client.get(reverse('bookings'))
-        # 检查响应状态码
         self.assertEqual(response.status_code, 200)
-        # 检查模板是否被正确使用
         self.assertTemplateUsed(response, 'manager/booking.html')
-        # 检查预订是否出现在页面中
         self.assertContains(response, self.booking.ref_num)
 
     def test_review_list(self):
@@ -433,7 +400,6 @@ class BookingListTestCase(TestCase):
         self.assertContains(response, self.booking1.review_star)
 
     def test_reply(self):
-        # 设置POST请求数据
         post_data = {
             'reply': 'Thank you for your review!'
         }
