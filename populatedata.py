@@ -15,7 +15,7 @@ from decimal import Decimal
 
 fake = Faker()
 
-numpercity =10
+numpercity =4
 
 roomtypes = { "Single" : (100,"images/room_single.jpeg",1), "Double" : (200,"images/room_double.jpeg",2), "VIP" : 
              (500,"images/room_vip.jpeg",4), "Penthouse" : (400,"images/room_penthouse.jpeg",6), 
@@ -166,7 +166,7 @@ hoteldesc = DynamicProvider(
 "Rejuvenate your mind, body, and spirit at the Ananda in the Himalayas, India. Nestled amidst the foothills of the Himalayas, this luxurious resort offers a variety of wellness programs, yoga and meditation classes, and Ayurvedic treatments, all designed to promote holistic well-being."
     ]
 )
-numberOfentries = 200
+numberOfentries = 20
 fake.add_provider(feature_provider)
 fake.add_provider(roomFacility_Provider)
 fake.add_provider(hotelnames)
@@ -174,7 +174,7 @@ fake.add_provider(hoteldesc)
 fake.add_provider(photo_provider)
 
 file_path = 'worldcities.csv'
-num_rows_to_read = 50  
+num_rows_to_read = 10  
 
 #creates a string of hotel features that is then parsed by the view method to display them seperately
 def concatRandom(list, range):
